@@ -154,38 +154,67 @@
             /* Global mobile spacing */
             body { overflow-x: hidden; }
 
+            /* All slides allow vertical scroll as safety net */
+            .slide-container.active {
+                overflow-y: auto;
+                -webkit-overflow-scrolling: touch;
+            }
+
             /* Nav bar — compact on mobile */
             .nav-bar {
-                bottom: 8px !important;
-                padding: 6px 12px !important;
-                gap: 10px !important;
-                font-size: 10px !important;
+                bottom: 6px !important;
+                padding: 5px 10px !important;
+                gap: 8px !important;
             }
-            .nav-bar .text-sm { font-size: 10px !important; }
             .nav-bar .text-xs { font-size: 8px !important; }
+            .nav-bar .h-1 { height: 2px !important; }
+            .nav-bar .w-28 { width: 60px !important; }
+            .nav-bar .p-2 { padding: 4px !important; }
+            .nav-bar .material-symbols-outlined { font-size: 18px !important; }
 
             /* Watermarks — smaller on mobile */
-            .watermark { font-size: 7px; right: 12px; bottom: 8px; }
-            .watermark-top { font-size: 7px; left: 12px; top: 8px; }
+            .watermark { font-size: 6px; right: 8px; bottom: 4px; }
+            .watermark-top { font-size: 6px; left: 8px; top: 4px; }
 
-            /* Slide 2 — compact format cards */
-            #slide-2 .mb-10 { margin-bottom: 1rem !important; }
-            #slide-2 .gap-8 { gap: 0.75rem !important; }
-            #slide-2 .p-8 { padding: 1rem !important; }
-            #slide-2 .mt-5 { margin-top: 0.5rem !important; }
-            #slide-2 .space-y-2\.5 > * + * { margin-top: 0.375rem !important; }
-            #slide-2 h3 { font-size: 1rem !important; }
-            #slide-2 .absolute.-top-5 { top: -0.75rem !important; }
-            #slide-2 .absolute.-top-5 .p-2\.5 { padding: 0.375rem !important; }
+            /* Slide 1 — compact hero */
+            #slide-1 .space-y-8 { gap: 1rem; }
+            #slide-1 h1 { font-size: 3rem !important; }
 
-            /* Slide 3 — compact host cards */
-            #slide-3 .h-32 { height: 5.5rem !important; }
-            #slide-3 .gap-3 { gap: 0.5rem !important; }
-            #slide-3 .p-4 { padding: 0.5rem 0.75rem !important; }
-            #slide-3 h3 { font-size: 0.875rem !important; }
-            #slide-3 .mb-2 { margin-bottom: 0.125rem !important; }
-            #slide-3 .mb-3 { margin-bottom: 0.25rem !important; }
-            #slide-3 .flex.items-center.gap-3 span:last-child { font-size: 9px !important; }
+            /* Slide 2 — aggressive compaction for portrait */
+            #slide-2 > div { padding: 0.75rem !important; }
+            #slide-2 .mb-10 { margin-bottom: 0.5rem !important; }
+            #slide-2 h2 { font-size: 1.25rem !important; margin-bottom: 0.25rem !important; }
+            #slide-2 .text-lg.text-white\/50 { font-size: 10px !important; line-height: 1.3 !important; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+            #slide-2 .gap-8 { gap: 0.5rem !important; }
+            #slide-2 .p-8 { padding: 0.625rem 0.75rem !important; }
+            #slide-2 h3 { font-size: 0.8rem !important; margin-top: 0.125rem !important; }
+            #slide-2 .text-\[11px\] { font-size: 8px !important; margin-top: 0 !important; }
+            #slide-2 .mt-5 { margin-top: 0.25rem !important; }
+            #slide-2 .space-y-2\.5 > * + * { margin-top: 0.125rem !important; }
+            #slide-2 .text-sm { font-size: 11px !important; }
+            #slide-2 li { line-height: 1.2 !important; }
+            #slide-2 .absolute.-top-5 { top: -0.5rem !important; }
+            #slide-2 .absolute.-top-5 > div,
+            #slide-2 .absolute.-top-5 .p-2\.5 { padding: 0.25rem !important; }
+            #slide-2 .absolute.-top-5 .material-symbols-outlined { font-size: 14px !important; }
+
+            /* Slide 3 — tighter host cards for portrait */
+            #slide-3 > div { padding: 0.5rem !important; }
+            #slide-3 .mb-4 { margin-bottom: 0.125rem !important; }
+            #slide-3 .sm\:mb-10 { margin-bottom: 0.25rem !important; }
+            #slide-3 h2 { font-size: 1.5rem !important; margin-bottom: 0 !important; }
+            #slide-3 .text-\[10px\] { font-size: 8px !important; }
+            #slide-3 .h-32 { height: 4.5rem !important; }
+            #slide-3 .gap-3 { gap: 0.375rem !important; }
+            #slide-3 .p-4 { padding: 0.375rem 0.5rem !important; }
+            #slide-3 h3 { font-size: 0.75rem !important; margin-bottom: 0 !important; }
+            #slide-3 .text-\[10px\].font-mono { font-size: 7px !important; margin-bottom: 0.125rem !important; }
+            #slide-3 .h-px { display: none; }
+            #slide-3 .flex.items-center.gap-3 { gap: 0.25rem; margin-top: 0; }
+            #slide-3 .flex.items-center.gap-3 span.w-2 { width: 5px; height: 5px; }
+            #slide-3 .flex.items-center.gap-3 span:last-child { font-size: 7px !important; }
+            #slide-3 .mt-4 { margin-top: 0.25rem !important; }
+            #slide-3 .text-\[9px\] { font-size: 7px !important; }
 
             /* Slide 4 — compact sports desk */
             #slide-4 .grid-cols-2 { grid-template-columns: repeat(2, 1fr) !important; }
@@ -193,45 +222,43 @@
             #slide-4 .grid-cols-2 h4 { font-size: 9px !important; }
             #slide-4 .grid-cols-2 p { display: none; }
             #slide-4 .mt-6 { margin-top: 0.75rem !important; }
-            #slide-4 .space-y-4 { gap: 0.5rem; }
             #slide-4 .aspect-video { aspect-ratio: 16/10 !important; }
-            #slide-4 .border-l-2 + p { font-size: 12px !important; }
 
             /* Slide 5 — compact market & revenue */
-            #slide-5 .mb-8 { margin-bottom: 0.75rem !important; }
-            #slide-5 .mb-6 { margin-bottom: 0.5rem !important; }
+            #slide-5 .mb-8 { margin-bottom: 0.5rem !important; }
+            #slide-5 .mb-6 { margin-bottom: 0.375rem !important; }
             #slide-5 .grid-cols-2 .p-5 { padding: 0.5rem !important; }
             #slide-5 .stat-number { font-size: 1.25rem !important; }
-            #slide-5 .grid-cols-1 .p-6 { padding: 0.75rem !important; }
-            #slide-5 .grid-cols-1 h3 { font-size: 0.875rem !important; }
-            #slide-5 .grid-cols-1 p.text-white\/55 { font-size: 11px !important; line-height: 1.3 !important; margin-bottom: 0.25rem !important; }
-            #slide-5 .grid-cols-1 .mb-5 { margin-bottom: 0.5rem !important; }
-            #slide-5 .grid-cols-1 .w-14 { width: 2rem !important; height: 2rem !important; }
-            #slide-5 .gap-6 { gap: 0.5rem !important; }
+            #slide-5 .grid-cols-1 .p-6 { padding: 0.5rem !important; }
+            #slide-5 .grid-cols-1 h3 { font-size: 0.8rem !important; }
+            #slide-5 .grid-cols-1 p.text-white\/55 { font-size: 10px !important; line-height: 1.2 !important; margin-bottom: 0.125rem !important; }
+            #slide-5 .grid-cols-1 .mb-5 { margin-bottom: 0.25rem !important; }
+            #slide-5 .grid-cols-1 .w-14 { width: 1.75rem !important; height: 1.75rem !important; }
+            #slide-5 .gap-6 { gap: 0.375rem !important; }
 
             /* Slide 6 — compact timeline */
             #slide-6 .py-10 { padding-top: 0.5rem !important; padding-bottom: 0.5rem !important; }
             #slide-6 .mb-10 { margin-bottom: 0.5rem !important; }
-            #slide-6 .space-y-8 > * + * { margin-top: 0.75rem !important; }
-            #slide-6 .p-5 { padding: 0.75rem !important; }
-            #slide-6 h4 { font-size: 0.8rem !important; margin-bottom: 0 !important; }
+            #slide-6 .space-y-8 > * + * { margin-top: 0.5rem !important; }
+            #slide-6 .p-5 { padding: 0.5rem !important; }
+            #slide-6 h4 { font-size: 0.75rem !important; margin-bottom: 0 !important; }
             #slide-6 .text-sm.text-white\/65,
-            #slide-6 .text-sm.text-white\/70 { font-size: 10px !important; line-height: 1.3 !important; }
-            #slide-6 .text-2xl { font-size: 1rem !important; }
-            #slide-6 .pl-8 { padding-left: 1.25rem !important; }
-            #slide-6 .absolute.-left-\[41px\] { left: -25px !important; width: 14px !important; height: 14px !important; }
+            #slide-6 .text-sm.text-white\/70 { font-size: 9px !important; line-height: 1.2 !important; }
+            #slide-6 .text-2xl { font-size: 0.875rem !important; }
+            #slide-6 .pl-8 { padding-left: 1rem !important; }
+            #slide-6 .absolute.-left-\[41px\] { left: -21px !important; width: 12px !important; height: 12px !important; }
 
             /* Slide 7 — compact championship */
-            #slide-7 .mb-8 { margin-bottom: 0.5rem !important; }
-            #slide-7 .mb-10 { margin-bottom: 0.5rem !important; }
-            #slide-7 .sm\:mb-10 { margin-bottom: 0.5rem !important; }
-            #slide-7 .grid-cols-2 .p-5 { padding: 0.75rem !important; }
-            #slide-7 .grid-cols-2 .w-14 { width: 2.25rem !important; height: 2.25rem !important; }
-            #slide-7 .grid-cols-2 .mb-4 { margin-bottom: 0.25rem !important; }
-            #slide-7 .grid-cols-2 p { font-size: 8px !important; line-height: 1.2 !important; }
-            #slide-7 .mt-8 { margin-top: 0.75rem !important; }
-            #slide-7 .flex.items-center.justify-center.gap-4 { gap: 0.5rem !important; flex-wrap: wrap; }
-            #slide-7 .flex.items-center.justify-center.gap-4 span.text-xs { font-size: 9px !important; }
+            #slide-7 .mb-8 { margin-bottom: 0.375rem !important; }
+            #slide-7 .mb-10 { margin-bottom: 0.375rem !important; }
+            #slide-7 .sm\:mb-10 { margin-bottom: 0.375rem !important; }
+            #slide-7 .grid-cols-2 .p-5 { padding: 0.5rem !important; }
+            #slide-7 .grid-cols-2 .w-14 { width: 2rem !important; height: 2rem !important; }
+            #slide-7 .grid-cols-2 .mb-4 { margin-bottom: 0.125rem !important; }
+            #slide-7 .grid-cols-2 p { font-size: 7px !important; line-height: 1.2 !important; }
+            #slide-7 .mt-8 { margin-top: 0.5rem !important; }
+            #slide-7 .flex.items-center.justify-center.gap-4 { gap: 0.375rem !important; flex-wrap: wrap; }
+            #slide-7 .flex.items-center.justify-center.gap-4 span.text-xs { font-size: 8px !important; }
 
             /* Slide 8 — stack split-panel vertically */
             #slide-8 > div:first-child {
@@ -242,47 +269,192 @@
                 min-height: 45vh;
             }
             #slide-8 .absolute.bottom-36 {
-                bottom: 12px !important;
-                left: 12px !important;
-                right: 12px !important;
+                bottom: 10px !important;
+                left: 10px !important;
+                right: 10px !important;
             }
-            #slide-8 .absolute.bottom-36 h3 { font-size: 1.5rem !important; }
-            #slide-8 .absolute.bottom-36 p { font-size: 11px !important; }
+            #slide-8 .absolute.bottom-36 h3 { font-size: 1.25rem !important; }
+            #slide-8 .absolute.bottom-36 p { font-size: 10px !important; }
             #slide-8 .border-r {
                 border-right: none !important;
                 border-bottom: 1px solid rgba(255,255,255,0.1);
             }
-            #slide-8 .w-20 { width: 3rem !important; height: 3rem !important; }
-            #slide-8 .w-20 span { font-size: 0.75rem !important; }
+            #slide-8 .w-20 { width: 2.5rem !important; height: 2.5rem !important; }
+            #slide-8 .w-20 span { font-size: 0.7rem !important; }
 
             /* Slide 9 — compact brand DNA */
-            #slide-9 .gap-14 { gap: 1rem !important; }
-            #slide-9 .space-y-6 > * + * { margin-top: 0.5rem !important; }
-            #slide-9 .space-y-5 > * + * { margin-top: 0.5rem !important; }
-            #slide-9 h4 { font-size: 0.8rem !important; }
-            #slide-9 .text-\[13px\] { font-size: 11px !important; }
+            #slide-9 .gap-14 { gap: 0.75rem !important; }
+            #slide-9 .space-y-6 > * + * { margin-top: 0.375rem !important; }
+            #slide-9 .space-y-5 > * + * { margin-top: 0.375rem !important; }
+            #slide-9 h4 { font-size: 0.75rem !important; }
+            #slide-9 .text-\[13px\] { font-size: 10px !important; }
             #slide-9 .text-3xl.font-light { font-size: 1rem !important; }
-            #slide-9 .rounded-2xl { max-height: 30vh; }
+            #slide-9 .rounded-none { max-height: 28vh; }
 
             /* Slide 10 — 2-col grid, compact cards */
             #slide-10 .grid { grid-template-columns: repeat(2, 1fr) !important; }
-            #slide-10 .min-h-\[220px\] { min-height: 130px !important; }
-            #slide-10 .p-7 { padding: 0.75rem !important; }
-            #slide-10 h3 { font-size: 0.8rem !important; }
-            #slide-10 .text-sm.opacity-50 { font-size: 10px !important; line-height: 1.2 !important; }
-            #slide-10 .mb-8 { margin-bottom: 0.5rem !important; }
+            #slide-10 .min-h-\[220px\] { min-height: 110px !important; }
+            #slide-10 .p-7 { padding: 0.625rem !important; }
+            #slide-10 h3 { font-size: 0.75rem !important; }
+            #slide-10 .text-sm.opacity-50 { font-size: 9px !important; line-height: 1.2 !important; }
+            #slide-10 .mb-8 { margin-bottom: 0.375rem !important; }
 
             /* Slide 11 — compact next steps + contact */
-            #slide-11 .mb-10 { margin-bottom: 0.75rem !important; }
-            #slide-11 .mb-8 { margin-bottom: 0.5rem !important; }
-            #slide-11 .grid-cols-1.md\:grid-cols-3 .p-6 { padding: 0.5rem 0.75rem !important; }
-            #slide-11 .grid-cols-1.md\:grid-cols-3 h4 { font-size: 11px !important; }
-            #slide-11 .grid-cols-1.md\:grid-cols-3 .text-3xl { font-size: 1.25rem !important; margin-bottom: 0.25rem !important; }
-            #slide-11 .grid-cols-1.md\:grid-cols-3 .text-\[11px\] { font-size: 9px !important; }
-            #slide-11 .grid-cols-1.md\:grid-cols-2 .p-6 { padding: 0.75rem !important; }
-            #slide-11 h4.font-bold { font-size: 11px !important; }
-            #slide-11 .gap-6 { gap: 0.5rem !important; }
-            #slide-11 .pb-24 { padding-bottom: 4rem !important; }
+            #slide-11 .mb-10 { margin-bottom: 0.5rem !important; }
+            #slide-11 .mb-8 { margin-bottom: 0.375rem !important; }
+            #slide-11 .grid-cols-1.md\:grid-cols-3 .p-6 { padding: 0.375rem 0.5rem !important; }
+            #slide-11 .grid-cols-1.md\:grid-cols-3 h4 { font-size: 10px !important; }
+            #slide-11 .grid-cols-1.md\:grid-cols-3 .text-3xl { font-size: 1rem !important; margin-bottom: 0.125rem !important; }
+            #slide-11 .grid-cols-1.md\:grid-cols-3 .text-\[11px\] { font-size: 8px !important; }
+            #slide-11 .grid-cols-1.md\:grid-cols-2 .p-6 { padding: 0.5rem !important; }
+            #slide-11 h4.font-bold { font-size: 10px !important; }
+            #slide-11 .gap-6 { gap: 0.375rem !important; }
+            #slide-11 .pb-24 { padding-bottom: 3rem !important; }
+        }
+
+        /* ===== LANDSCAPE MOBILE OVERRIDES ===== */
+        @media (orientation: landscape) and (max-height: 500px) {
+            /* Nav bar — ultra-compact in landscape */
+            .nav-bar {
+                bottom: 4px !important;
+                padding: 3px 8px !important;
+                gap: 6px !important;
+                opacity: 0.7;
+                transition: opacity 0.3s;
+            }
+            .nav-bar:hover { opacity: 1; }
+            .nav-bar .text-xs { font-size: 7px !important; }
+            .nav-bar .h-1 { height: 2px !important; }
+            .nav-bar .w-28 { width: 40px !important; }
+            .nav-bar .p-2 { padding: 2px !important; }
+            .nav-bar .material-symbols-outlined { font-size: 14px !important; }
+            .nav-bar .gap-4 { gap: 0.25rem !important; }
+
+            /* Watermarks — tiny in landscape */
+            .watermark { font-size: 5px; bottom: 2px; }
+            .watermark-top { font-size: 5px; top: 2px; }
+
+            /* Global slide padding — minimal in landscape */
+            .slide-container > div { padding: 0.375rem 0.75rem !important; }
+
+            /* All headings scale down in landscape */
+            h1 { font-size: 2rem !important; }
+            h2 { font-size: 1.25rem !important; margin-bottom: 0.25rem !important; }
+
+            /* All slides scrollable in landscape */
+            .slide-container.active {
+                overflow-y: auto;
+                -webkit-overflow-scrolling: touch;
+            }
+
+            /* Slide 1 — compact hero for landscape */
+            #slide-1 .space-y-8 { gap: 0.5rem; }
+            #slide-1 h1 { font-size: 2.5rem !important; line-height: 0.9 !important; }
+            #slide-1 .pt-6 { padding-top: 0.5rem !important; }
+
+            /* Slide 2 — 3-col layout in landscape */
+            #slide-2 .mb-10 { margin-bottom: 0.25rem !important; }
+            #slide-2 .text-lg { font-size: 9px !important; display: none; }
+            #slide-2 .grid-cols-1 { grid-template-columns: repeat(3, 1fr) !important; }
+            #slide-2 .gap-8 { gap: 0.5rem !important; }
+            #slide-2 .p-8 { padding: 0.375rem 0.5rem !important; }
+            #slide-2 h3 { font-size: 0.65rem !important; margin-top: 0 !important; }
+            #slide-2 .text-\[11px\] { font-size: 7px !important; }
+            #slide-2 .mt-5 { margin-top: 0.125rem !important; }
+            #slide-2 .space-y-2\.5 > * + * { margin-top: 0 !important; }
+            #slide-2 li { font-size: 8px !important; line-height: 1.15 !important; }
+            #slide-2 .absolute.-top-5 { top: -0.375rem !important; }
+            #slide-2 .absolute.-top-5 > div,
+            #slide-2 .absolute.-top-5 .p-2\.5 { padding: 0.125rem !important; }
+            #slide-2 .absolute.-top-5 .material-symbols-outlined { font-size: 10px !important; }
+            #slide-2 .md\:translate-y-6 { transform: none !important; }
+
+            /* Slide 3 — 3-col in landscape */
+            #slide-3 .grid-cols-1 { grid-template-columns: repeat(3, 1fr) !important; }
+            #slide-3 .h-32 { height: 6rem !important; }
+            #slide-3 .gap-3 { gap: 0.375rem !important; }
+            #slide-3 .p-4 { padding: 0.25rem 0.375rem !important; }
+            #slide-3 h3 { font-size: 0.65rem !important; margin-bottom: 0 !important; }
+            #slide-3 .text-\[10px\] { font-size: 7px !important; }
+            #slide-3 .text-\[10px\].font-mono { font-size: 6px !important; margin-bottom: 0 !important; }
+            #slide-3 .h-px { display: none; }
+            #slide-3 .flex.items-center.gap-3 span:last-child { font-size: 6px !important; }
+            #slide-3 .mt-4 { margin-top: 0.125rem !important; }
+            #slide-3 .text-\[9px\] { display: none; }
+            #slide-3 .mb-4 { margin-bottom: 0 !important; }
+
+            /* Slide 4 — landscape compact */
+            #slide-4 .grid-cols-2 p { display: none; }
+            #slide-4 .grid-cols-2 .p-4 { padding: 0.25rem !important; }
+            #slide-4 .grid-cols-2 h4 { font-size: 8px !important; }
+
+            /* Slide 5 — landscape compact */
+            #slide-5 .grid-cols-1 { grid-template-columns: repeat(3,1fr) !important; }
+            #slide-5 .grid-cols-1 .p-6 { padding: 0.375rem !important; }
+            #slide-5 .grid-cols-1 h3 { font-size: 0.65rem !important; }
+            #slide-5 .grid-cols-1 p { font-size: 8px !important; line-height: 1.2 !important; }
+            #slide-5 .grid-cols-1 .w-14 { width: 1.5rem !important; height: 1.5rem !important; }
+            #slide-5 .mb-8 { margin-bottom: 0.25rem !important; }
+            #slide-5 .gap-6 { gap: 0.25rem !important; }
+
+            /* Slide 6 — landscape compact */
+            #slide-6 .space-y-8 > * + * { margin-top: 0.25rem !important; }
+            #slide-6 .p-5 { padding: 0.25rem 0.5rem !important; }
+            #slide-6 h4 { font-size: 0.6rem !important; }
+            #slide-6 .text-sm { font-size: 8px !important; line-height: 1.2 !important; }
+            #slide-6 .text-2xl { font-size: 0.7rem !important; }
+            #slide-6 .mb-10 { margin-bottom: 0.25rem !important; }
+
+            /* Slide 7 — landscape compact */
+            #slide-7 .grid-cols-2 .p-5 { padding: 0.375rem !important; }
+            #slide-7 .grid-cols-2 .w-14 { width: 1.5rem !important; height: 1.5rem !important; }
+            #slide-7 .grid-cols-2 .mb-4 { margin-bottom: 0 !important; }
+            #slide-7 .grid-cols-2 p { font-size: 6px !important; }
+            #slide-7 .mb-10 { margin-bottom: 0.25rem !important; }
+            #slide-7 .mt-8 { margin-top: 0.25rem !important; }
+
+            /* Slide 8 — keep split layout in landscape, just compact */
+            #slide-8 > div:first-child {
+                flex-direction: row !important;
+            }
+            #slide-8 .w-1\/2 {
+                width: 50% !important;
+                min-height: auto;
+            }
+            #slide-8 .absolute.bottom-36 {
+                bottom: 6px !important;
+                left: 8px !important;
+                right: 8px !important;
+            }
+            #slide-8 .absolute.bottom-36 h3 { font-size: 1rem !important; }
+            #slide-8 .absolute.bottom-36 p { font-size: 8px !important; }
+            #slide-8 .w-20 { width: 2rem !important; height: 2rem !important; }
+            #slide-8 .w-20 span { font-size: 0.6rem !important; }
+
+            /* Slide 9 — landscape compact */
+            #slide-9 .gap-14 { gap: 0.5rem !important; }
+            #slide-9 h4 { font-size: 0.65rem !important; }
+            #slide-9 .text-\[13px\] { font-size: 8px !important; }
+
+            /* Slide 10 — 2x2 in landscape */
+            #slide-10 .grid { grid-template-columns: repeat(2,1fr) !important; }
+            #slide-10 .min-h-\[220px\] { min-height: 80px !important; }
+            #slide-10 .p-7 { padding: 0.375rem !important; }
+            #slide-10 h3 { font-size: 0.6rem !important; }
+            #slide-10 .text-sm.opacity-50 { font-size: 7px !important; }
+            #slide-10 .mb-8 { margin-bottom: 0.25rem !important; }
+
+            /* Slide 11 — landscape compact */
+            #slide-11 .grid-cols-1.md\:grid-cols-3 { grid-template-columns: repeat(3,1fr) !important; }
+            #slide-11 .grid-cols-1.md\:grid-cols-3 .p-6 { padding: 0.25rem 0.375rem !important; }
+            #slide-11 .grid-cols-1.md\:grid-cols-3 h4 { font-size: 8px !important; }
+            #slide-11 .grid-cols-1.md\:grid-cols-3 .text-3xl { font-size: 0.875rem !important; }
+            #slide-11 .grid-cols-1.md\:grid-cols-3 .text-\[11px\] { font-size: 7px !important; }
+            #slide-11 .grid-cols-1.md\:grid-cols-2 { grid-template-columns: repeat(2,1fr) !important; }
+            #slide-11 .grid-cols-1.md\:grid-cols-2 .p-6 { padding: 0.375rem !important; }
+            #slide-11 .pb-24 { padding-bottom: 2rem !important; }
+            #slide-11 .mb-10 { margin-bottom: 0.25rem !important; }
+            #slide-11 .gap-6 { gap: 0.25rem !important; }
         }
     </style>
 </head>

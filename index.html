@@ -139,13 +139,59 @@
         nav.nav-bar:hover { opacity: 1 !important; }
 
         .stat-number {
-            @apply text-5xl md:text-6xl font-black font-display;
+            @apply text-3xl sm:text-5xl md:text-6xl font-black font-display;
             line-height: 1;
         }
 
         ::-webkit-scrollbar { width: 6px; }
         ::-webkit-scrollbar-track { background: #0a0a0a; }
         ::-webkit-scrollbar-thumb { background: #333; border-radius: 3px; }
+
+        /* ===== MOBILE RESPONSIVE OVERRIDES ===== */
+        @media (max-width: 767px) {
+            /* Global mobile spacing */
+            body { overflow-x: hidden; }
+
+            /* Nav bar — compact on mobile */
+            .nav-bar {
+                bottom: 12px !important;
+                padding: 8px 16px !important;
+                gap: 12px !important;
+            }
+
+            /* Watermarks — smaller on mobile */
+            .watermark { font-size: 7px; right: 12px; bottom: 8px; }
+            .watermark-top { font-size: 7px; left: 12px; top: 8px; }
+
+            /* All slides allow vertical scroll on mobile */
+            .slide-container.active {
+                overflow-y: auto;
+                -webkit-overflow-scrolling: touch;
+            }
+
+            /* Slide 6 — stack panels vertically */
+            #slide-6 > div:first-child {
+                flex-direction: column !important;
+            }
+            #slide-6 .w-1\/2 {
+                width: 100% !important;
+                min-height: 50vh;
+            }
+            #slide-6 .absolute.bottom-36 {
+                bottom: 20px !important;
+                left: 16px !important;
+                right: 16px !important;
+            }
+            #slide-6 .border-r {
+                border-right: none !important;
+                border-bottom: 1px solid rgba(255,255,255,0.1);
+            }
+
+            /* Slide 8 — cards less tall on mobile */
+            #slide-8 .min-h-\[220px\] {
+                min-height: 160px;
+            }
+        }
     </style>
 </head>
 
@@ -203,12 +249,13 @@
                             Production</span>
                     </div>
                     <h1
-                        class="text-7xl md:text-[10rem] font-display font-black uppercase tracking-tighter leading-[0.85] text-glow drop-shadow-[0_4px_30px_rgba(236,19,37,0.45)]">
+                        class="text-5xl sm:text-7xl md:text-[10rem] font-display font-black uppercase tracking-tighter leading-[0.85] text-glow drop-shadow-[0_4px_30px_rgba(236,19,37,0.45)]">
                         Battle Rap<br />
                         <span class="text-primary italic">Olympics</span>
                     </h1>
                     <div class="h-px w-40 bg-gradient-to-r from-transparent via-white/40 to-transparent mx-auto"></div>
-                    <p class="text-lg md:text-2xl font-light uppercase tracking-[0.5em] text-white/70">
+                    <p
+                        class="text-sm sm:text-lg md:text-2xl font-light uppercase tracking-[0.25em] sm:tracking-[0.5em] text-white/70">
                         Rap is a Sport. Broadcast it like one.
                     </p>
                     <div
@@ -225,7 +272,7 @@
 
         <!-- ===== SLIDE 2: THE FORMAT ===== -->
         <section id="slide-2" class="slide-container">
-            <div class="relative w-full h-full flex flex-col p-10 md:p-16">
+            <div class="relative w-full h-full flex flex-col p-5 sm:p-10 md:p-16">
                 <div class="absolute inset-0 z-0 overflow-hidden">
                     <img src="./IMAGES/Gemini_Generated_Image_9eyv859eyv859eyv.jpeg" alt="The Pit Arena"
                         class="w-full h-full object-cover opacity-60 grayscale-[0.2] brightness-[0.4] blur-sm scale-105">
@@ -237,7 +284,9 @@
                     <div class="mb-10">
                         <span class="text-primary font-bold tracking-[0.3em] uppercase text-[10px] mb-3 block">Season
                             Structure</span>
-                        <h2 class="text-5xl md:text-7xl font-display font-black uppercase tracking-tighter mb-3">24
+                        <h2
+                            class="text-3xl sm:text-5xl md:text-7xl font-display font-black uppercase tracking-tighter mb-3">
+                            24
                             Rounds <span class="text-primary italic">To Glory</span></h2>
                         <p class="text-lg text-white/50 max-w-2xl">A structured, high-stakes seasonal format designed
                             for maximum week-over-week retention and binge-worthy narratives.</p>
@@ -328,7 +377,7 @@
 
         <!-- ===== SLIDE 3: THE SPORTS DESK ===== -->
         <section id="slide-3" class="slide-container">
-            <div class="relative w-full h-full flex flex-col p-8 md:p-14">
+            <div class="relative w-full h-full flex flex-col p-4 sm:p-8 md:p-14">
                 <div class="absolute inset-0 z-0 overflow-hidden">
                     <img src="./IMAGES/Gemini_Generated_Image_l7wu1vl7wu1vl7wu.jpeg" alt="Podcast Studio"
                         class="w-full h-full object-cover opacity-50 blur-md scale-105 grayscale-[0.3]">
@@ -336,15 +385,16 @@
                         class="absolute inset-0 bg-gradient-to-l from-background-dark via-background-dark/80 to-background-dark/60">
                     </div>
                 </div>
-                <div class="relative z-10 w-full h-full grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
-                    <div class="lg:col-span-5 space-y-6 pl-4 md:pl-8">
+                <div class="relative z-10 w-full h-full grid grid-cols-1 lg:grid-cols-12 gap-4 sm:gap-8 items-center">
+                    <div class="lg:col-span-5 space-y-4 sm:space-y-6 pl-2 sm:pl-4 md:pl-8">
                         <div
                             class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 border border-primary/20">
                             <span class="w-2 h-2 rounded-full bg-primary animate-pulse"></span>
                             <span class="text-[10px] uppercase font-bold text-primary tracking-widest">Live
                                 Analysis</span>
                         </div>
-                        <h2 class="text-5xl md:text-7xl font-display font-black uppercase leading-[0.9]">The Sports
+                        <h2 class="text-3xl sm:text-5xl md:text-7xl font-display font-black uppercase leading-[0.9]">The
+                            Sports
                             <br /><span
                                 class="text-transparent bg-clip-text bg-gradient-to-r from-white to-white/40">Desk</span>
                         </h2>
@@ -413,7 +463,7 @@
 
         <!-- ===== SLIDE 4: MARKET & REVENUE ===== -->
         <section id="slide-4" class="slide-container">
-            <div class="relative w-full h-full flex flex-col items-center justify-center p-8">
+            <div class="relative w-full h-full flex flex-col items-center justify-center p-4 sm:p-8">
                 <div class="absolute inset-0 z-0 overflow-hidden">
                     <img src="./IMAGES/Gemini_Generated_Image_92cpk392cpk392cp.jpeg" alt="Crowd Energy"
                         class="w-full h-full object-cover opacity-60 grayscale brightness-[0.7]">
@@ -426,7 +476,8 @@
                     <div class="text-center mb-8">
                         <span class="text-primary font-bold tracking-[0.3em] uppercase text-[10px] mb-3 block">Business
                             Model</span>
-                        <h2 class="text-5xl md:text-6xl font-display font-black uppercase tracking-tight">Monetizing The
+                        <h2 class="text-3xl sm:text-5xl md:text-6xl font-display font-black uppercase tracking-tight">
+                            Monetizing The
                             Culture</h2>
                     </div>
 
@@ -506,7 +557,7 @@
 
         <!-- ===== SLIDE 5: RUN OF SHOW ===== -->
         <section id="slide-5" class="slide-container">
-            <div class="relative w-full h-full flex flex-col items-center p-8 overflow-y-auto">
+            <div class="relative w-full h-full flex flex-col items-center p-4 sm:p-8 overflow-y-auto">
                 <div class="absolute inset-0 z-0 overflow-hidden">
                     <img src="./IMAGES/Gemini_Generated_Image_ukcfb2ukcfb2ukcf (1).jpeg" alt="Intimate Battle"
                         class="w-full h-full object-cover opacity-60 grayscale-[0.2] blur-[1px]">
@@ -515,7 +566,7 @@
                 <div class="relative z-10 w-full max-w-4xl py-10">
                     <div class="text-center mb-10">
                         <h2
-                            class="text-5xl md:text-6xl font-display font-black uppercase text-primary-gold mb-2 text-glow-gold">
+                            class="text-3xl sm:text-5xl md:text-6xl font-display font-black uppercase text-primary-gold mb-2 text-glow-gold">
                             Run of Show</h2>
                         <p class="text-white/50 font-mono tracking-widest text-xs">60 MIN EPISODE · LIVE-TO-TAPE · 4K
                             MULTI-CAMERA</p>
@@ -655,17 +706,18 @@
 
         <!-- ===== SLIDE 7: VISUAL IDENTITY ===== -->
         <section id="slide-7" class="slide-container">
-            <div class="relative w-full h-full flex flex-col p-8 md:p-14">
+            <div class="relative w-full h-full flex flex-col p-4 sm:p-8 md:p-14">
                 <div class="absolute inset-0 z-0 bg-surface-dark">
                     <div class="absolute inset-0 opacity-[0.06]"
                         style="background-image: linear-gradient(#333 1px, transparent 1px), linear-gradient(90deg, #333 1px, transparent 1px); background-size: 50px 50px;">
                     </div>
                 </div>
-                <div class="relative z-10 w-full h-full grid grid-cols-1 md:grid-cols-2 gap-14 items-center">
+                <div class="relative z-10 w-full h-full grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-14 items-center">
                     <div class="flex flex-col justify-center space-y-6">
                         <span class="text-primary-gold font-bold tracking-[0.3em] uppercase text-[10px]">Brand
                             DNA</span>
-                        <h2 class="text-5xl md:text-6xl font-display font-black uppercase tracking-tighter">The
+                        <h2 class="text-3xl sm:text-5xl md:text-6xl font-display font-black uppercase tracking-tighter">
+                            The
                             Aesthetic</h2>
                         <div class="space-y-5">
                             <div class="flex items-start gap-4 group">
@@ -718,12 +770,13 @@
 
         <!-- ===== SLIDE 8: WHY NOW ===== -->
         <section id="slide-8" class="slide-container">
-            <div class="relative w-full h-full flex flex-col items-center justify-center p-8 bg-black">
+            <div class="relative w-full h-full flex flex-col items-center justify-center p-4 sm:p-8 bg-black">
                 <div
                     class="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-surface-dark via-black to-black">
                 </div>
                 <div class="text-center mb-8 relative z-10">
-                    <h2 class="text-6xl md:text-8xl font-display font-black uppercase text-white mb-4">Why Now?</h2>
+                    <h2 class="text-4xl sm:text-6xl md:text-8xl font-display font-black uppercase text-white mb-4">Why
+                        Now?</h2>
                     <p class="text-lg text-primary font-mono tracking-widest">THE PERFECT STORM</p>
                 </div>
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 w-full max-w-6xl relative z-10">
@@ -770,7 +823,7 @@
 
         <!-- ===== SLIDE 9: NEXT STEPS & CONTACT ===== -->
         <section id="slide-9" class="slide-container">
-            <div class="relative w-full h-full flex flex-col items-center justify-center p-8 pb-28">
+            <div class="relative w-full h-full flex flex-col items-center justify-center p-4 sm:p-8 pb-24 sm:pb-28">
                 <div class="absolute inset-0 z-0">
                     <div class="absolute inset-0 bg-black"></div>
                     <div
@@ -782,7 +835,9 @@
                     <div class="mb-10">
                         <span class="text-primary-gold font-bold tracking-[0.4em] uppercase text-[10px] mb-4 block">What
                             Happens Next</span>
-                        <h2 class="text-5xl md:text-7xl font-display font-black uppercase tracking-tight mb-4">Let's
+                        <h2
+                            class="text-3xl sm:text-5xl md:text-7xl font-display font-black uppercase tracking-tight mb-4">
+                            Let's
                             Build<br /><span class="text-primary-gold italic">The Future</span></h2>
                         <div
                             class="h-px w-24 bg-gradient-to-r from-transparent via-primary-gold/50 to-transparent mx-auto mb-6">

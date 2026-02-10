@@ -217,6 +217,70 @@
             #slide-3 .mt-4 { margin-top: 0.25rem !important; }
             #slide-3 .text-\[9px\] { font-size: 7px !important; }
 
+            /* Slide 3 — Host card tap-to-expand (mobile only) */
+            #slide-3 .host-card {
+                cursor: pointer;
+                transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+                position: relative;
+            }
+            #slide-3 .host-card .host-bio {
+                display: block !important;
+                max-height: 0;
+                overflow: hidden;
+                opacity: 0;
+                transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+                            opacity 0.3s ease,
+                            margin 0.3s ease;
+                margin-bottom: 0;
+                font-size: 11px !important;
+                line-height: 1.4 !important;
+            }
+            #slide-3 .host-card .host-bio-divider {
+                transition: opacity 0.3s ease;
+                opacity: 0;
+            }
+            /* Expanded state */
+            #slide-3 .host-card.host-expanded {
+                z-index: 20;
+            }
+            #slide-3 .host-card.host-expanded .h-32 {
+                height: 7rem !important;
+            }
+            #slide-3 .host-card.host-expanded .host-bio {
+                max-height: 120px;
+                opacity: 1;
+                margin-bottom: 0.5rem;
+            }
+            #slide-3 .host-card.host-expanded .host-bio-divider {
+                opacity: 1;
+            }
+            /* Expand indicator */
+            #slide-3 .host-card .expand-hint {
+                position: absolute;
+                bottom: 4px;
+                right: 8px;
+                font-size: 10px;
+                color: rgba(255,255,255,0.3);
+                transition: opacity 0.3s ease;
+                pointer-events: none;
+            }
+            #slide-3 .host-card.host-expanded .expand-hint {
+                opacity: 0;
+            }
+            /* Glow borders for expanded cards */
+            #slide-3 .host-card.host-expanded.border-primary\/20 {
+                border-color: rgba(236, 19, 37, 0.6) !important;
+                box-shadow: 0 4px 25px rgba(236, 19, 37, 0.2);
+            }
+            #slide-3 .host-card.host-expanded.border-primary-gold\/20 {
+                border-color: rgba(242, 185, 13, 0.6) !important;
+                box-shadow: 0 4px 25px rgba(242, 185, 13, 0.2);
+            }
+            #slide-3 .host-card.host-expanded.border-white\/10 {
+                border-color: rgba(255, 255, 255, 0.4) !important;
+                box-shadow: 0 4px 25px rgba(255, 255, 255, 0.1);
+            }
+
             /* Slide 4 — compact sports desk */
             #slide-4 .grid-cols-2 { grid-template-columns: repeat(2, 1fr) !important; }
             #slide-4 .grid-cols-2 .p-4 { padding: 0.5rem !important; }
@@ -668,7 +732,7 @@
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-3 sm:gap-6 stagger">
                         <!-- A$AP Rocky -->
                         <div
-                            class="group relative bg-black/30 backdrop-blur-xl border border-primary/20 rounded-none overflow-hidden hover:border-primary/60 transition-all duration-500 hover:shadow-[0_8px_40px_0_rgba(236,19,37,0.2)]">
+                            class="host-card group relative bg-black/30 backdrop-blur-xl border border-primary/20 rounded-none overflow-hidden hover:border-primary/60 transition-all duration-500 hover:shadow-[0_8px_40px_0_rgba(236,19,37,0.2)]">
                             <div class="h-32 sm:h-56 md:h-64 relative overflow-hidden">
                                 <img src="./IMAGES/ASAP_Rocky.jpg" alt="A$AP Rocky"
                                     class="w-full h-full object-cover object-top grayscale brightness-[0.7] group-hover:grayscale-0 group-hover:brightness-90 transition-all duration-700 group-hover:scale-105">
@@ -686,12 +750,13 @@
                                 <p class="text-[10px] font-mono text-primary uppercase tracking-widest mb-2 sm:mb-3">
                                     Host &
                                     Executive Producer</p>
-                                <p class="hidden sm:block text-sm text-white/55 leading-relaxed mb-4">Global fashion
+                                <p class="host-bio hidden sm:block text-sm text-white/55 leading-relaxed mb-4">Global
+                                    fashion
                                     icon and cultural
                                     tastemaker. Bridges hip-hop, high fashion, and mainstream entertainment. The face
                                     that brings the world to the arena.</p>
                                 <div
-                                    class="h-px w-full bg-gradient-to-r from-primary/40 via-primary/10 to-transparent mb-3 sm:mb-4">
+                                    class="host-bio-divider h-px w-full bg-gradient-to-r from-primary/40 via-primary/10 to-transparent mb-3 sm:mb-4">
                                 </div>
                                 <div class="flex items-center gap-3">
                                     <span class="w-2 h-2 rounded-full bg-primary"></span>
@@ -700,10 +765,11 @@
                                         Reach</span>
                                 </div>
                             </div>
+                            <span class="expand-hint">TAP TO REVEAL ↓</span>
                         </div>
                         <!-- Loaded Lux -->
                         <div
-                            class="group relative bg-black/30 backdrop-blur-xl border border-primary-gold/20 rounded-none overflow-hidden hover:border-primary-gold/60 transition-all duration-500 hover:shadow-[0_8px_40px_0_rgba(242,185,13,0.2)] md:-translate-y-4">
+                            class="host-card group relative bg-black/30 backdrop-blur-xl border border-primary-gold/20 rounded-none overflow-hidden hover:border-primary-gold/60 transition-all duration-500 hover:shadow-[0_8px_40px_0_rgba(242,185,13,0.2)] md:-translate-y-4">
                             <div class="h-32 sm:h-56 md:h-64 relative overflow-hidden">
                                 <img src="./IMAGES/Loaded%20LUX.png" alt="Loaded Lux"
                                     class="w-full h-full object-cover object-center grayscale brightness-[0.7] group-hover:grayscale-0 group-hover:brightness-90 transition-all duration-700 group-hover:scale-105">
@@ -723,12 +789,13 @@
                                     class="text-[10px] font-mono text-primary-gold uppercase tracking-widest mb-2 sm:mb-3">
                                     Lead
                                     Analyst & Culture Ambassador</p>
-                                <p class="hidden sm:block text-sm text-white/55 leading-relaxed mb-4">The voice of
+                                <p class="host-bio hidden sm:block text-sm text-white/55 leading-relaxed mb-4">The voice
+                                    of
                                     battle rap's golden
                                     era. Legendary wordsmith whose cultural impact transcends the arena. The authority
                                     the community trusts.</p>
                                 <div
-                                    class="h-px w-full bg-gradient-to-r from-primary-gold/40 via-primary-gold/10 to-transparent mb-3 sm:mb-4">
+                                    class="host-bio-divider h-px w-full bg-gradient-to-r from-primary-gold/40 via-primary-gold/10 to-transparent mb-3 sm:mb-4">
                                 </div>
                                 <div class="flex items-center gap-3">
                                     <span class="w-2 h-2 rounded-full bg-primary-gold"></span>
@@ -737,10 +804,11 @@
                                         Authority</span>
                                 </div>
                             </div>
+                            <span class="expand-hint">TAP TO REVEAL ↓</span>
                         </div>
                         <!-- Murda Mook -->
                         <div
-                            class="group relative bg-black/30 backdrop-blur-xl border border-white/10 rounded-none overflow-hidden hover:border-white/40 transition-all duration-500 hover:shadow-[0_8px_40px_0_rgba(255,255,255,0.1)]">
+                            class="host-card group relative bg-black/30 backdrop-blur-xl border border-white/10 rounded-none overflow-hidden hover:border-white/40 transition-all duration-500 hover:shadow-[0_8px_40px_0_rgba(255,255,255,0.1)]">
                             <div class="h-32 sm:h-56 md:h-64 relative overflow-hidden">
                                 <img src="./IMAGES/Murda%20Mook%20on%20left,%20Loaded%20Lux%20on%20Right.png"
                                     alt="Murda Mook"
@@ -757,12 +825,13 @@
                                     Murda Mook</h3>
                                 <p class="text-[10px] font-mono text-white/50 uppercase tracking-widest mb-2 sm:mb-3">
                                     Commissioner & Head Judge</p>
-                                <p class="hidden sm:block text-sm text-white/55 leading-relaxed mb-4">The architect of
+                                <p class="host-bio hidden sm:block text-sm text-white/55 leading-relaxed mb-4">The
+                                    architect of
                                     modern battle
                                     rap. Co-founder of the culture's biggest stages. The competitive mind that sets the
                                     standard for every bout.</p>
                                 <div
-                                    class="h-px w-full bg-gradient-to-r from-white/40 via-white/10 to-transparent mb-3 sm:mb-4">
+                                    class="host-bio-divider h-px w-full bg-gradient-to-r from-white/40 via-white/10 to-transparent mb-3 sm:mb-4">
                                 </div>
                                 <div class="flex items-center gap-3">
                                     <span class="w-2 h-2 rounded-full bg-white"></span>
@@ -771,6 +840,7 @@
                                         Legacy</span>
                                 </div>
                             </div>
+                            <span class="expand-hint">TAP TO REVEAL ↓</span>
                         </div>
                     </div>
 
@@ -1591,6 +1661,62 @@
             // Reset nav fade timer on swipe
             resetNavFade();
         }
+
+        // ===== HOST CARD TAP-TO-EXPAND (Mobile Only) =====
+        (function () {
+            const hostCards = document.querySelectorAll('#slide-3 .host-card');
+            if (!hostCards.length) return;
+
+            let cardTouchStartX = 0;
+            let cardTouchStartY = 0;
+
+            hostCards.forEach(card => {
+                // Track touch start to distinguish tap from swipe
+                card.addEventListener('touchstart', (e) => {
+                    cardTouchStartX = e.changedTouches[0].screenX;
+                    cardTouchStartY = e.changedTouches[0].screenY;
+                }, { passive: true });
+
+                card.addEventListener('touchend', (e) => {
+                    // Only activate on mobile widths
+                    if (window.innerWidth >= 768) return;
+
+                    // Ignore if this was a swipe (moved more than 15px)
+                    const dx = Math.abs(e.changedTouches[0].screenX - cardTouchStartX);
+                    const dy = Math.abs(e.changedTouches[0].screenY - cardTouchStartY);
+                    if (dx > 15 || dy > 15) return;
+
+                    e.preventDefault();
+                    e.stopPropagation();
+
+                    const isExpanded = card.classList.contains('host-expanded');
+
+                    // Collapse all cards first
+                    hostCards.forEach(c => c.classList.remove('host-expanded'));
+
+                    // If this card wasn't expanded, expand it
+                    if (!isExpanded) {
+                        card.classList.add('host-expanded');
+                        // Scroll the card into view smoothly
+                        card.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                    }
+                }, { passive: false });
+
+                // Also handle click for desktop testing
+                card.addEventListener('click', (e) => {
+                    if (window.innerWidth >= 768) return;
+                    e.preventDefault();
+                    e.stopPropagation();
+
+                    const isExpanded = card.classList.contains('host-expanded');
+                    hostCards.forEach(c => c.classList.remove('host-expanded'));
+                    if (!isExpanded) {
+                        card.classList.add('host-expanded');
+                        card.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                    }
+                });
+            });
+        })();
 
         updateSlide(0);
 

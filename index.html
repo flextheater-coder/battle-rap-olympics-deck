@@ -146,6 +146,8 @@
         ::-webkit-scrollbar { width: 6px; }
         ::-webkit-scrollbar-track { background: #0a0a0a; }
         ::-webkit-scrollbar-thumb { background: #333; border-radius: 3px; }
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
 
         /* ===== MOBILE RESPONSIVE OVERRIDES ===== */
         @media (max-width: 767px) {
@@ -294,9 +296,9 @@
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-8 items-start stagger">
                         <!-- Qualifiers -->
                         <div
-                            class="group relative bg-black/20 backdrop-blur-xl border border-white/10 p-8 rounded-2xl hover:border-primary/50 transition-all duration-300 hover:bg-black/30 hover:shadow-[0_8px_32px_0_rgba(236,19,37,0.15)]">
+                            class="group relative bg-black/20 backdrop-blur-xl border border-white/10 p-8 rounded-none hover:border-primary/50 transition-all duration-300 hover:bg-black/30 hover:shadow-[0_8px_32px_0_rgba(236,19,37,0.15)]">
                             <div
-                                class="absolute -top-5 left-8 bg-primary text-white font-bold p-2.5 rounded-xl shadow-lg shadow-primary/30">
+                                class="absolute -top-5 left-8 bg-primary text-white font-bold p-2.5 rounded-none shadow-lg shadow-primary/30">
                                 <span class="material-symbols-outlined text-xl">groups</span>
                             </div>
                             <h3
@@ -320,9 +322,9 @@
                         </div>
                         <!-- Playoffs -->
                         <div
-                            class="group relative bg-black/20 backdrop-blur-xl border border-white/10 p-8 rounded-2xl hover:border-white/40 transition-all duration-300 hover:bg-black/30 hover:shadow-[0_8px_32px_0_rgba(255,255,255,0.1)] md:translate-y-6">
+                            class="group relative bg-black/20 backdrop-blur-xl border border-white/10 p-8 rounded-none hover:border-white/40 transition-all duration-300 hover:bg-black/30 hover:shadow-[0_8px_32px_0_rgba(255,255,255,0.1)] md:translate-y-6">
                             <div
-                                class="absolute -top-5 left-8 bg-white text-black font-bold p-2.5 rounded-xl shadow-lg">
+                                class="absolute -top-5 left-8 bg-white text-black font-bold p-2.5 rounded-none shadow-lg">
                                 <span class="material-symbols-outlined text-xl">swords</span>
                             </div>
                             <h3
@@ -346,9 +348,9 @@
                         </div>
                         <!-- Finals -->
                         <div
-                            class="group relative bg-black/20 backdrop-blur-xl border border-primary-gold/30 p-8 rounded-2xl hover:border-primary-gold transition-all duration-300 hover:bg-black/30 hover:shadow-[0_8px_32px_0_rgba(242,185,13,0.15)]">
+                            class="group relative bg-black/20 backdrop-blur-xl border border-primary-gold/30 p-8 rounded-none hover:border-primary-gold transition-all duration-300 hover:bg-black/30 hover:shadow-[0_8px_32px_0_rgba(242,185,13,0.15)]">
                             <div
-                                class="absolute -top-5 left-8 bg-primary-gold text-black font-bold p-2.5 rounded-xl shadow-lg shadow-yellow-500/30">
+                                class="absolute -top-5 left-8 bg-primary-gold text-black font-bold p-2.5 rounded-none shadow-lg shadow-yellow-500/30">
                                 <span class="material-symbols-outlined text-xl">trophy</span>
                             </div>
                             <h3 class="mt-4 text-2xl font-bold uppercase tracking-tight text-primary-gold">The Finals
@@ -387,121 +389,140 @@
                     </div>
                 </div>
                 <div class="relative z-10 max-w-7xl mx-auto w-full h-full flex flex-col justify-center">
-                    <div class="text-center mb-6 sm:mb-10">
-                        <span class="text-primary font-bold tracking-[0.3em] uppercase text-[10px] mb-3 block">The Faces
+                    <div class="text-center mb-4 sm:mb-10">
+                        <span
+                            class="text-primary font-bold tracking-[0.3em] uppercase text-[10px] mb-2 sm:mb-3 block">The
+                            Faces
                             of B.R.O.</span>
                         <h2
-                            class="text-3xl sm:text-5xl md:text-7xl font-display font-black uppercase tracking-tighter mb-3">
+                            class="text-2xl sm:text-5xl md:text-7xl font-display font-black uppercase tracking-tighter mb-2 sm:mb-3">
                             Your <span class="text-primary italic">Hosts</span></h2>
-                        <p class="text-sm sm:text-base text-white/50 max-w-2xl mx-auto">The voices that bridge
+                        <p class="hidden sm:block text-sm sm:text-base text-white/50 max-w-2xl mx-auto">The voices that
+                            bridge
                             underground authenticity with mainstream reach. Experience, credibility, and proven market
                             contenders on every level.</p>
                     </div>
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6 stagger">
+                    <!-- Mobile: horizontal scroll | Desktop: 3-col grid -->
+                    <div class="flex md:grid md:grid-cols-3 gap-3 sm:gap-6 stagger overflow-x-auto md:overflow-visible snap-x snap-mandatory pb-2 md:pb-0 -mx-4 px-4 md:mx-0 md:px-0 no-scrollbar"
+                        style="-webkit-overflow-scrolling: touch;">
                         <!-- A$AP Rocky -->
                         <div
-                            class="group relative bg-black/30 backdrop-blur-xl border border-primary/20 rounded-2xl overflow-hidden hover:border-primary/60 transition-all duration-500 hover:shadow-[0_8px_40px_0_rgba(236,19,37,0.2)]">
-                            <div class="h-48 sm:h-56 md:h-64 relative overflow-hidden">
+                            class="group relative bg-black/30 backdrop-blur-xl border border-primary/20 rounded-none overflow-hidden hover:border-primary/60 transition-all duration-500 hover:shadow-[0_8px_40px_0_rgba(236,19,37,0.2)] min-w-[75vw] sm:min-w-0 snap-center flex-shrink-0 md:flex-shrink">
+                            <div class="h-32 sm:h-56 md:h-64 relative overflow-hidden">
                                 <img src="./IMAGES/ASAP_Rocky.jpg" alt="A$AP Rocky"
                                     class="w-full h-full object-cover object-top grayscale brightness-[0.7] group-hover:grayscale-0 group-hover:brightness-90 transition-all duration-700 group-hover:scale-105">
                                 <div class="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent">
                                 </div>
-                                <div class="absolute top-4 right-4">
+                                <div class="absolute top-3 right-3 sm:top-4 sm:right-4">
                                     <span
                                         class="px-2 py-1 bg-primary text-white text-[8px] uppercase font-bold tracking-wider rounded">Host
                                         & EP</span>
                                 </div>
                             </div>
-                            <div class="p-5 sm:p-6">
-                                <h3 class="text-xl sm:text-2xl font-black uppercase tracking-tight text-white mb-1">A$AP
+                            <div class="p-4 sm:p-6">
+                                <h3 class="text-lg sm:text-2xl font-black uppercase tracking-tight text-white mb-1">A$AP
                                     Rocky</h3>
-                                <p class="text-[10px] font-mono text-primary uppercase tracking-widest mb-3">Host &
+                                <p class="text-[10px] font-mono text-primary uppercase tracking-widest mb-2 sm:mb-3">
+                                    Host &
                                     Executive Producer</p>
-                                <p class="text-sm text-white/55 leading-relaxed mb-4">Global fashion icon and cultural
+                                <p class="hidden sm:block text-sm text-white/55 leading-relaxed mb-4">Global fashion
+                                    icon and cultural
                                     tastemaker. Bridges hip-hop, high fashion, and mainstream entertainment. The face
                                     that brings the world to the arena.</p>
                                 <div
-                                    class="h-px w-full bg-gradient-to-r from-primary/40 via-primary/10 to-transparent mb-4">
+                                    class="h-px w-full bg-gradient-to-r from-primary/40 via-primary/10 to-transparent mb-3 sm:mb-4">
                                 </div>
                                 <div class="flex items-center gap-3">
                                     <span class="w-2 h-2 rounded-full bg-primary"></span>
                                     <span
-                                        class="text-sm font-bold uppercase tracking-[0.2em] text-primary italic font-display">Celebrity
+                                        class="text-xs sm:text-sm font-bold uppercase tracking-[0.2em] text-primary italic font-display">Celebrity
                                         Reach</span>
                                 </div>
                             </div>
                         </div>
                         <!-- Loaded Lux -->
                         <div
-                            class="group relative bg-black/30 backdrop-blur-xl border border-primary-gold/20 rounded-2xl overflow-hidden hover:border-primary-gold/60 transition-all duration-500 hover:shadow-[0_8px_40px_0_rgba(242,185,13,0.2)] md:-translate-y-4">
-                            <div class="h-48 sm:h-56 md:h-64 relative overflow-hidden">
+                            class="group relative bg-black/30 backdrop-blur-xl border border-primary-gold/20 rounded-none overflow-hidden hover:border-primary-gold/60 transition-all duration-500 hover:shadow-[0_8px_40px_0_rgba(242,185,13,0.2)] md:-translate-y-4 min-w-[75vw] sm:min-w-0 snap-center flex-shrink-0 md:flex-shrink">
+                            <div class="h-32 sm:h-56 md:h-64 relative overflow-hidden">
                                 <img src="./IMAGES/Loaded%20LUX.png" alt="Loaded Lux"
                                     class="w-full h-full object-cover object-center grayscale brightness-[0.7] group-hover:grayscale-0 group-hover:brightness-90 transition-all duration-700 group-hover:scale-105">
                                 <div class="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent">
                                 </div>
-                                <div class="absolute top-4 right-4">
+                                <div class="absolute top-3 right-3 sm:top-4 sm:right-4">
                                     <span
                                         class="px-2 py-1 bg-primary-gold text-black text-[8px] uppercase font-bold tracking-wider rounded">Lead
                                         Analyst</span>
                                 </div>
                             </div>
-                            <div class="p-5 sm:p-6">
+                            <div class="p-4 sm:p-6">
                                 <h3
-                                    class="text-xl sm:text-2xl font-black uppercase tracking-tight text-primary-gold mb-1">
+                                    class="text-lg sm:text-2xl font-black uppercase tracking-tight text-primary-gold mb-1">
                                     Loaded Lux</h3>
-                                <p class="text-[10px] font-mono text-primary-gold uppercase tracking-widest mb-3">Lead
+                                <p
+                                    class="text-[10px] font-mono text-primary-gold uppercase tracking-widest mb-2 sm:mb-3">
+                                    Lead
                                     Analyst & Culture Ambassador</p>
-                                <p class="text-sm text-white/55 leading-relaxed mb-4">The voice of battle rap's golden
+                                <p class="hidden sm:block text-sm text-white/55 leading-relaxed mb-4">The voice of
+                                    battle rap's golden
                                     era. Legendary wordsmith whose cultural impact transcends the arena. The authority
                                     the community trusts.</p>
                                 <div
-                                    class="h-px w-full bg-gradient-to-r from-primary-gold/40 via-primary-gold/10 to-transparent mb-4">
+                                    class="h-px w-full bg-gradient-to-r from-primary-gold/40 via-primary-gold/10 to-transparent mb-3 sm:mb-4">
                                 </div>
                                 <div class="flex items-center gap-3">
                                     <span class="w-2 h-2 rounded-full bg-primary-gold"></span>
                                     <span
-                                        class="text-sm font-bold uppercase tracking-[0.2em] text-primary-gold italic font-display">Cultural
+                                        class="text-xs sm:text-sm font-bold uppercase tracking-[0.2em] text-primary-gold italic font-display">Cultural
                                         Authority</span>
                                 </div>
                             </div>
                         </div>
                         <!-- Murda Mook -->
                         <div
-                            class="group relative bg-black/30 backdrop-blur-xl border border-white/10 rounded-2xl overflow-hidden hover:border-white/40 transition-all duration-500 hover:shadow-[0_8px_40px_0_rgba(255,255,255,0.1)]">
-                            <div class="h-48 sm:h-56 md:h-64 relative overflow-hidden">
+                            class="group relative bg-black/30 backdrop-blur-xl border border-white/10 rounded-none overflow-hidden hover:border-white/40 transition-all duration-500 hover:shadow-[0_8px_40px_0_rgba(255,255,255,0.1)] min-w-[75vw] sm:min-w-0 snap-center flex-shrink-0 md:flex-shrink">
+                            <div class="h-32 sm:h-56 md:h-64 relative overflow-hidden">
                                 <img src="./IMAGES/Murda%20Mook%20on%20left,%20Loaded%20Lux%20on%20Right.png"
                                     alt="Murda Mook"
                                     class="w-full h-full object-cover object-left grayscale brightness-[0.7] group-hover:grayscale-0 group-hover:brightness-90 transition-all duration-700 group-hover:scale-105">
                                 <div class="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent">
                                 </div>
-                                <div class="absolute top-4 right-4">
+                                <div class="absolute top-3 right-3 sm:top-4 sm:right-4">
                                     <span
                                         class="px-2 py-1 bg-white text-black text-[8px] uppercase font-bold tracking-wider rounded">Commissioner</span>
                                 </div>
                             </div>
-                            <div class="p-5 sm:p-6">
-                                <h3 class="text-xl sm:text-2xl font-black uppercase tracking-tight text-white mb-1">
+                            <div class="p-4 sm:p-6">
+                                <h3 class="text-lg sm:text-2xl font-black uppercase tracking-tight text-white mb-1">
                                     Murda Mook</h3>
-                                <p class="text-[10px] font-mono text-white/50 uppercase tracking-widest mb-3">
+                                <p class="text-[10px] font-mono text-white/50 uppercase tracking-widest mb-2 sm:mb-3">
                                     Commissioner & Head Judge</p>
-                                <p class="text-sm text-white/55 leading-relaxed mb-4">The architect of modern battle
+                                <p class="hidden sm:block text-sm text-white/55 leading-relaxed mb-4">The architect of
+                                    modern battle
                                     rap. Co-founder of the culture's biggest stages. The competitive mind that sets the
                                     standard for every bout.</p>
                                 <div
-                                    class="h-px w-full bg-gradient-to-r from-white/40 via-white/10 to-transparent mb-4">
+                                    class="h-px w-full bg-gradient-to-r from-white/40 via-white/10 to-transparent mb-3 sm:mb-4">
                                 </div>
                                 <div class="flex items-center gap-3">
                                     <span class="w-2 h-2 rounded-full bg-white"></span>
                                     <span
-                                        class="text-sm font-bold uppercase tracking-[0.2em] text-white italic font-display">Competitive
+                                        class="text-xs sm:text-sm font-bold uppercase tracking-[0.2em] text-white italic font-display">Competitive
                                         Legacy</span>
                                 </div>
                             </div>
                         </div>
                     </div>
+                    <!-- Scroll indicator (mobile only) -->
+                    <div class="flex md:hidden items-center justify-center gap-2 mt-3">
+                        <span class="w-6 h-1 rounded-full bg-primary"></span>
+                        <span class="w-3 h-1 rounded-full bg-primary-gold/40"></span>
+                        <span class="w-3 h-1 rounded-full bg-white/20"></span>
+                    </div>
                     <!-- Credibility Bar -->
-                    <div class="mt-6 sm:mt-8 text-center">
-                        <p class="text-xs text-white/30 uppercase tracking-[0.3em] font-mono">ESPN Meets Battle Rap
+                    <div class="mt-4 sm:mt-8 text-center">
+                        <p
+                            class="text-[9px] sm:text-xs text-white/30 uppercase tracking-[0.2em] sm:tracking-[0.3em] font-mono">
+                            ESPN Meets Battle Rap
                             Culture · A Separate Genre · Built for Crossover</p>
                     </div>
                 </div>
@@ -537,28 +558,28 @@
                         </p>
                         <div class="grid grid-cols-2 gap-3 mt-6">
                             <div
-                                class="p-4 bg-white/[0.04] rounded-xl border border-white/10 hover:border-primary/30 transition-colors">
+                                class="p-4 bg-white/[0.04] rounded-none border border-white/10 hover:border-primary/30 transition-colors">
                                 <span class="material-symbols-outlined text-primary mb-2 text-xl">analytics</span>
                                 <h4 class="font-bold uppercase text-xs tracking-wider">Real-Time Metrics</h4>
                                 <p class="text-[10px] text-white/40 mt-1">Punchline density, crowd reaction, round
                                     scoring overlays.</p>
                             </div>
                             <div
-                                class="p-4 bg-white/[0.04] rounded-xl border border-white/10 hover:border-primary/30 transition-colors">
+                                class="p-4 bg-white/[0.04] rounded-none border border-white/10 hover:border-primary/30 transition-colors">
                                 <span class="material-symbols-outlined text-primary mb-2 text-xl">history_edu</span>
                                 <h4 class="font-bold uppercase text-xs tracking-wider">Legacy Archive</h4>
                                 <p class="text-[10px] text-white/40 mt-1">Historical matchup data and head-to-head
                                     comparisons.</p>
                             </div>
                             <div
-                                class="p-4 bg-white/[0.04] rounded-xl border border-white/10 hover:border-primary/30 transition-colors">
+                                class="p-4 bg-white/[0.04] rounded-none border border-white/10 hover:border-primary/30 transition-colors">
                                 <span class="material-symbols-outlined text-primary mb-2 text-xl">podcasts</span>
                                 <h4 class="font-bold uppercase text-xs tracking-wider">Panel Debates</h4>
                                 <p class="text-[10px] text-white/40 mt-1">Expert panel with rotating cultural
                                     commentators.</p>
                             </div>
                             <div
-                                class="p-4 bg-white/[0.04] rounded-xl border border-white/10 hover:border-primary/30 transition-colors">
+                                class="p-4 bg-white/[0.04] rounded-none border border-white/10 hover:border-primary/30 transition-colors">
                                 <span class="material-symbols-outlined text-primary mb-2 text-xl">stadium</span>
                                 <h4 class="font-bold uppercase text-xs tracking-wider">The Pit</h4>
                                 <p class="text-[10px] text-white/40 mt-1">360° arena stage design. Standing room.
@@ -569,7 +590,7 @@
                     <div class="lg:col-span-7 h-full flex items-center justify-center p-4 md:p-8">
                         <a href="https://www.instagram.com/reel/DT5v41MAJ1_/?igsh=MTN1cWdxN25mMms3cg==" target="_blank"
                             rel="noopener noreferrer"
-                            class="relative w-full aspect-video rounded-2xl overflow-hidden border border-white/10 shadow-2xl group block cursor-pointer">
+                            class="relative w-full aspect-video rounded-none overflow-hidden border border-white/10 shadow-2xl group block cursor-pointer">
                             <img src="./IMAGES/Gemini_Generated_Image_l1b2u1l1b2u1l1b2.jpg"
                                 class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105 brightness-90"
                                 alt="Battle Rap Olympics - The Sports Desk">
@@ -617,21 +638,21 @@
 
                     <!-- Market Stats Row -->
                     <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
-                        <div class="text-center p-5 bg-white/[0.03] rounded-xl border border-white/5">
+                        <div class="text-center p-5 bg-white/[0.03] rounded-none border border-white/5">
                             <span class="stat-number text-primary">$2.5B</span>
                             <p class="text-[10px] text-white/40 mt-2 uppercase tracking-widest font-mono">Battle Rap TAM
                             </p>
                         </div>
-                        <div class="text-center p-5 bg-white/[0.03] rounded-xl border border-white/5">
+                        <div class="text-center p-5 bg-white/[0.03] rounded-none border border-white/5">
                             <span class="stat-number text-white">40M+</span>
                             <p class="text-[10px] text-white/40 mt-2 uppercase tracking-widest font-mono">Monthly
                                 Viewers</p>
                         </div>
-                        <div class="text-center p-5 bg-white/[0.03] rounded-xl border border-white/5">
+                        <div class="text-center p-5 bg-white/[0.03] rounded-none border border-white/5">
                             <span class="stat-number text-white">78%</span>
                             <p class="text-[10px] text-white/40 mt-2 uppercase tracking-widest font-mono">18–34 Demo</p>
                         </div>
-                        <div class="text-center p-5 bg-white/[0.03] rounded-xl border border-white/5">
+                        <div class="text-center p-5 bg-white/[0.03] rounded-none border border-white/5">
                             <span class="stat-number text-primary-gold">$150M+</span>
                             <p class="text-[10px] text-white/40 mt-2 uppercase tracking-widest font-mono">Streaming Deal
                                 Comp</p>
@@ -640,7 +661,7 @@
 
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-6 stagger">
                         <div
-                            class="group bg-surface-dark border border-white/5 p-6 rounded-2xl hover:border-primary/50 hover:-translate-y-1 transition-all duration-300">
+                            class="group bg-surface-dark border border-white/5 p-6 rounded-none hover:border-primary/50 hover:-translate-y-1 transition-all duration-300">
                             <div
                                 class="w-14 h-14 rounded-full bg-primary/10 flex items-center justify-center mb-5 text-primary group-hover:scale-110 transition-transform">
                                 <span class="material-symbols-outlined text-2xl">confirmation_number</span>
@@ -655,7 +676,7 @@
                                 REVENUE</span>
                         </div>
                         <div
-                            class="group bg-surface-dark border border-white/5 p-6 rounded-2xl hover:border-primary/50 hover:-translate-y-1 transition-all duration-300">
+                            class="group bg-surface-dark border border-white/5 p-6 rounded-none hover:border-primary/50 hover:-translate-y-1 transition-all duration-300">
                             <div
                                 class="w-14 h-14 rounded-full bg-primary/10 flex items-center justify-center mb-5 text-primary group-hover:scale-110 transition-transform">
                                 <span class="material-symbols-outlined text-2xl">shopping_bag</span>
@@ -670,7 +691,7 @@
                                 REVENUE</span>
                         </div>
                         <div
-                            class="group bg-surface-dark border border-white/5 p-6 rounded-2xl hover:border-primary/50 hover:-translate-y-1 transition-all duration-300">
+                            class="group bg-surface-dark border border-white/5 p-6 rounded-none hover:border-primary/50 hover:-translate-y-1 transition-all duration-300">
                             <div
                                 class="w-14 h-14 rounded-full bg-primary/10 flex items-center justify-center mb-5 text-primary group-hover:scale-110 transition-transform">
                                 <span class="material-symbols-outlined text-2xl">casino</span>
@@ -712,7 +733,7 @@
                             <div class="flex flex-col md:flex-row gap-3 md:items-center">
                                 <span class="text-2xl font-black italic text-primary-gold w-20 shrink-0">00:00</span>
                                 <div
-                                    class="flex-1 bg-gradient-to-r from-primary-gold/15 to-background-dark/80 backdrop-blur-md p-5 rounded-xl border border-primary-gold/25">
+                                    class="flex-1 bg-gradient-to-r from-primary-gold/15 to-background-dark/80 backdrop-blur-md p-5 rounded-none border border-primary-gold/25">
                                     <h4 class="text-lg font-bold uppercase text-primary-gold mb-1">Cold Open</h4>
                                     <p class="text-sm text-white/65">Cinematic montage. Stakes recap. A$AP Rocky
                                         voiceover intro. "Welcome to the Olympics."</p>
@@ -725,7 +746,7 @@
                             <div class="flex flex-col md:flex-row gap-3 md:items-center">
                                 <span class="text-2xl font-black italic text-white/40 w-20 shrink-0">00:05</span>
                                 <div
-                                    class="flex-1 bg-white/[0.08] backdrop-blur-md p-5 rounded-xl border border-white/15 group-hover:border-primary-gold/40 transition-colors">
+                                    class="flex-1 bg-white/[0.08] backdrop-blur-md p-5 rounded-none border border-white/15 group-hover:border-primary-gold/40 transition-colors">
                                     <h4 class="text-lg font-bold uppercase text-white mb-1">Sports Desk: Pre-Game</h4>
                                     <p class="text-sm text-white/65">Panel breaks down matchups, odds, and backstory.
                                         Fan predictions displayed live.</p>
@@ -738,7 +759,7 @@
                             <div class="flex flex-col md:flex-row gap-3 md:items-center">
                                 <span class="text-2xl font-black italic text-white/40 w-20 shrink-0">00:12</span>
                                 <div
-                                    class="flex-1 bg-white/[0.08] backdrop-blur-md p-5 rounded-xl border border-white/15 group-hover:border-primary-gold/40 transition-colors">
+                                    class="flex-1 bg-white/[0.08] backdrop-blur-md p-5 rounded-none border border-white/15 group-hover:border-primary-gold/40 transition-colors">
                                     <h4 class="text-lg font-bold uppercase text-white mb-1">Battle 01: The Undercard
                                     </h4>
                                     <p class="text-sm text-white/65">High-energy opening bout. Rising talent. 2-minute
@@ -752,7 +773,7 @@
                             <div class="flex flex-col md:flex-row gap-3 md:items-center">
                                 <span class="text-2xl font-black italic text-primary-gold w-20 shrink-0">00:30</span>
                                 <div
-                                    class="flex-1 bg-gradient-to-r from-primary-gold/20 to-background-dark/80 backdrop-blur-md p-5 rounded-xl border border-primary-gold/35">
+                                    class="flex-1 bg-gradient-to-r from-primary-gold/20 to-background-dark/80 backdrop-blur-md p-5 rounded-none border border-primary-gold/35">
                                     <h4 class="text-lg font-bold uppercase text-primary-gold mb-1">Main Event</h4>
                                     <p class="text-sm text-white/70">Heavyweight headliner. 3 Rounds. Judged decision.
                                         The bout the world tunes in for.</p>
@@ -765,7 +786,7 @@
                             <div class="flex flex-col md:flex-row gap-3 md:items-center">
                                 <span class="text-2xl font-black italic text-white/40 w-20 shrink-0">00:50</span>
                                 <div
-                                    class="flex-1 bg-white/[0.08] backdrop-blur-md p-5 rounded-xl border border-white/15 group-hover:border-primary-gold/40 transition-colors">
+                                    class="flex-1 bg-white/[0.08] backdrop-blur-md p-5 rounded-none border border-white/15 group-hover:border-primary-gold/40 transition-colors">
                                     <h4 class="text-lg font-bold uppercase text-white mb-1">Sports Desk: Post-Game</h4>
                                     <p class="text-sm text-white/65">Winner interview, round-by-round replay analysis,
                                         betting payouts, and next-week preview.</p>
@@ -849,9 +870,9 @@
                     <div class="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-5 stagger">
                         <!-- The Belt -->
                         <div
-                            class="group bg-black/50 backdrop-blur-xl border border-primary-gold/20 p-5 sm:p-6 rounded-2xl hover:border-primary-gold/60 hover:-translate-y-2 transition-all duration-500 text-center hover:shadow-[0_8px_40px_rgba(242,185,13,0.15)] hover:bg-black/60">
+                            class="group bg-black/50 backdrop-blur-xl border border-primary-gold/20 p-5 sm:p-6 rounded-none hover:border-primary-gold/60 hover:-translate-y-2 transition-all duration-500 text-center hover:shadow-[0_8px_40px_rgba(242,185,13,0.15)] hover:bg-black/60">
                             <div
-                                class="w-14 h-14 sm:w-16 sm:h-16 mx-auto rounded-xl bg-primary-gold/10 border border-primary-gold/20 flex items-center justify-center mb-4 group-hover:scale-110 group-hover:border-primary-gold/50 group-hover:bg-primary-gold/15 transition-all duration-500">
+                                class="w-14 h-14 sm:w-16 sm:h-16 mx-auto rounded-none bg-primary-gold/10 border border-primary-gold/20 flex items-center justify-center mb-4 group-hover:scale-110 group-hover:border-primary-gold/50 group-hover:bg-primary-gold/15 transition-all duration-500">
                                 <span
                                     class="material-symbols-outlined text-primary-gold text-2xl sm:text-3xl">shield</span>
                             </div>
@@ -862,9 +883,9 @@
                         </div>
                         <!-- The Medal -->
                         <div
-                            class="group bg-black/50 backdrop-blur-xl border border-primary-gold/20 p-5 sm:p-6 rounded-2xl hover:border-primary-gold/60 hover:-translate-y-2 transition-all duration-500 text-center hover:shadow-[0_8px_40px_rgba(242,185,13,0.15)] hover:bg-black/60">
+                            class="group bg-black/50 backdrop-blur-xl border border-primary-gold/20 p-5 sm:p-6 rounded-none hover:border-primary-gold/60 hover:-translate-y-2 transition-all duration-500 text-center hover:shadow-[0_8px_40px_rgba(242,185,13,0.15)] hover:bg-black/60">
                             <div
-                                class="w-14 h-14 sm:w-16 sm:h-16 mx-auto rounded-xl bg-primary-gold/10 border border-primary-gold/20 flex items-center justify-center mb-4 group-hover:scale-110 group-hover:border-primary-gold/50 group-hover:bg-primary-gold/15 transition-all duration-500">
+                                class="w-14 h-14 sm:w-16 sm:h-16 mx-auto rounded-none bg-primary-gold/10 border border-primary-gold/20 flex items-center justify-center mb-4 group-hover:scale-110 group-hover:border-primary-gold/50 group-hover:bg-primary-gold/15 transition-all duration-500">
                                 <span
                                     class="material-symbols-outlined text-primary-gold text-2xl sm:text-3xl">military_tech</span>
                             </div>
@@ -875,9 +896,9 @@
                         </div>
                         <!-- The Ring -->
                         <div
-                            class="group bg-black/50 backdrop-blur-xl border border-primary-gold/20 p-5 sm:p-6 rounded-2xl hover:border-primary-gold/60 hover:-translate-y-2 transition-all duration-500 text-center hover:shadow-[0_8px_40px_rgba(242,185,13,0.15)] hover:bg-black/60">
+                            class="group bg-black/50 backdrop-blur-xl border border-primary-gold/20 p-5 sm:p-6 rounded-none hover:border-primary-gold/60 hover:-translate-y-2 transition-all duration-500 text-center hover:shadow-[0_8px_40px_rgba(242,185,13,0.15)] hover:bg-black/60">
                             <div
-                                class="w-14 h-14 sm:w-16 sm:h-16 mx-auto rounded-xl bg-primary-gold/10 border border-primary-gold/20 flex items-center justify-center mb-4 group-hover:scale-110 group-hover:border-primary-gold/50 group-hover:bg-primary-gold/15 transition-all duration-500">
+                                class="w-14 h-14 sm:w-16 sm:h-16 mx-auto rounded-none bg-primary-gold/10 border border-primary-gold/20 flex items-center justify-center mb-4 group-hover:scale-110 group-hover:border-primary-gold/50 group-hover:bg-primary-gold/15 transition-all duration-500">
                                 <span
                                     class="material-symbols-outlined text-primary-gold text-2xl sm:text-3xl">diamond</span>
                             </div>
@@ -888,9 +909,9 @@
                         </div>
                         <!-- The Crown -->
                         <div
-                            class="group bg-primary-gold/[0.08] backdrop-blur-xl border border-primary-gold/35 p-5 sm:p-6 rounded-2xl hover:bg-primary-gold/[0.15] hover:border-primary-gold/70 hover:-translate-y-2 transition-all duration-500 text-center hover:shadow-[0_8px_40px_rgba(242,185,13,0.25)]">
+                            class="group bg-primary-gold/[0.08] backdrop-blur-xl border border-primary-gold/35 p-5 sm:p-6 rounded-none hover:bg-primary-gold/[0.15] hover:border-primary-gold/70 hover:-translate-y-2 transition-all duration-500 text-center hover:shadow-[0_8px_40px_rgba(242,185,13,0.25)]">
                             <div
-                                class="w-14 h-14 sm:w-16 sm:h-16 mx-auto rounded-xl bg-primary-gold/15 border border-primary-gold/30 flex items-center justify-center mb-4 group-hover:scale-110 group-hover:border-primary-gold/60 group-hover:bg-primary-gold/25 transition-all duration-500">
+                                class="w-14 h-14 sm:w-16 sm:h-16 mx-auto rounded-none bg-primary-gold/15 border border-primary-gold/30 flex items-center justify-center mb-4 group-hover:scale-110 group-hover:border-primary-gold/60 group-hover:bg-primary-gold/25 transition-all duration-500">
                                 <span
                                     class="material-symbols-outlined text-primary-gold text-2xl sm:text-3xl">emoji_events</span>
                             </div>

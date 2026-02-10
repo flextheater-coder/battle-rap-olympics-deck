@@ -164,13 +164,14 @@
             .nav-bar {
                 bottom: 6px !important;
                 padding: 5px 10px !important;
-                gap: 8px !important;
+                gap: 6px !important;
             }
-            .nav-bar .text-xs { font-size: 8px !important; }
+            .nav-bar .flex.items-center.gap-4 { gap: 0.25rem !important; white-space: nowrap; }
+            .nav-bar .text-xs { font-size: 8px !important; white-space: nowrap; }
             .nav-bar .h-1 { height: 2px !important; }
-            .nav-bar .w-28 { width: 60px !important; }
+            .nav-bar .w-28 { width: 50px !important; }
             .nav-bar .p-2 { padding: 4px !important; }
-            .nav-bar .material-symbols-outlined { font-size: 18px !important; }
+            .nav-bar .material-symbols-outlined { font-size: 16px !important; }
 
             /* Watermarks — smaller on mobile */
             .watermark { font-size: 6px; right: 8px; bottom: 4px; }
@@ -193,16 +194,16 @@
             #slide-2 .space-y-2\.5 > * + * { margin-top: 0.125rem !important; }
             #slide-2 .text-sm { font-size: 11px !important; }
             #slide-2 li { line-height: 1.2 !important; }
-            #slide-2 .absolute.-top-5 { top: -0.5rem !important; }
+            #slide-2 .absolute.-top-5 { position: relative !important; top: 0 !important; left: 0 !important; display: inline-block; margin-bottom: 0.25rem !important; }
             #slide-2 .absolute.-top-5 > div,
-            #slide-2 .absolute.-top-5 .p-2\.5 { padding: 0.25rem !important; }
+            #slide-2 .absolute.-top-5 .p-2\.5 { padding: 0.2rem !important; }
             #slide-2 .absolute.-top-5 .material-symbols-outlined { font-size: 14px !important; }
 
             /* Slide 3 — tighter host cards for portrait */
-            #slide-3 > div { padding: 0.5rem !important; }
-            #slide-3 .mb-4 { margin-bottom: 0.125rem !important; }
-            #slide-3 .sm\:mb-10 { margin-bottom: 0.25rem !important; }
-            #slide-3 h2 { font-size: 1.5rem !important; margin-bottom: 0 !important; }
+            #slide-3 > div { padding: 0.5rem !important; padding-top: 0.25rem !important; }
+            #slide-3 .mb-4 { margin-bottom: 0 !important; }
+            #slide-3 .sm\:mb-10 { margin-bottom: 0.125rem !important; }
+            #slide-3 h2 { font-size: 1.35rem !important; margin-bottom: 0 !important; }
             #slide-3 .text-\[10px\] { font-size: 8px !important; }
             #slide-3 .h-32 { height: 4.5rem !important; }
             #slide-3 .gap-3 { gap: 0.375rem !important; }
@@ -1550,6 +1551,47 @@
             else if (e.key === 'ArrowLeft') { e.preventDefault(); prevSlide(); }
         });
 
+        // ===== TOUCH SWIPE NAVIGATION =====
+        let touchStartX = 0;
+        let touchStartY = 0;
+        let touchEndX = 0;
+        let touchEndY = 0;
+        const SWIPE_THRESHOLD = 50; // minimum px for a swipe
+        const SWIPE_MAX_ANGLE = 45; // max vertical angle (degrees) to still count as horizontal swipe
+
+        document.addEventListener('touchstart', (e) => {
+            touchStartX = e.changedTouches[0].screenX;
+            touchStartY = e.changedTouches[0].screenY;
+        }, { passive: true });
+
+        document.addEventListener('touchend', (e) => {
+            touchEndX = e.changedTouches[0].screenX;
+            touchEndY = e.changedTouches[0].screenY;
+            handleSwipe();
+        }, { passive: true });
+
+        function handleSwipe() {
+            const deltaX = touchEndX - touchStartX;
+            const deltaY = touchEndY - touchStartY;
+            const absDeltaX = Math.abs(deltaX);
+            const absDeltaY = Math.abs(deltaY);
+
+            // Must exceed minimum horizontal threshold
+            if (absDeltaX < SWIPE_THRESHOLD) return;
+            // Must be more horizontal than vertical (prevent scroll-triggered swipes)
+            if (absDeltaY > absDeltaX) return;
+
+            if (deltaX < 0) {
+                // Swiped LEFT → next slide
+                nextSlide();
+            } else {
+                // Swiped RIGHT → prev slide
+                prevSlide();
+            }
+            // Reset nav fade timer on swipe
+            resetNavFade();
+        }
+
         updateSlide(0);
 
         // Nav auto-fade: fade out after 3s of inactivity
@@ -1562,6 +1604,7 @@
         }
         document.addEventListener('mousemove', resetNavFade);
         document.addEventListener('keydown', resetNavFade);
+        document.addEventListener('touchstart', resetNavFade, { passive: true });
         resetNavFade();
 
         console.log('%cB.R.O. Pitch Deck Loaded — Cypher One Productions', 'color: #ec1325; font-weight: bold; font-size: 14px;');

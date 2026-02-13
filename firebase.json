@@ -2,11 +2,13 @@
     "auth": {
         "providers": {
             "googleSignIn": {
-                "oAuthBrandDisplayName": "BRO Godfather Notebook",
+                "oAuthBrandDisplayName": "B.R.O. Production Guide",
                 "supportEmail": "flextheater@gmail.com",
                 "authorizedRedirectUris": [
                     "https://bro-notebook-2026.firebaseapp.com/__/auth/handler",
-                    "https://bro-notebook-2026.web.app/__/auth/handler"
+                    "https://bro-notebook-2026.web.app/__/auth/handler",
+                    "https://battlerapolympics.com/__/auth/handler",
+                    "https://www.battlerapolympics.com/__/auth/handler"
                 ]
             }
         }

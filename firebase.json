@@ -1,0 +1,29 @@
+{
+    "auth": {
+        "providers": {
+            "googleSignIn": {
+                "oAuthBrandDisplayName": "BRO Godfather Notebook",
+                "supportEmail": "flextheater@gmail.com",
+                "authorizedRedirectUris": [
+                    "https://bro-notebook-2026.firebaseapp.com/__/auth/handler",
+                    "https://bro-notebook-2026.web.app/__/auth/handler"
+                ]
+            }
+        }
+    },
+    "firestore": {
+        "rules": "firestore.rules"
+    },
+    "hosting": {
+        "public": ".",
+        "ignore": [
+            "firebase.json",
+            "firestore.rules",
+            "firebase-debug.log",
+            ".git",
+            "*.code-workspace",
+            ".DS_Store",
+            ".firebaserc"
+        ]
+    }
+}

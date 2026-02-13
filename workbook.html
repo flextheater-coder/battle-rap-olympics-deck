@@ -1,0 +1,1276 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>B.R.O. Production Guide — Battle Rap Olympics</title>
+    <meta name="description" content="Proprietary Production Workbook — Cypher One LLC">
+    <meta name="robots" content="noindex, nofollow">
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+
+    <!-- Google Fonts -->
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"
+        rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Jost:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@300;400;500;600;700&family=Spline+Sans:wght@300;400;500;600;700&family=Josefin+Sans:wght@100;300;400;600;700&display=swap"
+        rel="stylesheet">
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+
+    <script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#ec1325",
+                        "primary-gold": "#f2b90d",
+                        "background-dark": "#050505",
+                        "surface-dark": "#121212",
+                        "card-dark": "#0d0d0d",
+                        "accent-gold": "#D4AF37",
+                    },
+                    fontFamily: {
+                        "display": ["Jost", "Futura", "sans-serif"],
+                        "body": ["Space Grotesk", "sans-serif"],
+                        "title": ["Josefin Sans", "sans-serif"],
+                        "mono": ["Spline Sans", "monospace"],
+                    },
+                },
+            },
+        }
+    </script>
+
+    <style type="text/tailwindcss">
+        @font-face {
+            font-family: 'Futura';
+            src: url('./FuturaBk.ttf') format('truetype');
+            font-weight: normal;
+            font-style: normal;
+        }
+
+        body {
+            @apply bg-background-dark text-white font-body antialiased;
+        }
+
+        .grain-overlay {
+            position: fixed; inset: 0;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+            opacity: 0.06; pointer-events: none; z-index: 50;
+        }
+        .vignette {
+            position: fixed; inset: 0;
+            background: radial-gradient(circle at center, transparent 0%, rgba(0,0,0,0.15) 60%, rgba(0,0,0,0.55) 100%);
+            pointer-events: none; z-index: 40;
+        }
+
+        .text-glow { text-shadow: 0 0 30px rgba(236, 19, 37, 0.35), 0 0 80px rgba(236, 19, 37, 0.1); }
+        .text-glow-gold { text-shadow: 0 0 30px rgba(242, 185, 13, 0.35), 0 0 80px rgba(242, 185, 13, 0.1); }
+
+        .section-card {
+            @apply bg-white/[0.03] backdrop-blur-sm border border-white/10 p-8 md:p-12;
+            transition: border-color 0.4s ease;
+        }
+        .section-card:hover { border-color: rgba(236, 19, 37, 0.3); }
+
+        .budget-row {
+            @apply flex justify-between items-center py-3 px-4 border-b border-white/5;
+            transition: background 0.2s;
+        }
+        .budget-row:hover { background: rgba(255,255,255,0.03); }
+
+        .toc-link {
+            @apply block py-2 px-4 text-xs uppercase tracking-[0.2em] text-white/40 hover:text-primary-gold transition-colors duration-300 border-l-2 border-transparent hover:border-primary-gold;
+        }
+        .toc-link.active {
+            @apply text-primary-gold border-primary-gold;
+        }
+
+        /* Scroll reveal animation */
+        .reveal {
+            opacity: 0; transform: translateY(24px);
+            transition: opacity 0.7s ease-out, transform 0.7s ease-out;
+        }
+        .reveal.visible { opacity: 1; transform: translateY(0); }
+
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: #0a0a0a; }
+        ::-webkit-scrollbar-thumb { background: #333; border-radius: 3px; }
+
+        /* Auth overlay */
+        #auth-overlay {
+            @apply fixed inset-0 z-[200] flex items-center justify-center;
+            background: #050505;
+        }
+        #auth-overlay.hidden { display: none; }
+
+        .google-btn {
+            @apply flex items-center gap-3 px-8 py-4 bg-white text-black font-bold uppercase tracking-[0.15em] text-sm;
+            transition: all 0.3s;
+        }
+        .google-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(255,255,255,0.15); }
+
+        #access-denied { display: none; }
+        #access-denied.show { display: flex; }
+    </style>
+</head>
+
+<body>
+    <!-- Global Overlays -->
+    <div class="grain-overlay"></div>
+    <div class="vignette"></div>
+
+    <!-- ==================== AUTH OVERLAY ==================== -->
+    <div id="auth-overlay">
+        <div class="text-center space-y-10">
+            <div>
+                <div
+                    class="inline-flex items-center gap-2 border border-primary/30 bg-primary/10 px-5 py-1.5 rounded-full backdrop-blur-sm mb-6">
+                    <span class="w-1.5 h-1.5 rounded-full bg-primary animate-pulse"></span>
+                    <span class="text-[10px] uppercase tracking-[0.3em] font-bold text-primary">Cypher One LLC —
+                        Proprietary</span>
+                </div>
+                <h1 class="text-4xl md:text-7xl font-display font-black uppercase tracking-tighter text-glow mb-3">
+                    Production<br><span class="text-primary italic">Guide</span>
+                </h1>
+                <p class="text-white/40 text-sm uppercase tracking-[0.3em]">Battle Rap Olympics</p>
+            </div>
+            <div class="h-px w-32 bg-gradient-to-r from-transparent via-white/20 to-transparent mx-auto"></div>
+            <div>
+                <p class="text-white/30 text-xs uppercase tracking-[0.2em] mb-6">Authorized Personnel Only</p>
+                <button id="google-sign-in-btn" class="google-btn mx-auto">
+                    <svg width="20" height="20" viewBox="0 0 48 48">
+                        <path fill="#EA4335"
+                            d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z" />
+                        <path fill="#4285F4"
+                            d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z" />
+                        <path fill="#FBBC05"
+                            d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z" />
+                        <path fill="#34A853"
+                            d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z" />
+                    </svg>
+                    Sign in with Google
+                </button>
+                <p id="auth-error" class="text-primary text-xs mt-4 hidden"></p>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==================== ACCESS DENIED ==================== -->
+    <div id="access-denied" class="fixed inset-0 z-[200] items-center justify-center bg-background-dark">
+        <div class="text-center space-y-6">
+            <span class="material-symbols-outlined text-6xl text-primary">lock</span>
+            <h2 class="text-3xl font-display font-black uppercase text-white">Access Denied</h2>
+            <p class="text-white/40 text-sm max-w-md mx-auto">Your account is not authorized to view this workbook.
+                Contact the production team for access.</p>
+            <button onclick="signOutUser()"
+                class="px-6 py-3 border border-white/20 text-white/60 text-xs uppercase tracking-[0.2em] hover:bg-white/10 transition-colors">Sign
+                Out</button>
+        </div>
+    </div>
+
+    <!-- ==================== MAIN WORKBOOK ==================== -->
+    <div id="workbook-content" class="hidden">
+
+        <!-- Top Header Bar -->
+        <header class="fixed top-0 left-0 right-0 z-[100] bg-black/80 backdrop-blur-xl border-b border-white/10">
+            <div class="max-w-7xl mx-auto px-4 md:px-8 py-3 flex items-center justify-between">
+                <div class="flex items-center gap-4">
+                    <a href="index.html" class="text-white/30 hover:text-white transition-colors">
+                        <span class="material-symbols-outlined text-lg">arrow_back</span>
+                    </a>
+                    <div>
+                        <h1 class="text-sm font-display font-bold uppercase tracking-[0.15em]">B.R.O. Production Guide
+                        </h1>
+                        <p class="text-[9px] text-white/30 uppercase tracking-[0.2em]">Battle Rap Olympics — Proprietary
+                        </p>
+                    </div>
+                </div>
+                <div class="flex items-center gap-4">
+                    <a href="admin.html" id="admin-link"
+                        class="hidden px-3 py-1.5 border border-primary-gold/30 text-primary-gold text-[10px] uppercase tracking-[0.2em] font-bold hover:bg-primary-gold/10 transition-colors">
+                        <span
+                            class="material-symbols-outlined text-sm mr-1 align-middle">admin_panel_settings</span>Admin
+                    </a>
+                    <div class="flex items-center gap-2">
+                        <div class="w-7 h-7 rounded-full bg-primary/20 flex items-center justify-center overflow-hidden"
+                            id="user-avatar">
+                            <span class="material-symbols-outlined text-primary text-sm">person</span>
+                        </div>
+                        <button onclick="signOutUser()"
+                            class="text-[9px] text-white/30 uppercase tracking-[0.15em] hover:text-primary transition-colors">Logout</button>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Sidebar TOC (Desktop) -->
+        <nav id="toc-sidebar"
+            class="fixed left-0 top-14 bottom-0 w-56 bg-black/40 backdrop-blur-md border-r border-white/5 z-[90] hidden lg:block overflow-y-auto py-8">
+            <div class="px-4 mb-6">
+                <p class="text-[8px] uppercase tracking-[0.3em] text-white/20 font-bold">Table of Contents</p>
+            </div>
+            <a href="#sec-cover" class="toc-link active">Cover</a>
+            <a href="#sec-tour" class="toc-link">I. Global Tour</a>
+            <a href="#sec-treatment" class="toc-link">II. Director's Treatment</a>
+            <a href="#sec-runofshow" class="toc-link">III. Run of Show</a>
+            <a href="#sec-topology" class="toc-link">IV. Production Topology</a>
+            <a href="#sec-methodology" class="toc-link">V. Methodology</a>
+            <a href="#sec-budget-detail" class="toc-link">VI. Budget Topology</a>
+            <a href="#sec-marketing" class="toc-link">VII. Marketing & Dist.</a>
+            <a href="#sec-budget-summary" class="toc-link">VIII. Budget Summary</a>
+            <a href="#sec-team" class="toc-link">IX. Team & Credits</a>
+        </nav>
+
+        <!-- Scrollable Content -->
+        <main class="lg:ml-56 pt-14">
+
+            <!-- COVER PAGE -->
+            <section id="sec-cover" class="min-h-screen flex items-center justify-center relative overflow-hidden">
+                <div
+                    class="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-primary/5 via-transparent to-transparent">
+                </div>
+                <div class="relative z-10 text-center space-y-8 px-4 reveal">
+                    <div
+                        class="inline-flex items-center gap-2 border border-primary-gold/30 bg-primary-gold/10 px-5 py-1.5 rounded-full">
+                        <span class="w-1.5 h-1.5 rounded-full bg-primary-gold animate-pulse"></span>
+                        <span class="text-[10px] uppercase tracking-[0.3em] font-bold text-primary-gold">Production
+                            Guide — Greenlit</span>
+                    </div>
+                    <h1
+                        class="text-5xl md:text-8xl lg:text-[9rem] font-display font-black uppercase tracking-tighter leading-[0.85] text-glow">
+                        Production<br><span class="text-primary italic">Guide</span>
+                    </h1>
+                    <div class="h-px w-40 bg-gradient-to-r from-transparent via-primary-gold/40 to-transparent mx-auto">
+                    </div>
+                    <div class="space-y-2">
+                        <p class="text-lg md:text-2xl font-title uppercase tracking-[0.5em] text-white/60">Battle Rap
+                            Olympics</p>
+                        <p class="text-sm text-white/30 uppercase tracking-[0.3em]">A Cypher One LLC Production</p>
+                    </div>
+                    <div
+                        class="flex flex-wrap items-center justify-center gap-6 text-white/25 text-[10px] uppercase tracking-[0.25em] pt-4">
+                        <span>Director / Producer: Elijah Karriem Griffin</span>
+                        <span class="w-1 h-1 rounded-full bg-white/15"></span>
+                        <span>Flagship: Barclays Center</span>
+                        <span class="w-1 h-1 rounded-full bg-white/15"></span>
+                        <span>Budget: $20,000,000</span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- I. GLOBAL TOUR ARCHITECTURE -->
+            <section id="sec-tour" class="py-20 md:py-32 px-4 md:px-12 lg:px-20">
+                <div class="max-w-5xl mx-auto reveal">
+                    <span class="text-primary font-bold tracking-[0.3em] uppercase text-[10px] mb-3 block">Section
+                        I</span>
+                    <h2 class="text-3xl md:text-6xl font-display font-black uppercase tracking-tighter mb-4">Global Tour
+                        <span class="text-primary italic">Architecture</span>
+                    </h2>
+                    <p class="text-white/40 text-base max-w-2xl mb-12">We aren't just staying in Harlem. We are hitting
+                        the four corners of the culture.</p>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <!-- Barclays -->
+                        <div
+                            class="section-card border-primary-gold/30 hover:border-primary-gold/60 relative overflow-hidden group">
+                            <div
+                                class="absolute top-0 right-0 w-24 h-24 bg-primary-gold/5 rounded-full blur-2xl group-hover:bg-primary-gold/10 transition-colors">
+                            </div>
+                            <div class="flex items-center gap-3 mb-4">
+                                <div class="w-10 h-10 bg-primary-gold/10 flex items-center justify-center"><span
+                                        class="material-symbols-outlined text-primary-gold">location_city</span></div>
+                                <div>
+                                    <p class="text-[9px] uppercase tracking-[0.2em] text-primary-gold font-bold">
+                                        Northeast — Flagship Arena</p>
+                                    <h3 class="text-xl font-bold uppercase">Barclays Center</h3>
+                                </div>
+                            </div>
+                            <p class="text-[10px] uppercase tracking-[0.15em] text-white/30 mb-2">Brooklyn, New York ·
+                                19,000 Capacity</p>
+                            <p class="text-sm text-white/50 leading-relaxed">The "Center of the Universe." High-fashion,
+                                peak lyricism. This is the crown jewel — the Pit topology, global
+                                simulcast HQ.</p>
+                        </div>
+                        <!-- Houston -->
+                        <div class="section-card">
+                            <div class="flex items-center gap-3 mb-4">
+                                <div class="w-10 h-10 bg-primary/10 flex items-center justify-center"><span
+                                        class="material-symbols-outlined text-primary">whatshot</span></div>
+                                <div>
+                                    <p class="text-[9px] uppercase tracking-[0.2em] text-primary font-bold">The South
+                                    </p>
+                                    <h3 class="text-xl font-bold uppercase">Houston</h3>
+                                </div>
+                            </div>
+                            <p class="text-[10px] uppercase tracking-[0.15em] text-white/30 mb-2">Large Venue Booking ·
+                                Houston, Texas</p>
+                            <p class="text-sm text-white/50 leading-relaxed">Raw, heavy bass, "Screw" culture influence.
+                                Premium large-venue experience with intimate energy. The south's proving ground.</p>
+                        </div>
+                        <!-- LA -->
+                        <div class="section-card">
+                            <div class="flex items-center gap-3 mb-4">
+                                <div class="w-10 h-10 bg-white/5 flex items-center justify-center"><span
+                                        class="material-symbols-outlined text-white/60">movie</span></div>
+                                <div>
+                                    <p class="text-[9px] uppercase tracking-[0.2em] text-white/40 font-bold">The West
+                                    </p>
+                                    <h3 class="text-xl font-bold uppercase">Los Angeles</h3>
+                                </div>
+                            </div>
+                            <p class="text-[10px] uppercase tracking-[0.15em] text-white/30 mb-2">Large Venue Booking ·
+                                Los Angeles, California</p>
+                            <p class="text-sm text-white/50 leading-relaxed">Cinematic, star-studded, high-contrast
+                                "Hollywood Noir." Premium venue with celebrity exhibition matches.</p>
+                        </div>
+                        <!-- Miami -->
+                        <div class="section-card">
+                            <div class="flex items-center gap-3 mb-4">
+                                <div class="w-10 h-10 bg-primary/10 flex items-center justify-center"><span
+                                        class="material-symbols-outlined text-primary">globe_asia</span></div>
+                                <div>
+                                    <p class="text-[9px] uppercase tracking-[0.2em] text-primary font-bold">The Gateway
+                                    </p>
+                                    <h3 class="text-xl font-bold uppercase">Miami</h3>
+                                </div>
+                            </div>
+                            <p class="text-[10px] uppercase tracking-[0.15em] text-white/30 mb-2">Large Venue Booking ·
+                                Miami, Florida</p>
+                            <p class="text-sm text-white/50 leading-relaxed">High-octane, neon-drenched, international
+                                "Global South" vibe. Premium venue with Latin America and Caribbean crossover.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- II. DIRECTOR'S TREATMENT -->
+            <section id="sec-treatment" class="py-20 md:py-32 px-4 md:px-12 lg:px-20 relative">
+                <div
+                    class="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-primary/3 via-transparent to-transparent">
+                </div>
+                <div class="max-w-5xl mx-auto relative z-10 reveal">
+                    <span class="text-primary font-bold tracking-[0.3em] uppercase text-[10px] mb-3 block">Section
+                        II</span>
+                    <h2 class="text-3xl md:text-6xl font-display font-black uppercase tracking-tighter mb-2">Director's
+                        <span class="text-primary italic">Treatment</span>
+                    </h2>
+                    <p class="text-white/40 text-sm uppercase tracking-[0.2em] mb-12">The Barclays Opener — "Industrial
+                        Cathedral"</p>
+
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
+                        <div class="section-card col-span-1 md:col-span-3 border-primary/20">
+                            <p class="text-[10px] uppercase tracking-[0.2em] text-primary font-bold mb-3">Visual Concept
+                            </p>
+                            <h3 class="text-2xl md:text-4xl font-display font-black uppercase text-white mb-4">
+                                Industrial Cathedral</h3>
+                            <p class="text-sm text-white/50 leading-relaxed max-w-3xl">The show opens with a "Cold
+                                Blackout." 19,000 fans in total silence. Director / Producer — <span
+                                    class="text-primary-gold font-bold">Elijah Karriem Griffin</span>.</p>
+                        </div>
+                    </div>
+
+                    <div class="space-y-6">
+                        <div class="section-card">
+                            <div class="flex items-start gap-4">
+                                <div
+                                    class="w-12 h-12 bg-primary/10 flex items-center justify-center flex-shrink-0 mt-1">
+                                    <span class="material-symbols-outlined text-primary">videocam</span>
+                                </div>
+                                <div>
+                                    <h4 class="text-lg font-bold uppercase tracking-tight mb-2">The Hero Shot</h4>
+                                    <p class="text-sm text-white/50 leading-relaxed">A single <span
+                                            class="text-white font-semibold">RED V-Raptor</span> on a 50-foot
+                                        Technocrane high above the center of the Barclays floor. We start on an extreme
+                                        close-up of a 24K gold microphone sitting on a brushed-steel pedestal.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="section-card">
+                            <div class="flex items-start gap-4">
+                                <div class="w-12 h-12 bg-white/5 flex items-center justify-center flex-shrink-0 mt-1">
+                                    <span class="material-symbols-outlined text-white/60">flash_on</span>
+                                </div>
+                                <div>
+                                    <h4 class="text-lg font-bold uppercase tracking-tight mb-2">The Reveal</h4>
+                                    <p class="text-sm text-white/50 leading-relaxed">As the first bass note hits, a
+                                        360-degree "Curtain of Light" (industrial white strobes) drops from the rafters,
+                                        revealing <span class="text-white font-semibold">The Pit</span>. The rappers are
+                                        already inside, back-to-back, silhouettes only.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="section-card">
+                            <div class="flex items-start gap-4">
+                                <div
+                                    class="w-12 h-12 bg-primary-gold/10 flex items-center justify-center flex-shrink-0 mt-1">
+                                    <span class="material-symbols-outlined text-primary-gold">360</span>
+                                </div>
+                                <div>
+                                    <h4 class="text-lg font-bold uppercase tracking-tight mb-2">The Orbit Method</h4>
+                                    <p class="text-sm text-white/50 leading-relaxed">Two Steadicam operators (Elijah's
+                                        lead team) rotate in opposite directions around the rappers, creating a
+                                        dizzying, high-stakes parallax effect.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="section-card">
+                            <div class="flex items-start gap-4">
+                                <div
+                                    class="w-12 h-12 bg-primary/10 flex items-center justify-center flex-shrink-0 mt-1">
+                                    <span class="material-symbols-outlined text-primary">palette</span>
+                                </div>
+                                <div>
+                                    <h4 class="text-lg font-bold uppercase tracking-tight mb-2">Lighting Palette</h4>
+                                    <p class="text-sm text-white/50 leading-relaxed">Deep charcoal blacks, punctuated by
+                                        "<span class="text-primary-gold font-semibold">AWGE Green</span>" and "<span
+                                            class="text-primary-gold font-semibold">Olympic Gold</span>" flares. No
+                                        house lights. Mobile "Titan Tubes" carried by "Uniformed Guards" (styled by
+                                        Rocky) act as human light stands.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- III. RUN OF SHOW -->
+            <section id="sec-runofshow" class="py-20 md:py-32 px-4 md:px-12 lg:px-20">
+                <div class="max-w-5xl mx-auto reveal">
+                    <span class="text-primary font-bold tracking-[0.3em] uppercase text-[10px] mb-3 block">Section
+                        III</span>
+                    <h2 class="text-3xl md:text-6xl font-display font-black uppercase tracking-tighter mb-2">Run of
+                        <span class="text-primary italic">Show</span>
+                    </h2>
+                    <p class="text-white/40 text-sm uppercase tracking-[0.2em] mb-12">Barclays Center — Minute-by-Minute
+                        Execution</p>
+
+                    <!-- Day-Of Timeline -->
+                    <div class="space-y-0 mb-16">
+                        <p class="text-[10px] uppercase tracking-[0.3em] text-primary-gold font-bold mb-6">Production
+                            Day Timeline</p>
+
+                        <div class="relative border-l-2 border-white/10 pl-8 space-y-8">
+                            <!-- Load In -->
+                            <div class="relative">
+                                <div
+                                    class="absolute -left-[2.85rem] top-0 w-6 h-6 rounded-full bg-white/5 border border-white/20 flex items-center justify-center">
+                                    <span class="w-2 h-2 rounded-full bg-primary-gold"></span>
+                                </div>
+                                <p class="text-[10px] uppercase tracking-[0.2em] text-primary-gold font-bold">06:00 AM —
+                                    Load-In Begins</p>
+                                <p class="text-sm text-white/50 mt-1 leading-relaxed">Full crew call. 12× RED cameras,
+                                    Technocrane, Steadicams, DIT stations, lighting grid, and sound package arrive via 4
+                                    production trucks. Stage crew begins Pit construction (modular steel platforms, LED
+                                    floor panels). Load-in coordinator manages dock-to-floor traffic.</p>
+                            </div>
+                            <div class="relative">
+                                <div
+                                    class="absolute -left-[2.85rem] top-0 w-6 h-6 rounded-full bg-white/5 border border-white/20 flex items-center justify-center">
+                                    <span class="w-2 h-2 rounded-full bg-white/40"></span>
+                                </div>
+                                <p class="text-[10px] uppercase tracking-[0.2em] text-white/40 font-bold">10:00 AM —
+                                    Lighting & Sound Check</p>
+                                <p class="text-sm text-white/50 mt-1 leading-relaxed">Lighting Director programs cue
+                                    stack: 240+ cues across 8 zones. Titan Tube choreography rehearsed with "Guard"
+                                    team. Sound engineer calibrates cardioid arrays — isolation tests for each Pit mic
+                                    position. DIT confirms 8K pipeline to NAS.</p>
+                            </div>
+                            <div class="relative">
+                                <div
+                                    class="absolute -left-[2.85rem] top-0 w-6 h-6 rounded-full bg-white/5 border border-white/20 flex items-center justify-center">
+                                    <span class="w-2 h-2 rounded-full bg-white/40"></span>
+                                </div>
+                                <p class="text-[10px] uppercase tracking-[0.2em] text-white/40 font-bold">12:00 PM —
+                                    Camera Blocking & Walk-Through</p>
+                                <p class="text-sm text-white/50 mt-1 leading-relaxed">All 12 camera operators run
+                                    positions C1–C12. Technocrane practices "Hero Shot" descent (50ft → 4ft in 8
+                                    seconds). Steadicam team rehearses Orbit Method — counter-rotation with blocking
+                                    marks on floor. Director Elijah calls shots from control truck.</p>
+                            </div>
+                            <div class="relative">
+                                <div
+                                    class="absolute -left-[2.85rem] top-0 w-6 h-6 rounded-full bg-white/5 border border-white/20 flex items-center justify-center">
+                                    <span class="w-2 h-2 rounded-full bg-white/40"></span>
+                                </div>
+                                <p class="text-[10px] uppercase tracking-[0.2em] text-white/40 font-bold">02:00 PM —
+                                    Talent Arrival & Green Room</p>
+                                <p class="text-sm text-white/50 mt-1 leading-relaxed">Battlers arrive to private green
+                                    rooms (4 rooms, 2 battlers each). AWGE styling team begins wardrobe. Production
+                                    coordinator distributes call sheets, IFB earpieces, and confidentiality reminders.
+                                    No phones past green room threshold.</p>
+                            </div>
+                            <div class="relative">
+                                <div
+                                    class="absolute -left-[2.85rem] top-0 w-6 h-6 rounded-full bg-white/5 border border-white/20 flex items-center justify-center">
+                                    <span class="w-2 h-2 rounded-full bg-primary"></span>
+                                </div>
+                                <p class="text-[10px] uppercase tracking-[0.2em] text-primary font-bold">04:00 PM —
+                                    Dress Rehearsal</p>
+                                <p class="text-sm text-white/50 mt-1 leading-relaxed">Full technical rehearsal with
+                                    stand-ins. Run opening sequence (Cold Blackout → Hero Shot → Reveal → First Battle).
+                                    Test all camera switches, lighting cues, and audio routing. Time each segment.
+                                    Director validates "no dead air" policy — every transition scripted.</p>
+                            </div>
+                            <div class="relative">
+                                <div
+                                    class="absolute -left-[2.85rem] top-0 w-6 h-6 rounded-full bg-white/5 border border-white/20 flex items-center justify-center">
+                                    <span class="w-2 h-2 rounded-full bg-white/40"></span>
+                                </div>
+                                <p class="text-[10px] uppercase tracking-[0.2em] text-white/40 font-bold">05:30 PM —
+                                    Doors Open</p>
+                                <p class="text-sm text-white/50 mt-1 leading-relaxed">General admission begins.
+                                    VIP/influencer Pit access via separate tunnel entrance. FOH "pre-show" ambient
+                                    visuals running on LED walls — B.R.O. brand package, fighter profiles, odds boards
+                                    (non-betting, momentum trackers only). DJ set begins.</p>
+                            </div>
+                            <div class="relative">
+                                <div
+                                    class="absolute -left-[2.85rem] top-0 w-6 h-6 rounded-full bg-white/5 border border-white/20 flex items-center justify-center">
+                                    <span class="w-2 h-2 rounded-full bg-primary-gold animate-pulse"></span>
+                                </div>
+                                <p class="text-[10px] uppercase tracking-[0.2em] text-primary-gold font-bold">07:00 PM —
+                                    SHOWTIME: Cold Blackout</p>
+                                <p class="text-sm text-white/50 mt-1 leading-relaxed">All house lights kill. 19,000 fans
+                                    in total darkness for 12 seconds. Single RED V-Raptor on Technocrane powers up —
+                                    spotlight hits the gold mic. Bass drop. Curtain of Light reveal. The Pit goes
+                                    nuclear. <span class="text-white font-semibold">Show is live.</span></p>
+                            </div>
+                            <div class="relative">
+                                <div
+                                    class="absolute -left-[2.85rem] top-0 w-6 h-6 rounded-full bg-white/5 border border-white/20 flex items-center justify-center">
+                                    <span class="w-2 h-2 rounded-full bg-white/40"></span>
+                                </div>
+                                <p class="text-[10px] uppercase tracking-[0.2em] text-white/40 font-bold">07:05 PM –
+                                    10:30 PM — Battle Rounds</p>
+                                <p class="text-sm text-white/50 mt-1 leading-relaxed">4 battles × 3 rounds. Each round:
+                                    3 minutes. Between rounds: 60-second "interstitial films" (pre-shot character
+                                    studies). Between battles: 8-minute reset — stage refresh, lighting cue change,
+                                    camera realignment, DJ bridge set. Judges deliberate during resets.</p>
+                            </div>
+                            <div class="relative">
+                                <div
+                                    class="absolute -left-[2.85rem] top-0 w-6 h-6 rounded-full bg-white/5 border border-white/20 flex items-center justify-center">
+                                    <span class="w-2 h-2 rounded-full bg-primary-gold"></span>
+                                </div>
+                                <p class="text-[10px] uppercase tracking-[0.2em] text-primary-gold font-bold">10:30 PM —
+                                    Main Event & Finale</p>
+                                <p class="text-sm text-white/50 mt-1 leading-relaxed">Championship bout. Extended intro
+                                    — full walkout packages with Steadicam follow. Trophy presentation. Confetti/pyro on
+                                    result. Post-show "victory lap" interview captured on RED for episode edit.
+                                    15-minute controlled exit begins.</p>
+                            </div>
+                            <div class="relative">
+                                <div
+                                    class="absolute -left-[2.85rem] top-0 w-6 h-6 rounded-full bg-white/5 border border-white/20 flex items-center justify-center">
+                                    <span class="w-2 h-2 rounded-full bg-white/20"></span>
+                                </div>
+                                <p class="text-[10px] uppercase tracking-[0.2em] text-white/30 font-bold">11:00 PM →
+                                    04:00 AM — Load-Out & Data Backup</p>
+                                <p class="text-sm text-white/50 mt-1 leading-relaxed">Strike begins immediately. DIT
+                                    team priority: triple-redundant backup of all 8K footage to production NAS, portable
+                                    drives, and cloud (est. 14TB raw per show). Equipment wrap, truck loading, venue
+                                    handoff by 4 AM.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Live Show Segments -->
+                    <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+                        <div class="section-card border-primary/20 text-center">
+                            <p class="text-3xl font-display font-black text-primary">4</p>
+                            <p class="text-[10px] uppercase tracking-widest text-white/40 mt-1">Battles Per Show</p>
+                        </div>
+                        <div class="section-card border-primary-gold/20 text-center">
+                            <p class="text-3xl font-display font-black text-primary-gold">3</p>
+                            <p class="text-[10px] uppercase tracking-widest text-white/40 mt-1">Rounds Per Battle</p>
+                        </div>
+                        <div class="section-card text-center">
+                            <p class="text-3xl font-display font-black text-white/70">3:00</p>
+                            <p class="text-[10px] uppercase tracking-widest text-white/40 mt-1">Minutes Per Round</p>
+                        </div>
+                        <div class="section-card text-center">
+                            <p class="text-3xl font-display font-black text-white/70">3.5</p>
+                            <p class="text-[10px] uppercase tracking-widest text-white/40 mt-1">Hour Runtime</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- IV. PRODUCTION TOPOLOGY -->
+            <section id="sec-topology" class="py-20 md:py-32 px-4 md:px-12 lg:px-20 relative">
+                <div
+                    class="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-primary/3 via-transparent to-transparent">
+                </div>
+                <div class="max-w-5xl mx-auto relative z-10 reveal">
+                    <span class="text-primary font-bold tracking-[0.3em] uppercase text-[10px] mb-3 block">Section
+                        IV</span>
+                    <h2 class="text-3xl md:text-6xl font-display font-black uppercase tracking-tighter mb-2">Production
+                        <span class="text-primary italic">Topology</span>
+                    </h2>
+                    <p class="text-white/40 text-sm uppercase tracking-[0.2em] mb-12">Floor Plan, Camera Array, Comms &
+                        Infrastructure</p>
+
+                    <!-- The Pit Floor Plan -->
+                    <div class="mb-16">
+                        <p class="text-[10px] uppercase tracking-[0.3em] text-primary font-bold mb-6">The Pit — Floor
+                            Architecture</p>
+                        <div class="section-card border-primary/20">
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                                <div>
+                                    <h4 class="text-lg font-bold uppercase tracking-tight mb-4">360° Arena-Within-Arena
+                                    </h4>
+                                    <p class="text-sm text-white/50 leading-relaxed mb-4">The Pit is a <span
+                                            class="text-white font-semibold">40ft × 40ft modular steel platform</span>
+                                        built at center court with integrated LED floor panels. No traditional stage —
+                                        the audience surrounds the battlers on all sides, creating an octagonal
+                                        amphitheater effect.</p>
+                                    <ul class="space-y-2 text-sm text-white/50">
+                                        <li class="flex items-start gap-2"><span
+                                                class="text-primary-gold text-xs mt-1">▸</span> Elevation: 3ft raised
+                                            platform with anti-slip composite surface</li>
+                                        <li class="flex items-start gap-2"><span
+                                                class="text-primary-gold text-xs mt-1">▸</span> Inner Ring: 200 standing
+                                            VIP/influencer spots (vetted, no phones)</li>
+                                        <li class="flex items-start gap-2"><span
+                                                class="text-primary-gold text-xs mt-1">▸</span> Judge Station: 5 chairs,
+                                            45° angle, lit with dedicated key lights</li>
+                                        <li class="flex items-start gap-2"><span
+                                                class="text-primary-gold text-xs mt-1">▸</span> "Guard Rail": Titan
+                                            Tube-carrying uniformed guards form the perimeter</li>
+                                        <li class="flex items-start gap-2"><span
+                                                class="text-primary-gold text-xs mt-1">▸</span> Entry Tunnel: 60ft
+                                            covered walk from backstage to Pit center</li>
+                                    </ul>
+                                </div>
+                                <div>
+                                    <h4 class="text-lg font-bold uppercase tracking-tight mb-4">Venue Zones</h4>
+                                    <div class="space-y-3">
+                                        <div class="bg-white/[0.03] border border-white/10 p-3">
+                                            <p
+                                                class="text-[10px] uppercase tracking-widest text-primary-gold font-bold">
+                                                Zone A — The Pit</p>
+                                            <p class="text-xs text-white/40">Center floor. Battlers + judges + inner
+                                                ring. Camera C1–C4 territory.</p>
+                                        </div>
+                                        <div class="bg-white/[0.03] border border-white/10 p-3">
+                                            <p class="text-[10px] uppercase tracking-widest text-primary font-bold">Zone
+                                                B — Lower Bowl</p>
+                                            <p class="text-xs text-white/40">Sections 1–20. Standard seating. Camera
+                                                C5–C8 positions. LED wall sightlines.</p>
+                                        </div>
+                                        <div class="bg-white/[0.03] border border-white/10 p-3">
+                                            <p class="text-[10px] uppercase tracking-widest text-white/40 font-bold">
+                                                Zone C — Upper Bowl</p>
+                                            <p class="text-xs text-white/40">Sections 201–228. High-angle camera C9
+                                                position. IMAG screens primary audience.</p>
+                                        </div>
+                                        <div class="bg-white/[0.03] border border-white/10 p-3">
+                                            <p class="text-[10px] uppercase tracking-widest text-white/40 font-bold">
+                                                Zone D — Production Compound</p>
+                                            <p class="text-xs text-white/40">Backstage + control truck + DIT village +
+                                                green rooms + talent tunnel.</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Camera Array -->
+                    <div class="mb-16">
+                        <p class="text-[10px] uppercase tracking-[0.3em] text-primary-gold font-bold mb-6">12-Camera
+                            Cinema Array — Position Map</p>
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                            <div class="section-card border-primary-gold/20">
+                                <p class="text-[9px] uppercase tracking-widest text-primary-gold font-bold mb-3">Hero /
+                                    Pit Cameras</p>
+                                <div class="space-y-3 text-sm">
+                                    <div><span class="text-white font-bold">C1</span> <span
+                                            class="text-white/30">—</span> <span class="text-white/60">Technocrane
+                                            (50ft) · Hero Shot · RED V-Raptor</span></div>
+                                    <div><span class="text-white font-bold">C2</span> <span
+                                            class="text-white/30">—</span> <span class="text-white/60">Steadicam A ·
+                                            Orbit CW · RED V-Raptor</span></div>
+                                    <div><span class="text-white font-bold">C3</span> <span
+                                            class="text-white/30">—</span> <span class="text-white/60">Steadicam B ·
+                                            Orbit CCW · RED V-Raptor</span></div>
+                                    <div><span class="text-white font-bold">C4</span> <span
+                                            class="text-white/30">—</span> <span class="text-white/60">Pit-Level
+                                            Lock-Off · Battler A Close-Up</span></div>
+                                </div>
+                            </div>
+                            <div class="section-card border-primary/20">
+                                <p class="text-[9px] uppercase tracking-widest text-primary font-bold mb-3">Mid-Range /
+                                    Coverage</p>
+                                <div class="space-y-3 text-sm">
+                                    <div><span class="text-white font-bold">C5</span> <span
+                                            class="text-white/30">—</span> <span class="text-white/60">Pit-Level
+                                            Lock-Off · Battler B Close-Up</span></div>
+                                    <div><span class="text-white font-bold">C6</span> <span
+                                            class="text-white/30">—</span> <span class="text-white/60">Judge Reaction ·
+                                            RED Komodo · 135mm</span></div>
+                                    <div><span class="text-white font-bold">C7</span> <span
+                                            class="text-white/30">—</span> <span class="text-white/60">Inner Ring /
+                                            Crowd POV · Handheld</span></div>
+                                    <div><span class="text-white font-bold">C8</span> <span
+                                            class="text-white/30">—</span> <span class="text-white/60">Tunnel Exit
+                                            Camera · Walkout Coverage</span></div>
+                                </div>
+                            </div>
+                            <div class="section-card">
+                                <p class="text-[9px] uppercase tracking-widest text-white/40 font-bold mb-3">Wide /
+                                    Specialty</p>
+                                <div class="space-y-3 text-sm">
+                                    <div><span class="text-white font-bold">C9</span> <span
+                                            class="text-white/30">—</span> <span class="text-white/60">Upper Bowl Wide ·
+                                            Super 35 · Epic Shot</span></div>
+                                    <div><span class="text-white font-bold">C10</span> <span
+                                            class="text-white/30">—</span> <span class="text-white/60">Robo-Cam Rail ·
+                                            Automated Beauty Passes</span></div>
+                                    <div><span class="text-white font-bold">C11</span> <span
+                                            class="text-white/30">—</span> <span class="text-white/60">Backstage / Green
+                                            Room · Doc Coverage</span></div>
+                                    <div><span class="text-white font-bold">C12</span> <span
+                                            class="text-white/30">—</span> <span class="text-white/60">Wireless FPV
+                                            Drone · Arena Flybys (pre-show)</span></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Comms & Infrastructure -->
+                    <div class="mb-16">
+                        <p class="text-[10px] uppercase tracking-[0.3em] text-white/40 font-bold mb-6">Communications &
+                            Infrastructure</p>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div class="section-card">
+                                <span
+                                    class="material-symbols-outlined text-2xl text-primary-gold mb-3">headset_mic</span>
+                                <h4 class="text-lg font-bold uppercase tracking-tight mb-3">Comms / IFB System</h4>
+                                <ul class="space-y-2 text-sm text-white/50">
+                                    <li><span class="text-white font-semibold">Channel 1 (Director)</span> — Elijah to
+                                        all camera ops, TD, floor manager</li>
+                                    <li><span class="text-white font-semibold">Channel 2 (Audio)</span> — Sound
+                                        supervisor, A1/A2, DJ booth</li>
+                                    <li><span class="text-white font-semibold">Channel 3 (Lighting)</span> — LD,
+                                        follow-spot ops, Titan Tube guards</li>
+                                    <li><span class="text-white font-semibold">Channel 4 (Production)</span> — Stage
+                                        manager, talent wranglers, security</li>
+                                    <li><span class="text-white font-semibold">Channel 5 (Private)</span> — EP to
+                                        Director only, executive override</li>
+                                </ul>
+                            </div>
+                            <div class="section-card">
+                                <span class="material-symbols-outlined text-2xl text-primary mb-3">hub</span>
+                                <h4 class="text-lg font-bold uppercase tracking-tight mb-3">Data & Power Infrastructure
+                                </h4>
+                                <ul class="space-y-2 text-sm text-white/50">
+                                    <li><span class="text-white font-semibold">Control Truck</span> — 53ft OB unit.
+                                        12-input switcher, multi-viewer, program out</li>
+                                    <li><span class="text-white font-semibold">DIT Village</span> — 6× DIT stations,
+                                        shared 100TB NAS via 10GbE fiber</li>
+                                    <li><span class="text-white font-semibold">Power</span> — 400A service from venue +
+                                        2× backup generators (200A each)</li>
+                                    <li><span class="text-white font-semibold">Streaming</span> — Dedicated 1Gbps uplink
+                                        for simulcast, bonded cellular backup</li>
+                                    <li><span class="text-white font-semibold">Backup</span> — Triple redundancy: NAS →
+                                        portable SSD → cloud upload overnight</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Transport & Rehearsal -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="section-card border-primary-gold/20">
+                            <span
+                                class="material-symbols-outlined text-2xl text-primary-gold mb-3">local_shipping</span>
+                            <h4 class="text-lg font-bold uppercase tracking-tight mb-3">Tour Transport & Load-In</h4>
+                            <p class="text-sm text-white/50 leading-relaxed mb-3">Full production package travels via
+                                <span class="text-white font-semibold">4 production trucks</span> between the 4 tour
+                                cities. Advance team arrives 48 hours before each show for venue assessment and local
+                                crew integration.
+                            </p>
+                            <div class="space-y-1 text-xs text-white/40">
+                                <p>▸ Truck 1: Camera package + grip/electric</p>
+                                <p>▸ Truck 2: Lighting rig + Titan Tubes + LED walls</p>
+                                <p>▸ Truck 3: Audio package + DJ rig + comms</p>
+                                <p>▸ Truck 4: Pit modular stage + scenic + props</p>
+                            </div>
+                        </div>
+                        <div class="section-card border-primary/20">
+                            <span class="material-symbols-outlined text-2xl text-primary mb-3">event_note</span>
+                            <h4 class="text-lg font-bold uppercase tracking-tight mb-3">Rehearsal & Contingency Protocol
+                            </h4>
+                            <p class="text-sm text-white/50 leading-relaxed mb-3">Each venue gets a <span
+                                    class="text-white font-semibold">minimum 8-hour tech day</span> before show day.
+                                Full dress rehearsal with stand-ins, lighting cues, and camera blocking.</p>
+                            <div class="space-y-1 text-xs text-white/40">
+                                <p>▸ Rain/weather plan: N/A (all indoor arenas)</p>
+                                <p>▸ Talent no-show: Alternate battler on standby per card</p>
+                                <p>▸ Camera failure: C10 (robo-cam) as hot backup for any position</p>
+                                <p>▸ Power failure: Auto-switch to generator in under 4 seconds</p>
+                                <p>▸ Medical: EMT team on-site, clear lane to tunnel exit at all times</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- V. PRODUCTION METHODOLOGY -->
+            <section id="sec-methodology" class="py-20 md:py-32 px-4 md:px-12 lg:px-20">
+                <div class="max-w-5xl mx-auto reveal">
+                    <span class="text-primary-gold font-bold tracking-[0.3em] uppercase text-[10px] mb-3 block">Section
+                        V</span>
+                    <h2 class="text-3xl md:text-6xl font-display font-black uppercase tracking-tighter mb-4">Production
+                        <span class="text-primary-gold italic">Methodology</span>
+                    </h2>
+                    <p class="text-white/40 text-base max-w-2xl mb-12">We are applying <span
+                            class="text-white font-semibold">Feature Film Logic</span> to a live sporting event. This is
+                        "Movie Magic."</p>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="section-card border-primary-gold/20">
+                            <span class="material-symbols-outlined text-3xl text-primary-gold mb-4">theaters</span>
+                            <h4 class="text-lg font-bold uppercase tracking-tight mb-3">Cinematic Pacing</h4>
+                            <p class="text-sm text-white/50 leading-relaxed">We don't just "cut to commercial." We use
+                                scripted "interstitial films" — 60-second character studies shot by Elijah Karriem on
+                                the <span class="text-white font-semibold">RED V-Raptor 8K</span> — to bridge rounds.
+                            </p>
+                        </div>
+                        <div class="section-card border-primary/20">
+                            <span class="material-symbols-outlined text-3xl text-primary mb-4">stadium</span>
+                            <h4 class="text-lg font-bold uppercase tracking-tight mb-3">The "Pit" Topology</h4>
+                            <p class="text-sm text-white/50 leading-relaxed">Barclays floor transformed into a 360°
+                                industrial pit. No front-row seats — only a standing "mosh pit" of judges and vetted
+                                influencers to maintain street energy in an arena setting.</p>
+                        </div>
+                        <div class="section-card">
+                            <span class="material-symbols-outlined text-3xl text-white/40 mb-4">camera</span>
+                            <h4 class="text-lg font-bold uppercase tracking-tight mb-3">12-Camera "Cinema Array"</h4>
+                            <p class="text-sm text-white/50 leading-relaxed">Full deployment of RED V-Raptors and
+                                Komodos. Positions C1–C12 covering every angle — Technocrane hero, Steadicam orbits,
+                                pit-level POVs, and crowd reverse shots.</p>
+                        </div>
+                        <div class="section-card">
+                            <span class="material-symbols-outlined text-3xl text-white/40 mb-4">mic</span>
+                            <h4 class="text-lg font-bold uppercase tracking-tight mb-3">Sound Architecture</h4>
+                            <p class="text-sm text-white/50 leading-relaxed">Specialized cardioid microphone arrays to
+                                isolate rappers from 15,000+ crowd noise. "Hyper-real" audio mixing — every punchline
+                                hit emphasized with a cinematic boom.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- IV. MOVIE MAGIC BUDGET TOPOLOGY -->
+            <section id="sec-budget-detail" class="py-20 md:py-32 px-4 md:px-12 lg:px-20 relative">
+                <div
+                    class="absolute inset-0 bg-[radial-gradient(ellipse_at_bottom,_var(--tw-gradient-stops))] from-primary-gold/3 via-transparent to-transparent">
+                </div>
+                <div class="max-w-5xl mx-auto relative z-10 reveal">
+                    <span class="text-primary-gold font-bold tracking-[0.3em] uppercase text-[10px] mb-3 block">Section
+                        VI</span>
+                    <h2 class="text-3xl md:text-6xl font-display font-black uppercase tracking-tighter mb-2">Movie Magic
+                        <span class="text-primary-gold italic">Budget</span>
+                    </h2>
+                    <p class="text-white/40 text-sm uppercase tracking-[0.2em] mb-12">$20,000,000 Greenlit Cap —
+                        Line-Item Detail</p>
+
+                    <div class="section-card border-primary-gold/20 mb-8">
+                        <div class="flex items-center justify-between mb-6">
+                            <h3 class="text-lg font-bold uppercase tracking-tight">Production Ledger</h3>
+                            <span class="text-primary-gold font-display font-black text-2xl">$20,000,000</span>
+                        </div>
+
+                        <!-- Header -->
+                        <div class="flex justify-between items-center py-2 px-4 border-b border-white/10 mb-2">
+                            <span class="text-[10px] uppercase tracking-[0.2em] text-white/30 font-bold">Account /
+                                Category</span>
+                            <span
+                                class="text-[10px] uppercase tracking-[0.2em] text-white/30 font-bold">Allocation</span>
+                        </div>
+
+                        <!-- Budget rows -->
+                        <div class="budget-row">
+                            <div>
+                                <span class="text-xs font-mono text-primary-gold mr-3">1000</span>
+                                <span class="text-sm font-bold uppercase">Above-The-Line (ATL)</span>
+                                <p class="text-[11px] text-white/30 mt-1 ml-12">Talent (Rocky/Lux/Mook), EP Fees,
+                                    Writing Staff</p>
+                            </div>
+                            <span class="text-primary-gold font-display font-bold text-lg">$6,500,000</span>
+                        </div>
+                        <div class="budget-row">
+                            <div>
+                                <span class="text-xs font-mono text-white/40 mr-3">2000</span>
+                                <span class="text-sm font-bold uppercase">Production (BTL)</span>
+                                <p class="text-[11px] text-white/30 mt-1 ml-12">Crew (IATSE/Non-Union Mix), 12-Cam 8K
+                                    Array</p>
+                            </div>
+                            <span class="text-white font-display font-bold text-lg">$4,800,000</span>
+                        </div>
+                        <div class="budget-row">
+                            <div>
+                                <span class="text-xs font-mono text-white/40 mr-3">3000</span>
+                                <span class="text-sm font-bold uppercase">Location / Venues</span>
+                                <p class="text-[11px] text-white/30 mt-1 ml-12">Barclays Center + Houston, LA, Miami
+                                    Venues +
+                                    Security</p>
+                            </div>
+                            <span class="text-white font-display font-bold text-lg">$3,200,000</span>
+                        </div>
+                        <div class="budget-row">
+                            <div>
+                                <span class="text-xs font-mono text-white/40 mr-3">4000</span>
+                                <span class="text-sm font-bold uppercase">Art / Wardrobe</span>
+                                <p class="text-[11px] text-white/30 mt-1 ml-12">AWGE Custom Uniforms, Set Construction
+                                    (The Pit)</p>
+                            </div>
+                            <span class="text-white font-display font-bold text-lg">$1,500,000</span>
+                        </div>
+                        <div class="budget-row">
+                            <div>
+                                <span class="text-xs font-mono text-white/40 mr-3">5000</span>
+                                <span class="text-sm font-bold uppercase">Post-Production</span>
+                                <p class="text-[11px] text-white/30 mt-1 ml-12">8K HDR Finishing, Sound Design,
+                                    Meta-Data/VFX</p>
+                            </div>
+                            <span class="text-white font-display font-bold text-lg">$2,000,000</span>
+                        </div>
+                        <div class="budget-row">
+                            <div>
+                                <span class="text-xs font-mono text-white/40 mr-3">6000</span>
+                                <span class="text-sm font-bold uppercase">Distribution / Marketing</span>
+                                <p class="text-[11px] text-white/30 mt-1 ml-12">Global PR, B.R.O. App Hosting, AWGE
+                                    Drops</p>
+                            </div>
+                            <span class="text-white font-display font-bold text-lg">$1,000,000</span>
+                        </div>
+                        <div class="budget-row border-b-0 bg-white/[0.02]">
+                            <div>
+                                <span class="text-xs font-mono text-primary mr-3">9000</span>
+                                <span class="text-sm font-bold uppercase text-primary">Contingency</span>
+                                <p class="text-[11px] text-white/30 mt-1 ml-12">5% Production Buffer (Standard 2026
+                                    Rate)</p>
+                            </div>
+                            <span class="text-primary font-display font-bold text-lg">$1,000,000</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- VII. MARKETING & DISTRIBUTION -->
+            <section id="sec-marketing" class="py-20 md:py-32 px-4 md:px-12 lg:px-20">
+                <div class="max-w-5xl mx-auto reveal">
+                    <span class="text-primary font-bold tracking-[0.3em] uppercase text-[10px] mb-3 block">Section
+                        VII</span>
+                    <h2 class="text-3xl md:text-6xl font-display font-black uppercase tracking-tighter mb-4">Marketing &
+                        <span class="text-primary italic">Distribution</span>
+                    </h2>
+                    <p class="text-white/40 text-base max-w-2xl mb-12">The global rollout strategy — from Draft Day to
+                        PPV to retail.</p>
+
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        <div class="section-card border-primary/20 group">
+                            <span
+                                class="material-symbols-outlined text-3xl text-primary mb-4 group-hover:scale-110 transition-transform">play_circle</span>
+                            <h4 class="text-lg font-bold uppercase tracking-tight mb-3">The "Draft Day" Launch</h4>
+                            <p class="text-sm text-white/50 leading-relaxed">A cinematic special released on
+                                YouTube/Twitch to kick off the season. The first reveal of the B.R.O. bracket, live from
+                                Barclays Center.</p>
+                        </div>
+                        <div class="section-card border-primary-gold/20 group">
+                            <span
+                                class="material-symbols-outlined text-3xl text-primary-gold mb-4 group-hover:scale-110 transition-transform">live_tv</span>
+                            <h4 class="text-lg font-bold uppercase tracking-tight mb-3">The Barclays Final PPV</h4>
+                            <p class="text-sm text-white/50 leading-relaxed">A global digital pay-per-view event. The
+                                season finale broadcast worldwide. Premium pricing, premium production.</p>
+                        </div>
+                        <div class="section-card group">
+                            <span
+                                class="material-symbols-outlined text-3xl text-white/40 mb-4 group-hover:scale-110 transition-transform">storefront</span>
+                            <h4 class="text-lg font-bold uppercase tracking-tight mb-3">Retail Integration</h4>
+                            <p class="text-sm text-white/50 leading-relaxed">"Cypher One × AWGE" limited drops available
+                                via Geofenced QR codes inside the arena only. Exclusive merch drives live attendance.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- VI. BUDGET SUMMARY -->
+            <section id="sec-budget-summary" class="py-20 md:py-32 px-4 md:px-12 lg:px-20 relative">
+                <div
+                    class="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-primary/3 via-transparent to-transparent">
+                </div>
+                <div class="max-w-5xl mx-auto relative z-10 reveal">
+                    <span class="text-primary font-bold tracking-[0.3em] uppercase text-[10px] mb-3 block">Section
+                        VIII</span>
+                    <h2 class="text-3xl md:text-6xl font-display font-black uppercase tracking-tighter mb-12">Budget
+                        <span class="text-primary italic">Summary</span>
+                    </h2>
+
+                    <div class="grid grid-cols-2 md:grid-cols-5 gap-4">
+                        <div class="section-card text-center border-primary-gold/30">
+                            <p class="text-[9px] uppercase tracking-[0.2em] text-primary-gold font-bold mb-2">ATL</p>
+                            <p class="text-2xl md:text-3xl font-display font-black text-primary-gold">$6.5M</p>
+                            <p class="text-[10px] text-white/30 mt-1">Talent & Rights</p>
+                        </div>
+                        <div class="section-card text-center">
+                            <p class="text-[9px] uppercase tracking-[0.2em] text-white/40 font-bold mb-2">BTL</p>
+                            <p class="text-2xl md:text-3xl font-display font-black text-white">$4.8M</p>
+                            <p class="text-[10px] text-white/30 mt-1">Production</p>
+                        </div>
+                        <div class="section-card text-center">
+                            <p class="text-[9px] uppercase tracking-[0.2em] text-white/40 font-bold mb-2">Venues</p>
+                            <p class="text-2xl md:text-3xl font-display font-black text-white">$3.2M</p>
+                            <p class="text-[10px] text-white/30 mt-1">Location & Security</p>
+                        </div>
+                        <div class="section-card text-center">
+                            <p class="text-[9px] uppercase tracking-[0.2em] text-white/40 font-bold mb-2">Post</p>
+                            <p class="text-2xl md:text-3xl font-display font-black text-white">$2.0M</p>
+                            <p class="text-[10px] text-white/30 mt-1">Post-Production</p>
+                        </div>
+                        <div class="section-card text-center border-primary/30">
+                            <p class="text-[9px] uppercase tracking-[0.2em] text-primary font-bold mb-2">Buffer</p>
+                            <p class="text-2xl md:text-3xl font-display font-black text-primary">$1.0M</p>
+                            <p class="text-[10px] text-white/30 mt-1">Contingency</p>
+                        </div>
+                    </div>
+
+                    <div class="mt-8 section-card border-primary-gold/30 text-center">
+                        <p class="text-[10px] uppercase tracking-[0.3em] text-primary-gold font-bold mb-2">Total
+                            Greenlit Budget</p>
+                        <p class="text-5xl md:text-7xl font-display font-black text-primary-gold text-glow-gold">
+                            $20,000,000</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- IX. TEAM & CREDITS -->
+            <section id="sec-team" class="py-20 md:py-32 px-4 md:px-12 lg:px-20 border-t border-white/5">
+                <div class="max-w-5xl mx-auto reveal">
+                    <span class="text-primary-gold font-bold tracking-[0.3em] uppercase text-[10px] mb-3 block">Section
+                        IX</span>
+                    <h2 class="text-3xl md:text-6xl font-display font-black uppercase tracking-tighter mb-12">Team &
+                        <span class="text-primary-gold italic">Credits</span>
+                    </h2>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="section-card border-primary-gold/20">
+                            <div class="flex items-center gap-4 mb-4">
+                                <div class="w-14 h-14 bg-primary-gold/10 flex items-center justify-center"><span
+                                        class="material-symbols-outlined text-primary-gold text-2xl">videocam</span>
+                                </div>
+                                <div>
+                                    <h4 class="text-lg font-bold uppercase">Elijah Karriem Griffin</h4>
+                                    <p class="text-[10px] uppercase tracking-[0.2em] text-primary-gold">Director /
+                                        Producer</p>
+                                </div>
+                            </div>
+                            <p class="text-sm text-white/50 leading-relaxed">The visual architect and driving force
+                                behind B.R.O. Cinematic
+                                vision, RED V-Raptor 8K deployment, and the "Industrial Cathedral" aesthetic. Cypher One
+                                LLC founder.</p>
+                        </div>
+                        <div class="section-card border-primary/20">
+                            <div class="flex items-center gap-4 mb-4">
+                                <div class="w-14 h-14 bg-primary/10 flex items-center justify-center"><span
+                                        class="material-symbols-outlined text-primary text-2xl">brush</span></div>
+                                <div>
+                                    <h4 class="text-lg font-bold uppercase">A$AP Rocky</h4>
+                                    <p class="text-[10px] uppercase tracking-[0.2em] text-primary">Creative Director /
+                                        AWGE Integration</p>
+                                </div>
+                            </div>
+                            <p class="text-sm text-white/50 leading-relaxed">Global fashion icon and cultural
+                                tastemaker. Styling "The Pit" uniforms, curating the lighting guards, and AWGE retail
+                                integration.</p>
+                        </div>
+                        <div class="section-card">
+                            <div class="flex items-center gap-4 mb-4">
+                                <div class="w-14 h-14 bg-primary-gold/10 flex items-center justify-center"><span
+                                        class="material-symbols-outlined text-primary-gold text-2xl">mic</span></div>
+                                <div>
+                                    <h4 class="text-lg font-bold uppercase">Loaded Lux</h4>
+                                    <p class="text-[10px] uppercase tracking-[0.2em] text-primary-gold">Lead Analyst /
+                                        Culture Ambassador / EP</p>
+                                </div>
+                            </div>
+                            <p class="text-sm text-white/50 leading-relaxed">The voice of battle rap's golden era.
+                                Legendary wordsmith, cultural authority. The Writer's Room consultant and on-air
+                                presence.</p>
+                        </div>
+                        <div class="section-card">
+                            <div class="flex items-center gap-4 mb-4">
+                                <div class="w-14 h-14 bg-white/5 flex items-center justify-center"><span
+                                        class="material-symbols-outlined text-white/60 text-2xl">gavel</span></div>
+                                <div>
+                                    <h4 class="text-lg font-bold uppercase">Murda Mook</h4>
+                                    <p class="text-[10px] uppercase tracking-[0.2em] text-white/40">Commissioner / Head
+                                        Judge / EP</p>
+                                </div>
+                            </div>
+                            <p class="text-sm text-white/50 leading-relaxed">The architect of modern battle rap.
+                                Co-founder of the culture's biggest stages. Sets the competitive standard for every
+                                bout.</p>
+                        </div>
+                    </div>
+
+                    <!-- Footer -->
+                    <div class="mt-20 text-center">
+                        <div
+                            class="h-px w-32 bg-gradient-to-r from-transparent via-primary-gold/30 to-transparent mx-auto mb-8">
+                        </div>
+                        <p class="text-[9px] uppercase tracking-[0.3em] text-white/20">Proprietary & Confidential —
+                            Cypher One LLC © 2026</p>
+                        <p class="text-[9px] uppercase tracking-[0.3em] text-white/15 mt-1">B.R.O. Production Guide V1.0
+                        </p>
+                    </div>
+                </div>
+            </section>
+
+        </main>
+    </div>
+
+    <!-- ==================== FIREBASE + APP LOGIC ==================== -->
+    <script>
+        // Firebase Configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyA9xKNle9MBcAvRYRbE3u_vudPoYRw0k20",
+            authDomain: "bro-notebook-2026.firebaseapp.com",
+            projectId: "bro-notebook-2026",
+            storageBucket: "bro-notebook-2026.firebasestorage.app",
+            messagingSenderId: "1069518947547",
+            appId: "1:1069518947547:web:a724d5bd85e62b1f86b8fe"
+        };
+
+        firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+        const db = firebase.firestore();
+
+        const ADMIN_EMAIL = 'flextheater@gmail.com';
+
+        // Elements
+        const authOverlay = document.getElementById('auth-overlay');
+        const accessDenied = document.getElementById('access-denied');
+        const workbookContent = document.getElementById('workbook-content');
+        const googleSignInBtn = document.getElementById('google-sign-in-btn');
+        const authError = document.getElementById('auth-error');
+        const adminLink = document.getElementById('admin-link');
+        const userAvatar = document.getElementById('user-avatar');
+
+        // Sign in with Google
+        googleSignInBtn.addEventListener('click', async () => {
+            try {
+                const provider = new firebase.auth.GoogleAuthProvider();
+                await auth.signInWithPopup(provider);
+            } catch (error) {
+                authError.textContent = error.message;
+                authError.classList.remove('hidden');
+            }
+        });
+
+        function signOutUser() {
+            auth.signOut().then(() => {
+                window.location.reload();
+            });
+        }
+
+        // Check whitelist in Firestore
+        async function isWhitelisted(email) {
+            try {
+                const doc = await db.collection('whitelist').doc(email.toLowerCase()).get();
+                return doc.exists;
+            } catch (e) {
+                console.error('Whitelist check failed:', e);
+                return false;
+            }
+        }
+
+        // Auth state observer
+        auth.onAuthStateChanged(async (user) => {
+            if (user) {
+                const email = user.email.toLowerCase();
+                const isAdmin = email === ADMIN_EMAIL;
+                const whitelisted = isAdmin || await isWhitelisted(email);
+
+                if (whitelisted) {
+                    // Grant access
+                    authOverlay.classList.add('hidden');
+                    accessDenied.classList.remove('show');
+                    workbookContent.classList.remove('hidden');
+
+                    // Set avatar
+                    if (user.photoURL) {
+                        userAvatar.innerHTML = `<img src="${user.photoURL}" class="w-full h-full object-cover rounded-full" alt="avatar">`;
+                    }
+
+                    // Show admin link for admin
+                    if (isAdmin) {
+                        adminLink.classList.remove('hidden');
+                    }
+
+                    // Initialize scroll reveals
+                    initScrollReveals();
+                    initTocHighlighting();
+                } else {
+                    // Access denied
+                    authOverlay.classList.add('hidden');
+                    accessDenied.classList.add('show');
+                    workbookContent.classList.add('hidden');
+                }
+            } else {
+                // Not signed in
+                authOverlay.classList.remove('hidden');
+                accessDenied.classList.remove('show');
+                workbookContent.classList.add('hidden');
+            }
+        });
+
+        // Scroll reveal animation
+        function initScrollReveals() {
+            const reveals = document.querySelectorAll('.reveal');
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                    }
+                });
+            }, { threshold: 0.1 });
+            reveals.forEach(el => observer.observe(el));
+        }
+
+        // TOC highlighting on scroll
+        function initTocHighlighting() {
+            const sections = document.querySelectorAll('section[id]');
+            const tocLinks = document.querySelectorAll('.toc-link');
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const id = entry.target.id;
+                        tocLinks.forEach(link => {
+                            link.classList.toggle('active', link.getAttribute('href') === `#${id}`);
+                        });
+                    }
+                });
+            }, { threshold: 0.3, rootMargin: '-80px 0px -50% 0px' });
+
+            sections.forEach(sec => observer.observe(sec));
+        }
+
+        console.log('%cB.R.O. Production Guide Loaded — Cypher One Productions', 'color: #f2b90d; font-weight: bold; font-size: 14px;');
+    </script>
+</body>
+
+</html>

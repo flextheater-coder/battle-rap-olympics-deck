@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin Portal — B.R.O. Production Guide</title>
+    <meta name="robots" content="noindex, nofollow">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"
+        rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Jost:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+    <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+    <script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: { "primary": "#ec1325", "primary-gold": "#f2b90d", "background-dark": "#050505" },
+                    fontFamily: { "display": ["Jost", "sans-serif"], "body": ["Space Grotesk", "sans-serif"] },
+                },
+            },
+        }
+    </script>
+    <style>
+        body {
+            background: #050505;
+            color: white;
+            font-family: 'Space Grotesk', sans-serif;
+        }
+
+        .input-field {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: white;
+            padding: 12px 16px;
+            font-size: 14px;
+            width: 100%;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+
+        .input-field:focus {
+            border-color: #f2b90d;
+        }
+
+        .btn-gold {
+            background: linear-gradient(135deg, #f2b90d 0%, #D4AF37 100%);
+            color: #050505;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            font-size: 11px;
+            padding: 12px 24px;
+            transition: all 0.3s;
+            cursor: pointer;
+            border: none;
+        }
+
+        .btn-gold:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 6px 20px rgba(242, 185, 13, 0.25);
+        }
+
+        .btn-danger {
+            background: transparent;
+            border: 1px solid rgba(236, 19, 37, 0.3);
+            color: #ec1325;
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            padding: 6px 16px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .btn-danger:hover {
+            background: rgba(236, 19, 37, 0.1);
+        }
+
+        .whitelist-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px 16px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            transition: background 0.2s;
+        }
+
+        .whitelist-item:hover {
+            background: rgba(255, 255, 255, 0.02);
+        }
+
+        .toast {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            padding: 12px 24px;
+            border-radius: 4px;
+            font-size: 12px;
+            z-index: 1000;
+            transform: translateY(100px);
+            opacity: 0;
+            transition: all 0.3s;
+        }
+
+        .toast.show {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        .toast.success {
+            background: #065f46;
+            color: #6ee7b7;
+            border: 1px solid #059669;
+        }
+
+        .toast.error {
+            background: #7f1d1d;
+            color: #fca5a5;
+            border: 1px solid #dc2626;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Unauthorized -->
+    <div id="unauth-view" class="min-h-screen flex items-center justify-center">
+        <div class="text-center space-y-4">
+            <span class="material-symbols-outlined text-6xl text-primary">shield_lock</span>
+            <h1 class="text-2xl font-display font-bold uppercase">Admin Access Required</h1>
+            <p class="text-white/40 text-sm">Checking authorization...</p>
+        </div>
+    </div>
+
+    <!-- Admin Dashboard -->
+    <div id="admin-view" class="hidden min-h-screen">
+        <header class="border-b border-white/10 bg-black/60 backdrop-blur-xl sticky top-0 z-50">
+            <div class="max-w-4xl mx-auto px-6 py-4 flex items-center justify-between">
+                <div class="flex items-center gap-4">
+                    <a href="workbook.html" class="text-white/30 hover:text-white transition-colors">
+                        <span class="material-symbols-outlined text-lg">arrow_back</span>
+                    </a>
+                    <div>
+                        <h1 class="text-sm font-display font-bold uppercase tracking-wider">Whitelist Manager</h1>
+                        <p class="text-[9px] text-white/30 uppercase tracking-widest">Admin Portal — B.R.O. Production
+                            Guide
+                        </p>
+                    </div>
+                </div>
+                <button onclick="signOutUser()"
+                    class="text-[9px] text-white/30 uppercase tracking-widest hover:text-primary transition-colors">Logout</button>
+            </div>
+        </header>
+
+        <main class="max-w-4xl mx-auto px-6 py-12">
+            <!-- Add User -->
+            <div class="mb-12">
+                <h2 class="text-xs uppercase tracking-widest text-primary-gold font-bold mb-6">Add Authorized User</h2>
+                <form id="add-form" class="flex gap-3">
+                    <input type="email" id="email-input" class="input-field flex-1" placeholder="Enter email address..."
+                        required>
+                    <input type="text" id="name-input" class="input-field w-48" placeholder="Name (optional)">
+                    <button type="submit" class="btn-gold whitespace-nowrap">Add</button>
+                </form>
+            </div>
+
+            <!-- Whitelist -->
+            <div>
+                <div class="flex items-center justify-between mb-6">
+                    <h2 class="text-xs uppercase tracking-widest text-white/40 font-bold">Authorized Users</h2>
+                    <span id="user-count" class="text-[10px] text-white/20 uppercase tracking-widest">0 users</span>
+                </div>
+                <div id="whitelist-container" class="border border-white/10 bg-white/[0.02]">
+                    <p id="empty-state" class="text-center text-white/20 text-sm py-12">No users added yet. Add the
+                        first one above.</p>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <div id="toast" class="toast"></div>
+
+    <script>
+        const firebaseConfig = {
+            apiKey: "AIzaSyA9xKNle9MBcAvRYRbE3u_vudPoYRw0k20",
+            authDomain: "bro-notebook-2026.firebaseapp.com",
+            projectId: "bro-notebook-2026",
+            storageBucket: "bro-notebook-2026.firebasestorage.app",
+            messagingSenderId: "1069518947547",
+            appId: "1:1069518947547:web:a724d5bd85e62b1f86b8fe"
+        };
+
+        firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+        const db = firebase.firestore();
+        const ADMIN_EMAIL = 'flextheater@gmail.com';
+
+        auth.onAuthStateChanged(async (user) => {
+            if (!user || user.email.toLowerCase() !== ADMIN_EMAIL) {
+                if (!user) {
+                    const provider = new firebase.auth.GoogleAuthProvider();
+                    try { await auth.signInWithPopup(provider); } catch (e) { /* redirect back */ }
+                    return;
+                }
+                document.getElementById('unauth-view').innerHTML = `
+                    <div class="text-center space-y-4">
+                        <span class="material-symbols-outlined text-6xl text-primary">block</span>
+                        <h1 class="text-2xl font-display font-bold uppercase">Not Authorized</h1>
+                        <p class="text-white/40 text-sm">Only the admin can access this portal.</p>
+                        <button onclick="signOutUser()" class="btn-danger mt-4">Sign Out</button>
+                    </div>`;
+                return;
+            }
+            document.getElementById('unauth-view').classList.add('hidden');
+            document.getElementById('admin-view').classList.remove('hidden');
+            loadWhitelist();
+        });
+
+        function signOutUser() { auth.signOut().then(() => window.location.href = 'workbook.html'); }
+
+        // Add user
+        document.getElementById('add-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const email = document.getElementById('email-input').value.trim().toLowerCase();
+            const name = document.getElementById('name-input').value.trim();
+            if (!email) return;
+            try {
+                await db.collection('whitelist').doc(email).set({
+                    email, name: name || '', addedAt: firebase.firestore.FieldValue.serverTimestamp(), addedBy: ADMIN_EMAIL
+                });
+                document.getElementById('email-input').value = '';
+                document.getElementById('name-input').value = '';
+                showToast('User added successfully', 'success');
+                loadWhitelist();
+            } catch (err) {
+                showToast('Error: ' + err.message, 'error');
+            }
+        });
+
+        // Load whitelist
+        async function loadWhitelist() {
+            const snapshot = await db.collection('whitelist').orderBy('addedAt', 'desc').get();
+            const container = document.getElementById('whitelist-container');
+            const count = document.getElementById('user-count');
+            const empty = document.getElementById('empty-state');
+
+            if (snapshot.empty) {
+                container.innerHTML = '';
+                container.appendChild(empty);
+                count.textContent = '0 users';
+                return;
+            }
+
+            count.textContent = `${snapshot.size} user${snapshot.size !== 1 ? 's' : ''}`;
+            container.innerHTML = '';
+
+            snapshot.forEach(doc => {
+                const data = doc.data();
+                const div = document.createElement('div');
+                div.className = 'whitelist-item';
+                div.innerHTML = `
+                    <div>
+                        <p class="text-sm font-bold">${data.name || data.email}</p>
+                        <p class="text-[10px] text-white/30 uppercase tracking-widest">${data.email}</p>
+                    </div>
+                    <button class="btn-danger" onclick="removeUser('${data.email}')">Remove</button>
+                `;
+                container.appendChild(div);
+            });
+        }
+
+        // Remove user
+        async function removeUser(email) {
+            if (!confirm(`Remove ${email} from the whitelist?`)) return;
+            try {
+                await db.collection('whitelist').doc(email).delete();
+                showToast('User removed', 'success');
+                loadWhitelist();
+            } catch (err) {
+                showToast('Error: ' + err.message, 'error');
+            }
+        }
+
+        function showToast(msg, type) {
+            const t = document.getElementById('toast');
+            t.textContent = msg;
+            t.className = `toast ${type} show`;
+            setTimeout(() => t.classList.remove('show'), 3000);
+        }
+    </script>
+</body>
+
+</html>

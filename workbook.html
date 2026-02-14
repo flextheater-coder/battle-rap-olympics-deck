@@ -1781,14 +1781,25 @@
         const adminLink = document.getElementById('admin-link');
         const userAvatar = document.getElementById('user-avatar');
 
-        // Sign in with Google
+        // Sign in with Google — use popup with redirect fallback
         googleSignInBtn.addEventListener('click', async () => {
             try {
                 const provider = new firebase.auth.GoogleAuthProvider();
-                await auth.signInWithPopup(provider);
+                // Try popup first (works on desktop, some mobile)
+                const result = await auth.signInWithPopup(provider);
+                console.log('[BRO Auth] Popup sign-in success:', result.user.email);
             } catch (error) {
-                authError.textContent = error.message;
-                authError.classList.remove('hidden');
+                console.warn('[BRO Auth] Popup failed, code:', error.code, error.message);
+                if (error.code === 'auth/popup-blocked' ||
+                    error.code === 'auth/popup-closed-by-user' ||
+                    error.code === 'auth/cancelled-popup-request') {
+                    // Show user-friendly message
+                    authError.textContent = 'Popup was blocked. Please allow popups for this site and try again.';
+                    authError.classList.remove('hidden');
+                } else {
+                    authError.textContent = error.message;
+                    authError.classList.remove('hidden');
+                }
             }
         });
 

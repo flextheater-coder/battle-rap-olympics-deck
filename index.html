@@ -95,12 +95,21 @@
         }
 
         .slide-container {
-            @apply absolute inset-0 w-full h-full transition-all duration-500 ease-in-out opacity-0 pointer-events-none;
-            transform: translateY(8px);
+            @apply absolute inset-0 w-full h-full opacity-0 pointer-events-none;
+            transform: scale(1.03) translateY(6px);
+            transition: opacity 0.6s cubic-bezier(0.4, 0, 0.2, 1),
+                        transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
         }
         .slide-container.active {
             @apply opacity-100 pointer-events-auto;
-            transform: translateY(0);
+            transform: scale(1) translateY(0);
+        }
+        .slide-container.slide-exit {
+            opacity: 0;
+            transform: scale(0.97);
+            transition: opacity 0.4s ease-in, transform 0.4s ease-in;
         }
 
         .text-glow { text-shadow: 0 0 30px rgba(236, 19, 37, 0.35), 0 0 80px rgba(236, 19, 37, 0.1); }
@@ -141,6 +150,159 @@
         .stat-number {
             @apply text-3xl sm:text-5xl md:text-6xl font-black font-display;
             line-height: 1;
+        }
+
+        /* ===== SCROLL INDICATOR ===== */
+        .scroll-indicator {
+            position: absolute;
+            bottom: 50px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 30;
+            opacity: 0;
+            transition: opacity 0.4s ease;
+            pointer-events: none;
+        }
+        .scroll-indicator.visible { opacity: 1; }
+        .scroll-indicator span {
+            display: block;
+            animation: scrollBounce 1.5s ease-in-out infinite;
+            color: rgba(255,255,255,0.3);
+            font-size: 20px;
+        }
+        @keyframes scrollBounce {
+            0%, 100% { transform: translateY(0); opacity: 0.3; }
+            50% { transform: translateY(6px); opacity: 0.7; }
+        }
+
+        /* ===== CARD CURSOR GLOW ===== */
+        .card-glow {
+            position: relative;
+            overflow: hidden;
+        }
+        .card-glow::before {
+            content: '';
+            position: absolute;
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(236,19,37,0.12) 0%, transparent 70%);
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            transform: translate(-50%, -50%);
+            z-index: 5;
+        }
+        .card-glow:hover::before {
+            opacity: 1;
+        }
+        .card-glow-gold::before {
+            background: radial-gradient(circle, rgba(242,185,13,0.12) 0%, transparent 70%);
+        }
+
+        /* ===== PROGRESS DOT ===== */
+        .progress-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            position: absolute;
+            right: -4px;
+            top: 50%;
+            transform: translateY(-50%);
+            animation: progressPulse 2s ease-in-out infinite;
+        }
+        @keyframes progressPulse {
+            0%, 100% { box-shadow: 0 0 4px 1px currentColor; }
+            50% { box-shadow: 0 0 12px 3px currentColor; }
+        }
+
+        /* ===== PARALLAX BG ===== */
+        .parallax-bg {
+            transition: transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            will-change: transform;
+        }
+
+        /* ===== LIQUID GLASS ===== */
+        .liquid-glass {
+            background: linear-gradient(135deg, rgba(255,255,255,0.04) 0%, rgba(255,255,255,0.01) 100%);
+            backdrop-filter: blur(20px) saturate(1.3);
+            -webkit-backdrop-filter: blur(20px) saturate(1.3);
+            border: 1px solid rgba(255,255,255,0.08);
+            position: relative;
+            overflow: hidden;
+        }
+        .liquid-glass::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            border: 1px solid transparent;
+            background: linear-gradient(135deg, rgba(242,185,13,0.15), rgba(236,19,37,0.08), rgba(255,255,255,0.1), rgba(242,185,13,0.12)) border-box;
+            -webkit-mask: linear-gradient(#fff 0 0) padding-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+            pointer-events: none;
+            opacity: 0.6;
+            animation: liquidShift 6s ease-in-out infinite alternate;
+        }
+        @keyframes liquidShift {
+            0% { background-position: 0% 50%; opacity: 0.4; }
+            100% { background-position: 100% 50%; opacity: 0.7; }
+        }
+
+        /* ===== HOLOGRAPHIC SHIMMER ===== */
+        .holo-shimmer {
+            position: relative;
+            background: linear-gradient(90deg, #f2b90d 0%, #fff 25%, #f2b90d 50%, #fff 75%, #f2b90d 100%);
+            background-size: 200% 100%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: holoShimmer 4s linear infinite;
+        }
+        @keyframes holoShimmer {
+            0% { background-position: 200% 0; }
+            100% { background-position: -200% 0; }
+        }
+
+        /* ===== SCAN LINES ===== */
+        .scan-lines::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: repeating-linear-gradient(
+                0deg,
+                transparent,
+                transparent 2px,
+                rgba(255,255,255,0.008) 2px,
+                rgba(255,255,255,0.008) 4px
+            );
+            pointer-events: none;
+            z-index: 15;
+        }
+
+        /* ===== 3D TILT CARDS ===== */
+        .tilt-card {
+            transform-style: preserve-3d;
+            transition: transform 0.2s ease-out;
+            will-change: transform;
+        }
+        .tilt-card .tilt-inner {
+            transform: translateZ(20px);
+        }
+
+        /* ===== TOUCH FEEDBACK ===== */
+        @media (hover: none) {
+            .touch-feedback {
+                transition: transform 0.15s ease;
+            }
+            .touch-feedback:active {
+                transform: scale(0.97) !important;
+            }
+        }
+
+        /* ===== STAT COUNTER ===== */
+        .stat-animate {
+            transition: opacity 0.3s ease;
         }
 
         ::-webkit-scrollbar { width: 6px; }
@@ -301,80 +463,91 @@
             #slide-5 .grid-cols-1 .w-14 { width: 1.75rem !important; height: 1.75rem !important; }
             #slide-5 .gap-6 { gap: 0.375rem !important; }
 
-            /* Slide 6 — compact timeline */
-            #slide-6 .py-10 { padding-top: 0.5rem !important; padding-bottom: 0.5rem !important; }
-            #slide-6 .mb-10 { margin-bottom: 0.5rem !important; }
-            #slide-6 .space-y-8 > * + * { margin-top: 0.5rem !important; }
+            /* Slide 6 — compact demographics */
+            #slide-6 > div { padding: 0.5rem !important; }
+            #slide-6 .mb-5 { margin-bottom: 0.25rem !important; }
+            #slide-6 h2 { font-size: 1.25rem !important; margin-bottom: 0.125rem !important; }
+            #slide-6 .stat-number { font-size: 1.25rem !important; }
+            #slide-6 .grid-cols-2 .p-4 { padding: 0.375rem !important; }
+            #slide-6 .gap-5 { gap: 0.375rem !important; }
             #slide-6 .p-5 { padding: 0.5rem !important; }
-            #slide-6 h4 { font-size: 0.75rem !important; margin-bottom: 0 !important; }
-            #slide-6 .text-sm.text-white\/65,
-            #slide-6 .text-sm.text-white\/70 { font-size: 9px !important; line-height: 1.2 !important; }
-            #slide-6 .text-2xl { font-size: 0.875rem !important; }
-            #slide-6 .pl-8 { padding-left: 1rem !important; }
-            #slide-6 .absolute.-left-\[41px\] { left: -21px !important; width: 12px !important; height: 12px !important; }
+            #slide-6 .w-24 { width: 5rem !important; }
+            #slide-6 .text-sm.italic { font-size: 10px !important; }
 
-            /* Slide 7 — compact championship */
-            #slide-7 .mb-8 { margin-bottom: 0.375rem !important; }
-            #slide-7 .mb-10 { margin-bottom: 0.375rem !important; }
-            #slide-7 .sm\:mb-10 { margin-bottom: 0.375rem !important; }
-            #slide-7 .grid-cols-2 .p-5 { padding: 0.5rem !important; }
-            #slide-7 .grid-cols-2 .w-14 { width: 2rem !important; height: 2rem !important; }
-            #slide-7 .grid-cols-2 .mb-4 { margin-bottom: 0.125rem !important; }
-            #slide-7 .grid-cols-2 p { font-size: 7px !important; line-height: 1.2 !important; }
-            #slide-7 .mt-8 { margin-top: 0.5rem !important; }
-            #slide-7 .flex.items-center.justify-center.gap-4 { gap: 0.375rem !important; flex-wrap: wrap; }
-            #slide-7 .flex.items-center.justify-center.gap-4 span.text-xs { font-size: 8px !important; }
+            /* Slide 7 — compact timeline */
+            #slide-7 .py-10 { padding-top: 0.5rem !important; padding-bottom: 0.5rem !important; }
+            #slide-7 .mb-10 { margin-bottom: 0.5rem !important; }
+            #slide-7 .space-y-8 > * + * { margin-top: 0.5rem !important; }
+            #slide-7 .p-5 { padding: 0.5rem !important; }
+            #slide-7 h4 { font-size: 0.75rem !important; margin-bottom: 0 !important; }
+            #slide-7 .text-sm.text-white\/65,
+            #slide-7 .text-sm.text-white\/70 { font-size: 9px !important; line-height: 1.2 !important; }
+            #slide-7 .text-2xl { font-size: 0.875rem !important; }
+            #slide-7 .pl-8 { padding-left: 1rem !important; }
+            #slide-7 .absolute.-left-\[41px\] { left: -21px !important; width: 12px !important; height: 12px !important; }
 
-            /* Slide 8 — stack split-panel vertically */
-            #slide-8 > div:first-child {
+            /* Slide 8 — compact championship */
+            #slide-8 .mb-8 { margin-bottom: 0.375rem !important; }
+            #slide-8 .mb-10 { margin-bottom: 0.375rem !important; }
+            #slide-8 .sm\:mb-10 { margin-bottom: 0.375rem !important; }
+            #slide-8 .grid-cols-2 .p-5 { padding: 0.5rem !important; }
+            #slide-8 .grid-cols-2 .w-14 { width: 2rem !important; height: 2rem !important; }
+            #slide-8 .grid-cols-2 .mb-4 { margin-bottom: 0.125rem !important; }
+            #slide-8 .grid-cols-2 p { font-size: 7px !important; line-height: 1.2 !important; }
+            #slide-8 .mt-8 { margin-top: 0.5rem !important; }
+            #slide-8 .flex.items-center.justify-center.gap-4 { gap: 0.375rem !important; flex-wrap: wrap; }
+            #slide-8 .flex.items-center.justify-center.gap-4 span.text-xs { font-size: 8px !important; }
+
+            /* Slide 9 — stack split-panel vertically */
+            #slide-9 > div:first-child {
                 flex-direction: column !important;
             }
-            #slide-8 .w-1\/2 {
+            #slide-9 .w-1\/2 {
                 width: 100% !important;
                 min-height: 45vh;
             }
-            #slide-8 .absolute.bottom-36 {
+            #slide-9 .absolute.bottom-36 {
                 bottom: 10px !important;
                 left: 10px !important;
                 right: 10px !important;
             }
-            #slide-8 .absolute.bottom-36 h3 { font-size: 1.25rem !important; }
-            #slide-8 .absolute.bottom-36 p { font-size: 10px !important; }
-            #slide-8 .border-r {
+            #slide-9 .absolute.bottom-36 h3 { font-size: 1.25rem !important; }
+            #slide-9 .absolute.bottom-36 p { font-size: 10px !important; }
+            #slide-9 .border-r {
                 border-right: none !important;
                 border-bottom: 1px solid rgba(255,255,255,0.1);
             }
-            #slide-8 .w-20 { width: 2.5rem !important; height: 2.5rem !important; }
-            #slide-8 .w-20 span { font-size: 0.7rem !important; }
+            #slide-9 .w-20 { width: 2.5rem !important; height: 2.5rem !important; }
+            #slide-9 .w-20 span { font-size: 0.7rem !important; }
 
-            /* Slide 9 — compact brand DNA */
-            #slide-9 .gap-14 { gap: 0.75rem !important; }
-            #slide-9 .space-y-6 > * + * { margin-top: 0.375rem !important; }
-            #slide-9 .space-y-5 > * + * { margin-top: 0.375rem !important; }
-            #slide-9 h4 { font-size: 0.75rem !important; }
-            #slide-9 .text-\[13px\] { font-size: 10px !important; }
-            #slide-9 .text-3xl.font-light { font-size: 1rem !important; }
-            #slide-9 .rounded-none { max-height: 28vh; }
+            /* Slide 10 — compact brand DNA */
+            #slide-10 .gap-14 { gap: 0.75rem !important; }
+            #slide-10 .space-y-6 > * + * { margin-top: 0.375rem !important; }
+            #slide-10 .space-y-5 > * + * { margin-top: 0.375rem !important; }
+            #slide-10 h4 { font-size: 0.75rem !important; }
+            #slide-10 .text-\[13px\] { font-size: 10px !important; }
+            #slide-10 .text-3xl.font-light { font-size: 1rem !important; }
+            #slide-10 .rounded-none { max-height: 28vh; }
 
-            /* Slide 10 — 2-col grid, compact cards */
-            #slide-10 .grid { grid-template-columns: repeat(2, 1fr) !important; }
-            #slide-10 .min-h-\[220px\] { min-height: 110px !important; }
-            #slide-10 .p-7 { padding: 0.625rem !important; }
-            #slide-10 h3 { font-size: 0.75rem !important; }
-            #slide-10 .text-sm.opacity-50 { font-size: 9px !important; line-height: 1.2 !important; }
-            #slide-10 .mb-8 { margin-bottom: 0.375rem !important; }
-
-            /* Slide 11 — compact next steps + contact */
-            #slide-11 .mb-10 { margin-bottom: 0.5rem !important; }
+            /* Slide 11 — 2-col grid, compact cards */
+            #slide-11 .grid { grid-template-columns: repeat(2, 1fr) !important; }
+            #slide-11 .min-h-\[220px\] { min-height: 110px !important; }
+            #slide-11 .p-7 { padding: 0.625rem !important; }
+            #slide-11 h3 { font-size: 0.75rem !important; }
+            #slide-11 .text-sm.opacity-50 { font-size: 9px !important; line-height: 1.2 !important; }
             #slide-11 .mb-8 { margin-bottom: 0.375rem !important; }
-            #slide-11 .grid-cols-1.md\:grid-cols-3 .p-6 { padding: 0.375rem 0.5rem !important; }
-            #slide-11 .grid-cols-1.md\:grid-cols-3 h4 { font-size: 10px !important; }
-            #slide-11 .grid-cols-1.md\:grid-cols-3 .text-3xl { font-size: 1rem !important; margin-bottom: 0.125rem !important; }
-            #slide-11 .grid-cols-1.md\:grid-cols-3 .text-\[11px\] { font-size: 8px !important; }
-            #slide-11 .grid-cols-1.md\:grid-cols-2 .p-6 { padding: 0.5rem !important; }
-            #slide-11 h4.font-bold { font-size: 10px !important; }
-            #slide-11 .gap-6 { gap: 0.375rem !important; }
-            #slide-11 .pb-24 { padding-bottom: 3rem !important; }
+
+            /* Slide 12 — compact next steps + contact */
+            #slide-12 .mb-10 { margin-bottom: 0.5rem !important; }
+            #slide-12 .mb-8 { margin-bottom: 0.375rem !important; }
+            #slide-12 .grid-cols-1.md\:grid-cols-3 .p-6 { padding: 0.375rem 0.5rem !important; }
+            #slide-12 .grid-cols-1.md\:grid-cols-3 h4 { font-size: 10px !important; }
+            #slide-12 .grid-cols-1.md\:grid-cols-3 .text-3xl { font-size: 1rem !important; margin-bottom: 0.125rem !important; }
+            #slide-12 .grid-cols-1.md\:grid-cols-3 .text-\[11px\] { font-size: 8px !important; }
+            #slide-12 .grid-cols-1.md\:grid-cols-2 .p-6 { padding: 0.5rem !important; }
+            #slide-12 h4.font-bold { font-size: 10px !important; }
+            #slide-12 .gap-6 { gap: 0.375rem !important; }
+            #slide-12 .pb-24 { padding-bottom: 3rem !important; }
         }
 
         /* ===== LANDSCAPE MOBILE OVERRIDES ===== */
@@ -704,9 +877,11 @@
         <div class="flex items-center gap-4">
             <span class="text-xs font-bold tracking-[0.2em] text-white/60">SLIDE <span id="current-slide-num"
                     class="text-white">01</span> / <span id="total-slide-num">09</span></span>
-            <div class="h-1 w-28 bg-white/10 rounded-full overflow-hidden">
-                <div id="progress-bar" class="h-full bg-primary transition-all duration-500 ease-out"
-                    style="width:11.1%"></div>
+            <div class="h-1 w-28 bg-white/10 rounded-full overflow-hidden relative">
+                <div id="progress-bar" class="h-full bg-primary transition-all duration-500 ease-out relative"
+                    style="width:11.1%">
+                    <div class="progress-dot bg-primary" style="color: var(--tw-bg-opacity, #ec1325)"></div>
+                </div>
             </div>
         </div>
         <button onclick="nextSlide()" class="p-2 rounded-full hover:bg-white/10 transition-colors group"
@@ -717,7 +892,7 @@
     </nav>
 
     <!-- ==================== SLIDE DECK ==================== -->
-    <main id="deck" class="relative w-full h-screen overflow-hidden bg-background-dark">
+    <main id="deck" class="relative w-full overflow-hidden bg-background-dark" style="height: 100vh; height: 100dvh;">
 
         <!-- ===== SLIDE 1: TITLE CARD ===== -->
         <section id="slide-1" class="slide-container active">
@@ -1254,7 +1429,7 @@
         </section>
 
         <!-- ===== SLIDE 6: CORE DEMOGRAPHICS ===== -->
-        <section id="slide-6" class="slide-container">
+        <section id="slide-6" class="slide-container scan-lines">
             <div class="relative w-full h-full flex flex-col p-5 sm:p-8 md:p-10 lg:p-12">
                 <div class="absolute inset-0 z-0 overflow-hidden">
                     <img src="./IMAGES/Gemini_Generated_Image_92cpk392cpk392cp.jpeg" alt="Crowd Energy"
@@ -1282,29 +1457,33 @@
                         <!-- Hero Stats Row -->
                         <div class="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4 stagger">
                             <div
-                                class="text-center p-4 md:p-5 bg-primary-gold/5 border border-primary-gold/20 hover:border-primary-gold/40 transition-all duration-300">
-                                <span class="stat-number text-primary-gold text-3xl md:text-4xl font-black">78%</span>
+                                class="text-center p-4 md:p-5 liquid-glass tilt-card hover:border-primary-gold/40 transition-all duration-300">
+                                <span class="stat-number holo-shimmer text-3xl md:text-4xl font-black" data-count="78"
+                                    data-suffix="%">78%</span>
                                 <p class="text-[9px] text-white/40 mt-2 uppercase tracking-widest font-mono">Aged 18–34
                                 </p>
                                 <p class="text-[8px] text-white/25 mt-0.5">Peak Consumption Demo</p>
                             </div>
                             <div
-                                class="text-center p-4 md:p-5 bg-white/[0.03] border border-white/10 hover:border-primary-gold/30 transition-all duration-300">
-                                <span class="stat-number text-white text-3xl md:text-4xl font-black">40M+</span>
+                                class="text-center p-4 md:p-5 liquid-glass tilt-card hover:border-primary-gold/30 transition-all duration-300">
+                                <span class="stat-number text-white text-3xl md:text-4xl font-black" data-count="40"
+                                    data-suffix="M+">40M+</span>
                                 <p class="text-[9px] text-white/40 mt-2 uppercase tracking-widest font-mono">Monthly
                                     Viewers</p>
                                 <p class="text-[8px] text-white/25 mt-0.5">Across All Platforms</p>
                             </div>
                             <div
-                                class="text-center p-4 md:p-5 bg-white/[0.03] border border-white/10 hover:border-primary-gold/30 transition-all duration-300">
-                                <span class="stat-number text-white text-3xl md:text-4xl font-black">497K</span>
+                                class="text-center p-4 md:p-5 liquid-glass tilt-card hover:border-primary-gold/30 transition-all duration-300">
+                                <span class="stat-number text-white text-3xl md:text-4xl font-black" data-count="497"
+                                    data-suffix="K">497K</span>
                                 <p class="text-[9px] text-white/40 mt-2 uppercase tracking-widest font-mono">Peak
                                     Concurrent</p>
                                 <p class="text-[8px] text-white/25 mt-0.5">Rivals Traditional Sports</p>
                             </div>
                             <div
-                                class="text-center p-4 md:p-5 bg-primary-gold/5 border border-primary-gold/20 hover:border-primary-gold/40 transition-all duration-300">
-                                <span class="stat-number text-primary-gold text-3xl md:text-4xl font-black">4.2B</span>
+                                class="text-center p-4 md:p-5 liquid-glass tilt-card hover:border-primary-gold/40 transition-all duration-300">
+                                <span class="stat-number holo-shimmer text-3xl md:text-4xl font-black" data-count="4.2"
+                                    data-suffix="B" data-decimal="true">4.2B</span>
                                 <p class="text-[9px] text-white/40 mt-2 uppercase tracking-widest font-mono">YouTube
                                     Views</p>
                                 <p class="text-[8px] text-white/25 mt-0.5">Top Battle Channels</p>
@@ -1312,7 +1491,7 @@
                         </div>
 
                         <!-- Engagement Multipliers -->
-                        <div class="flex-1 bg-black/30 backdrop-blur-xl border border-white/5 p-5 md:p-6 flex flex-col">
+                        <div class="flex-1 liquid-glass p-5 md:p-6 flex flex-col">
                             <div class="flex items-center justify-between mb-4">
                                 <div class="flex items-center gap-2">
                                     <div
@@ -1984,38 +2163,71 @@
     <script>
         const slides = document.querySelectorAll('.slide-container');
         const progressBar = document.getElementById('progress-bar');
+        const progressDot = progressBar.querySelector('.progress-dot');
         const currentSlideNum = document.getElementById('current-slide-num');
         const totalSlideNum = document.getElementById('total-slide-num');
         let currentIndex = 0;
         const totalSlides = slides.length;
+        const animatedSlides = new Set(); // track which slides have had stat animation
 
         totalSlideNum.innerText = String(totalSlides).padStart(2, '0');
 
+        // ===== SCROLL INDICATOR =====
+        const scrollIndicator = document.createElement('div');
+        scrollIndicator.className = 'scroll-indicator';
+        scrollIndicator.innerHTML = '<span class="material-symbols-outlined">expand_more</span>';
+        document.getElementById('deck').appendChild(scrollIndicator);
+
+        function checkScrollIndicator() {
+            const active = slides[currentIndex];
+            if (!active) return;
+            const isScrollable = active.scrollHeight > active.clientHeight + 10;
+            const atBottom = active.scrollTop + active.clientHeight >= active.scrollHeight - 20;
+            scrollIndicator.classList.toggle('visible', isScrollable && !atBottom);
+        }
+
+        // ===== CINEMATIC SLIDE TRANSITION =====
         function updateSlide(index) {
             if (index < 0) index = 0;
             if (index >= totalSlides) index = totalSlides - 1;
-            currentIndex = index;
+            if (index === currentIndex && slides[currentIndex].classList.contains('active')) return;
 
-            slides.forEach((slide, i) => {
-                if (i === currentIndex) {
-                    slide.classList.add('active');
-                } else {
-                    slide.classList.remove('active');
-                }
-            });
+            const prev = slides[currentIndex];
+            const next = slides[index];
+
+            // Exit animation on previous slide
+            if (prev && prev !== next) {
+                prev.classList.add('slide-exit');
+                prev.classList.remove('active');
+                setTimeout(() => prev.classList.remove('slide-exit'), 450);
+            }
+
+            currentIndex = index;
+            next.classList.add('active');
+            next.scrollTop = 0; // reset scroll
 
             const progress = ((currentIndex + 1) / totalSlides) * 100;
             progressBar.style.width = `${progress}%`;
             currentSlideNum.innerText = String(currentIndex + 1).padStart(2, '0');
 
-            // Color phase: Red (1-5) → Gold (6-11)
+            // Color phase: Red (1-5) → Gold (6-12)
             if (currentIndex >= 5) {
                 progressBar.classList.remove('bg-primary');
                 progressBar.classList.add('bg-primary-gold');
+                progressDot.classList.remove('bg-primary');
+                progressDot.classList.add('bg-primary-gold');
             } else {
                 progressBar.classList.add('bg-primary');
                 progressBar.classList.remove('bg-primary-gold');
+                progressDot.classList.add('bg-primary');
+                progressDot.classList.remove('bg-primary-gold');
             }
+
+            // Trigger stat counter animation
+            setTimeout(() => {
+                triggerStatCounters(currentIndex);
+                checkScrollIndicator();
+            }, 300);
         }
 
         function nextSlide() {
@@ -2030,46 +2242,151 @@
             else if (e.key === 'ArrowLeft') { e.preventDefault(); prevSlide(); }
         });
 
-        // ===== TOUCH SWIPE NAVIGATION =====
+        // ===== SCROLL-AWARE TOUCH SWIPE =====
         let touchStartX = 0;
         let touchStartY = 0;
-        let touchEndX = 0;
-        let touchEndY = 0;
-        const SWIPE_THRESHOLD = 50; // minimum px for a swipe
-        const SWIPE_MAX_ANGLE = 45; // max vertical angle (degrees) to still count as horizontal swipe
+        let touchStartTime = 0;
+        const SWIPE_THRESHOLD = 50;
 
         document.addEventListener('touchstart', (e) => {
             touchStartX = e.changedTouches[0].screenX;
             touchStartY = e.changedTouches[0].screenY;
+            touchStartTime = Date.now();
         }, { passive: true });
 
         document.addEventListener('touchend', (e) => {
-            touchEndX = e.changedTouches[0].screenX;
-            touchEndY = e.changedTouches[0].screenY;
-            handleSwipe();
-        }, { passive: true });
-
-        function handleSwipe() {
-            const deltaX = touchEndX - touchStartX;
-            const deltaY = touchEndY - touchStartY;
+            const deltaX = e.changedTouches[0].screenX - touchStartX;
+            const deltaY = e.changedTouches[0].screenY - touchStartY;
+            const elapsed = Date.now() - touchStartTime;
             const absDeltaX = Math.abs(deltaX);
             const absDeltaY = Math.abs(deltaY);
 
-            // Must exceed minimum horizontal threshold
-            if (absDeltaX < SWIPE_THRESHOLD) return;
-            // Must be more horizontal than vertical (prevent scroll-triggered swipes)
-            if (absDeltaY > absDeltaX) return;
+            // Must be a fast, horizontal gesture
+            if (absDeltaX < SWIPE_THRESHOLD || absDeltaY > absDeltaX || elapsed > 500) return;
 
-            if (deltaX < 0) {
-                // Swiped LEFT → next slide
-                nextSlide();
-            } else {
-                // Swiped RIGHT → prev slide
-                prevSlide();
+            // Check if current slide is scrollable
+            const active = slides[currentIndex];
+            const isScrollable = active.scrollHeight > active.clientHeight + 10;
+
+            if (isScrollable) {
+                const atTop = active.scrollTop <= 5;
+                const atBottom = active.scrollTop + active.clientHeight >= active.scrollHeight - 10;
+
+                // Only allow swipe-next at bottom, swipe-prev at top
+                if (deltaX < 0 && !atBottom) return; // trying to go next but not at bottom
+                if (deltaX > 0 && !atTop) return;    // trying to go prev but not at top
             }
-            // Reset nav fade timer on swipe
+
+            if (deltaX < 0) nextSlide();
+            else prevSlide();
             resetNavFade();
+        }, { passive: true });
+
+        // Listen for scroll on active slide for indicator
+        document.getElementById('deck').addEventListener('scroll', checkScrollIndicator, true);
+
+        // ===== STAT COUNTER ANIMATION =====
+        function triggerStatCounters(slideIdx) {
+            if (animatedSlides.has(slideIdx)) return;
+            const slide = slides[slideIdx];
+            const counters = slide.querySelectorAll('[data-count]');
+            if (!counters.length) return;
+            animatedSlides.add(slideIdx);
+
+            counters.forEach(el => {
+                const target = parseFloat(el.dataset.count);
+                const suffix = el.dataset.suffix || '';
+                const isDecimal = el.dataset.decimal === 'true';
+                const duration = 1200;
+                const start = performance.now();
+
+                function tick(now) {
+                    const elapsed = now - start;
+                    const progress = Math.min(elapsed / duration, 1);
+                    // Ease out cubic
+                    const eased = 1 - Math.pow(1 - progress, 3);
+                    const current = target * eased;
+                    el.textContent = (isDecimal ? current.toFixed(1) : Math.round(current)) + suffix;
+                    if (progress < 1) requestAnimationFrame(tick);
+                }
+                requestAnimationFrame(tick);
+            });
         }
+
+        // ===== 3D TILT CARDS (Mouse + Gyro) =====
+        (function initTiltCards() {
+            const tiltCards = document.querySelectorAll('.tilt-card');
+            if (!tiltCards.length) return;
+
+            // Mouse-driven tilt (desktop)
+            tiltCards.forEach(card => {
+                card.addEventListener('mousemove', (e) => {
+                    const rect = card.getBoundingClientRect();
+                    const x = (e.clientX - rect.left) / rect.width - 0.5;
+                    const y = (e.clientY - rect.top) / rect.height - 0.5;
+                    card.style.transform = `perspective(600px) rotateY(${x * 8}deg) rotateX(${-y * 8}deg)`;
+                });
+                card.addEventListener('mouseleave', () => {
+                    card.style.transform = 'perspective(600px) rotateY(0) rotateX(0)';
+                });
+            });
+
+            // Gyroscope-driven tilt (mobile)
+            if (window.DeviceOrientationEvent) {
+                window.addEventListener('deviceorientation', (e) => {
+                    if (e.gamma === null || e.beta === null) return;
+                    const x = Math.max(-15, Math.min(15, e.gamma)) / 15; // -1 to 1
+                    const y = Math.max(-15, Math.min(15, e.beta - 45)) / 15;
+                    tiltCards.forEach(card => {
+                        if (card.closest('.slide-container.active')) {
+                            card.style.transform = `perspective(600px) rotateY(${x * 6}deg) rotateX(${-y * 6}deg)`;
+                        }
+                    });
+                }, { passive: true });
+            }
+        })();
+
+        // ===== PARALLAX BACKGROUND DRIFT =====
+        (function initParallax() {
+            const bgs = document.querySelectorAll('.slide-container .absolute.inset-0 img');
+            bgs.forEach(bg => bg.classList.add('parallax-bg'));
+
+            // Mouse parallax (desktop)
+            document.addEventListener('mousemove', (e) => {
+                const x = (e.clientX / window.innerWidth - 0.5) * 4;
+                const y = (e.clientY / window.innerHeight - 0.5) * 4;
+                const active = slides[currentIndex];
+                if (!active) return;
+                const bg = active.querySelector('.parallax-bg');
+                if (bg) bg.style.transform = `scale(1.05) translate3d(${x}px, ${y}px, 0)`;
+            });
+
+            // Gyro parallax (mobile)
+            if (window.DeviceOrientationEvent) {
+                window.addEventListener('deviceorientation', (e) => {
+                    if (e.gamma === null) return;
+                    const x = Math.max(-3, Math.min(3, e.gamma * 0.15));
+                    const y = Math.max(-3, Math.min(3, (e.beta - 45) * 0.15));
+                    const active = slides[currentIndex];
+                    if (!active) return;
+                    const bg = active.querySelector('.parallax-bg');
+                    if (bg) bg.style.transform = `scale(1.05) translate3d(${x}px, ${y}px, 0)`;
+                }, { passive: true });
+            }
+        })();
+
+        // ===== CARD CURSOR-GLOW =====
+        (function initCardGlow() {
+            document.querySelectorAll('.card-glow').forEach(card => {
+                card.addEventListener('mousemove', (e) => {
+                    const rect = card.getBoundingClientRect();
+                    card.style.setProperty('--glow-x', (e.clientX - rect.left) + 'px');
+                    card.style.setProperty('--glow-y', (e.clientY - rect.top) + 'px');
+                    const before = card.querySelector(':before') || card;
+                    card.style.cssText += `; --glow-x: ${e.clientX - rect.left}px; --glow-y: ${e.clientY - rect.top}px;`;
+                });
+            });
+        })();
 
         // ===== HOST CARD TAP-TO-EXPAND (Mobile Only) =====
         (function () {
@@ -2080,17 +2397,13 @@
             let cardTouchStartY = 0;
 
             hostCards.forEach(card => {
-                // Track touch start to distinguish tap from swipe
                 card.addEventListener('touchstart', (e) => {
                     cardTouchStartX = e.changedTouches[0].screenX;
                     cardTouchStartY = e.changedTouches[0].screenY;
                 }, { passive: true });
 
                 card.addEventListener('touchend', (e) => {
-                    // Only activate on mobile widths
                     if (window.innerWidth >= 768) return;
-
-                    // Ignore if this was a swipe (moved more than 15px)
                     const dx = Math.abs(e.changedTouches[0].screenX - cardTouchStartX);
                     const dy = Math.abs(e.changedTouches[0].screenY - cardTouchStartY);
                     if (dx > 15 || dy > 15) return;
@@ -2099,24 +2412,17 @@
                     e.stopPropagation();
 
                     const isExpanded = card.classList.contains('host-expanded');
-
-                    // Collapse all cards first
                     hostCards.forEach(c => c.classList.remove('host-expanded'));
-
-                    // If this card wasn't expanded, expand it
                     if (!isExpanded) {
                         card.classList.add('host-expanded');
-                        // Scroll the card into view smoothly
                         card.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
                     }
                 }, { passive: false });
 
-                // Also handle click for desktop testing
                 card.addEventListener('click', (e) => {
                     if (window.innerWidth >= 768) return;
                     e.preventDefault();
                     e.stopPropagation();
-
                     const isExpanded = card.classList.contains('host-expanded');
                     hostCards.forEach(c => c.classList.remove('host-expanded'));
                     if (!isExpanded) {
@@ -2152,7 +2458,6 @@
         let audioPlaying = true;
 
         bgAudio.volume = 0.5;
-        // Autoplay starts muted; user can unmute with volume button
 
         function toggleAudio() {
             if (audioPlaying) {
@@ -2187,7 +2492,6 @@
             }
         }
 
-        // Update progress bar
         function updateAudioProgress() {
             if (bgAudio.duration) {
                 const pct = (bgAudio.currentTime / bgAudio.duration) * 100;
@@ -2211,14 +2515,11 @@
                 overlay.classList.remove('hidden');
             }
 
-            // Show overlay again when video ends
             video.onended = () => {
                 overlay.classList.remove('hidden');
-                // Reset play icon
                 overlay.querySelector('.play-icon span').textContent = 'replay';
             };
 
-            // Click on video to pause it
             video.onclick = () => {
                 if (!video.paused) {
                     video.pause();
@@ -2234,26 +2535,21 @@
             const overlay = document.getElementById('aesthetics-overlay');
             const poster = document.getElementById('aesthetics-poster');
 
-            // Lazy-load the iframe src (only loads when user clicks play)
             if (!iframe.src || iframe.src === '' || iframe.src === window.location.href) {
                 iframe.src = iframe.dataset.src;
             }
 
-            // Fade out poster, fade in iframe
             if (poster) {
                 poster.style.opacity = '0';
                 setTimeout(() => { poster.style.display = 'none'; }, 500);
             }
             iframe.style.opacity = '1';
-
-            // Hide our custom overlay
             overlay.classList.add('hidden');
         }
 
-        // Pause all videos when changing slides to avoid background playback
+        // Pause all videos when changing slides
         const originalUpdateSlide = updateSlide;
         updateSlide = function (index) {
-            // Pause all videos
             document.querySelectorAll('video').forEach(v => {
                 if (!v.paused && v.id !== 'bg-audio') {
                     v.pause();

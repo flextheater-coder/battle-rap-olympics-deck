@@ -521,6 +521,140 @@
             #slide-11 .mb-10 { margin-bottom: 0.25rem !important; }
             #slide-11 .gap-6 { gap: 0.25rem !important; }
         }
+        /* ===== AUDIO PLAYER ===== */
+        .audio-player {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 200;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(0,0,0,0.7);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255,255,255,0.1);
+            padding: 8px 14px;
+            border-radius: 40px;
+            transition: all 0.3s;
+        }
+        .audio-player:hover {
+            border-color: rgba(242,185,13,0.3);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+        }
+        .audio-player button {
+            background: none;
+            border: none;
+            color: white;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0;
+            transition: color 0.2s;
+        }
+        .audio-player button:hover {
+            color: #f2b90d;
+        }
+        .audio-player .audio-progress {
+            width: 80px;
+            height: 3px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 2px;
+            overflow: hidden;
+            cursor: pointer;
+        }
+        .audio-player .audio-progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #f2b90d, #D4AF37);
+            width: 0%;
+            transition: width 0.1s linear;
+        }
+        .audio-player .audio-label {
+            font-size: 8px;
+            color: rgba(255,255,255,0.3);
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            white-space: nowrap;
+        }
+        .audio-player .volume-slider {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 50px;
+            height: 3px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 2px;
+            outline: none;
+        }
+        .audio-player .volume-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: #f2b90d;
+            cursor: pointer;
+        }
+
+        /* ===== VIDEO PLAY BUTTON OVERLAY ===== */
+        .video-play-overlay {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 10;
+            background: rgba(0,0,0,0.3);
+            transition: all 0.4s;
+        }
+        .video-play-overlay:hover {
+            background: rgba(0,0,0,0.15);
+        }
+        .video-play-overlay .play-icon {
+            width: 64px;
+            height: 64px;
+            border-radius: 50%;
+            background: rgba(236,19,37,0.85);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            backdrop-filter: blur(8px);
+            border: 2px solid rgba(255,255,255,0.2);
+            box-shadow: 0 8px 32px rgba(236,19,37,0.4);
+            transition: all 0.3s;
+        }
+        .video-play-overlay:hover .play-icon {
+            transform: scale(1.1);
+            box-shadow: 0 12px 40px rgba(236,19,37,0.6);
+        }
+        .video-play-overlay .play-icon span {
+            font-size: 28px;
+            color: white;
+            margin-left: 3px;
+        }
+        .video-play-overlay.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        @media (max-width: 640px) {
+            .audio-player {
+                top: 10px;
+                right: 10px;
+                padding: 6px 10px;
+                gap: 6px;
+            }
+            .audio-player .audio-progress { width: 50px; }
+            .audio-player .audio-label { display: none; }
+            .audio-player .volume-slider { width: 35px; }
+            .video-play-overlay .play-icon {
+                width: 48px;
+                height: 48px;
+            }
+            .video-play-overlay .play-icon span {
+                font-size: 22px;
+            }
+        }
     </style>
 </head>
 
@@ -533,6 +667,25 @@
     <!-- Confidential / Proprietary Watermarks -->
     <div class="watermark">Proprietary & Confidential — Cypher One LLC</div>
     <div class="watermark-top">Cypher One Productions</div>
+
+    <!-- ===== PERSISTENT AUDIO PLAYER ===== -->
+    <div class="audio-player" id="audio-player">
+        <button id="audio-play-btn" onclick="toggleAudio()" title="Play/Pause">
+            <span class="material-symbols-outlined" style="font-size:18px" id="audio-icon">play_arrow</span>
+        </button>
+        <span class="audio-label">Rocky Theme</span>
+        <div class="audio-progress" id="audio-progress" onclick="seekAudio(event)">
+            <div class="audio-progress-fill" id="audio-progress-fill"></div>
+        </div>
+        <button id="audio-vol-btn" onclick="toggleMute()" title="Mute/Unmute">
+            <span class="material-symbols-outlined" style="font-size:16px" id="vol-icon">volume_up</span>
+        </button>
+        <input type="range" class="volume-slider" id="volume-slider" min="0" max="1" step="0.05" value="0.5"
+            oninput="setVolume(this.value)">
+    </div>
+    <audio id="bg-audio" loop preload="auto">
+        <source src="./media/rocky-theme.mp3" type="audio/mpeg">
+    </audio>
 
     <!-- Navigation Controller -->
     <nav id="nav-bar"
@@ -700,6 +853,25 @@
                                     match</li>
                             </ul>
                         </div>
+                    </div>
+
+                    <!-- B.R.O. Promo Video -->
+                    <div class="mt-8 md:mt-10 relative max-w-4xl mx-auto">
+                        <div class="relative border border-white/10 overflow-hidden shadow-2xl"
+                            style="aspect-ratio: 16/9;">
+                            <video id="promo-video" class="w-full h-full object-cover" playsinline preload="metadata"
+                                poster="">
+                                <source src="./media/bro-promo.mp4" type="video/mp4">
+                            </video>
+                            <div class="video-play-overlay" id="promo-overlay"
+                                onclick="toggleVideo('promo-video', 'promo-overlay')">
+                                <div class="play-icon">
+                                    <span class="material-symbols-outlined">play_arrow</span>
+                                </div>
+                            </div>
+                        </div>
+                        <p class="text-[9px] text-white/20 uppercase tracking-widest text-center mt-3">▲ B.R.O. Promo
+                            Reel — Tap to Play</p>
                     </div>
                 </div>
             </div>
@@ -1390,9 +1562,21 @@
                         </div>
                     </div>
                     <div class="relative h-full w-full rounded-none overflow-hidden border border-white/10 shadow-2xl">
-                        <img src="./IMAGES/Gemini_Generated_Image_wlqtntwlqtntwlqt.jpeg"
-                            class="w-full h-full object-cover grayscale brightness-90 hover:grayscale-0 transition-all duration-700"
-                            alt="Cinematic Identity Montage">
+                        <video id="aesthetics-video" class="w-full h-full object-cover" playsinline preload="metadata"
+                            style="filter: grayscale(100%) brightness(0.9); transition: filter 0.7s;"
+                            onplay="this.style.filter='none'"
+                            onpause="this.style.filter='grayscale(100%) brightness(0.9)'">
+                            <source src="./media/aesthetics-freestyle.mp4" type="video/mp4">
+                        </video>
+                        <div class="video-play-overlay" id="aesthetics-overlay"
+                            onclick="toggleVideo('aesthetics-video', 'aesthetics-overlay')">
+                            <div class="play-icon">
+                                <span class="material-symbols-outlined">play_arrow</span>
+                            </div>
+                        </div>
+                        <p
+                            class="absolute bottom-0 left-0 right-0 text-center text-[8px] text-white/30 uppercase tracking-widest py-2 bg-gradient-to-t from-black/60 to-transparent z-20">
+                            Lux × Mook · Fab V Banks Freestyle</p>
                     </div>
                 </div>
             </div>
@@ -1750,6 +1934,106 @@
         resetNavFade();
 
         console.log('%cB.R.O. Pitch Deck Loaded — Cypher One Productions', 'color: #ec1325; font-weight: bold; font-size: 14px;');
+
+        // ===== AUDIO PLAYER =====
+        const bgAudio = document.getElementById('bg-audio');
+        const audioIcon = document.getElementById('audio-icon');
+        const volIcon = document.getElementById('vol-icon');
+        const progressFill = document.getElementById('audio-progress-fill');
+        let audioPlaying = false;
+
+        bgAudio.volume = 0.5;
+
+        function toggleAudio() {
+            if (audioPlaying) {
+                bgAudio.pause();
+                audioIcon.textContent = 'play_arrow';
+                audioPlaying = false;
+            } else {
+                bgAudio.play().then(() => {
+                    audioIcon.textContent = 'pause';
+                    audioPlaying = true;
+                }).catch(e => console.warn('Audio play blocked:', e));
+            }
+        }
+
+        function toggleMute() {
+            bgAudio.muted = !bgAudio.muted;
+            volIcon.textContent = bgAudio.muted ? 'volume_off' : 'volume_up';
+        }
+
+        function setVolume(val) {
+            bgAudio.volume = parseFloat(val);
+            bgAudio.muted = false;
+            volIcon.textContent = val == 0 ? 'volume_off' : 'volume_up';
+        }
+
+        function seekAudio(e) {
+            const bar = document.getElementById('audio-progress');
+            const rect = bar.getBoundingClientRect();
+            const pct = (e.clientX - rect.left) / rect.width;
+            if (bgAudio.duration) {
+                bgAudio.currentTime = pct * bgAudio.duration;
+            }
+        }
+
+        // Update progress bar
+        function updateAudioProgress() {
+            if (bgAudio.duration) {
+                const pct = (bgAudio.currentTime / bgAudio.duration) * 100;
+                progressFill.style.width = pct + '%';
+            }
+            requestAnimationFrame(updateAudioProgress);
+        }
+        requestAnimationFrame(updateAudioProgress);
+
+        // ===== VIDEO PLAY/PAUSE TOGGLE =====
+        function toggleVideo(videoId, overlayId) {
+            const video = document.getElementById(videoId);
+            const overlay = document.getElementById(overlayId);
+
+            if (video.paused) {
+                video.play().then(() => {
+                    overlay.classList.add('hidden');
+                }).catch(e => console.warn('Video play blocked:', e));
+            } else {
+                video.pause();
+                overlay.classList.remove('hidden');
+            }
+
+            // Show overlay again when video ends
+            video.onended = () => {
+                overlay.classList.remove('hidden');
+                // Reset play icon
+                overlay.querySelector('.play-icon span').textContent = 'replay';
+            };
+
+            // Click on video to pause it
+            video.onclick = () => {
+                if (!video.paused) {
+                    video.pause();
+                    overlay.classList.remove('hidden');
+                    overlay.querySelector('.play-icon span').textContent = 'play_arrow';
+                }
+            };
+        }
+
+        // Pause all videos when changing slides to avoid background playback
+        const originalUpdateSlide = updateSlide;
+        updateSlide = function (index) {
+            // Pause all videos
+            document.querySelectorAll('video').forEach(v => {
+                if (!v.paused && v.id !== 'bg-audio') {
+                    v.pause();
+                    const overlay = v.parentElement.querySelector('.video-play-overlay');
+                    if (overlay) {
+                        overlay.classList.remove('hidden');
+                        overlay.querySelector('.play-icon span').textContent = 'play_arrow';
+                    }
+                }
+            });
+            originalUpdateSlide(index);
+        };
     </script>
 </body>
 

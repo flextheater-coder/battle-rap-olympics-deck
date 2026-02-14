@@ -671,19 +671,19 @@
     <!-- ===== PERSISTENT AUDIO PLAYER ===== -->
     <div class="audio-player" id="audio-player">
         <button id="audio-play-btn" onclick="toggleAudio()" title="Play/Pause">
-            <span class="material-symbols-outlined" style="font-size:18px" id="audio-icon">play_arrow</span>
+            <span class="material-symbols-outlined" style="font-size:18px" id="audio-icon">pause</span>
         </button>
         <span class="audio-label">Rocky Theme</span>
         <div class="audio-progress" id="audio-progress" onclick="seekAudio(event)">
             <div class="audio-progress-fill" id="audio-progress-fill"></div>
         </div>
         <button id="audio-vol-btn" onclick="toggleMute()" title="Mute/Unmute">
-            <span class="material-symbols-outlined" style="font-size:16px" id="vol-icon">volume_up</span>
+            <span class="material-symbols-outlined" style="font-size:16px" id="vol-icon">volume_off</span>
         </button>
         <input type="range" class="volume-slider" id="volume-slider" min="0" max="1" step="0.05" value="0.5"
             oninput="setVolume(this.value)">
     </div>
-    <audio id="bg-audio" loop preload="auto">
+    <audio id="bg-audio" loop preload="auto" autoplay muted>
         <source src="./media/rocky-theme.mp3" type="audio/mpeg">
     </audio>
 
@@ -1561,19 +1561,23 @@
                             </div>
                         </div>
                     </div>
-                    <div class="relative h-full w-full rounded-none overflow-hidden border border-white/10 shadow-2xl">
-                        <video id="aesthetics-video" class="w-full h-full object-cover" playsinline preload="metadata"
-                            style="filter: grayscale(100%) brightness(0.9); transition: filter 0.7s;"
-                            onplay="this.style.filter='none'"
-                            onpause="this.style.filter='grayscale(100%) brightness(0.9)'">
-                            <source src="./media/aesthetics-freestyle.mp4" type="video/mp4">
-                        </video>
-                        <div class="video-play-overlay" id="aesthetics-overlay"
-                            onclick="toggleVideo('aesthetics-video', 'aesthetics-overlay')">
+                    <div class="relative h-full w-full rounded-none overflow-hidden border border-white/10 shadow-2xl"
+                        data-fallback-src="./media/aesthetics-freestyle.mp4">
+                        <!-- Google Drive iframe (primary) — bandwidth-free hosting -->
+                        <iframe id="aesthetics-video" class="w-full h-full absolute inset-0" src=""
+                            data-src="https://drive.google.com/file/d/1Lhh_mSTSGMHwNlRLzfw1g3BRTPHVGYA6/preview"
+                            frameborder="0" allow="autoplay; encrypted-media" allowfullscreen
+                            style="opacity: 0; transition: opacity 0.5s;"></iframe>
+                        <!-- Custom play overlay -->
+                        <div class="video-play-overlay" id="aesthetics-overlay" onclick="revealDriveVideo()">
                             <div class="play-icon">
                                 <span class="material-symbols-outlined">play_arrow</span>
                             </div>
                         </div>
+                        <!-- Poster image while Drive loads -->
+                        <img src="./IMAGES/Gemini_Generated_Image_wlqtntwlqtntwlqt.jpeg" id="aesthetics-poster"
+                            class="absolute inset-0 w-full h-full object-cover grayscale brightness-90 transition-opacity duration-500"
+                            alt="Lux × Mook Freestyle">
                         <p
                             class="absolute bottom-0 left-0 right-0 text-center text-[8px] text-white/30 uppercase tracking-widest py-2 bg-gradient-to-t from-black/60 to-transparent z-20">
                             Lux × Mook · Fab V Banks Freestyle</p>
@@ -1940,9 +1944,10 @@
         const audioIcon = document.getElementById('audio-icon');
         const volIcon = document.getElementById('vol-icon');
         const progressFill = document.getElementById('audio-progress-fill');
-        let audioPlaying = false;
+        let audioPlaying = true;
 
         bgAudio.volume = 0.5;
+        // Autoplay starts muted; user can unmute with volume button
 
         function toggleAudio() {
             if (audioPlaying) {
@@ -2016,6 +2021,28 @@
                     overlay.querySelector('.play-icon span').textContent = 'play_arrow';
                 }
             };
+        }
+
+        // ===== GOOGLE DRIVE VIDEO REVEAL =====
+        function revealDriveVideo() {
+            const iframe = document.getElementById('aesthetics-video');
+            const overlay = document.getElementById('aesthetics-overlay');
+            const poster = document.getElementById('aesthetics-poster');
+
+            // Lazy-load the iframe src (only loads when user clicks play)
+            if (!iframe.src || iframe.src === '' || iframe.src === window.location.href) {
+                iframe.src = iframe.dataset.src;
+            }
+
+            // Fade out poster, fade in iframe
+            if (poster) {
+                poster.style.opacity = '0';
+                setTimeout(() => { poster.style.display = 'none'; }, 500);
+            }
+            iframe.style.opacity = '1';
+
+            // Hide our custom overlay
+            overlay.classList.add('hidden');
         }
 
         // Pause all videos when changing slides to avoid background playback

@@ -532,10 +532,16 @@
             gap: 8px;
             background: rgba(0,0,0,0.7);
             backdrop-filter: blur(20px);
-            border: 1px solid rgba(255,255,255,0.1);
+            border: 1px solid rgba(242,185,13,0.3);
             padding: 8px 14px;
             border-radius: 40px;
             transition: all 0.3s;
+            animation: audioGlow 2s ease-in-out 5;
+            box-shadow: 0 0 12px rgba(242,185,13,0.15);
+        }
+        @keyframes audioGlow {
+            0%, 100% { box-shadow: 0 0 12px rgba(242,185,13,0.15); border-color: rgba(242,185,13,0.3); }
+            50% { box-shadow: 0 0 24px rgba(242,185,13,0.4), 0 0 48px rgba(242,185,13,0.1); border-color: rgba(242,185,13,0.6); }
         }
         .audio-player:hover {
             border-color: rgba(242,185,13,0.3);

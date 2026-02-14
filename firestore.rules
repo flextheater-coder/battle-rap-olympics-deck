@@ -11,5 +11,14 @@ service cloud.firestore {
     match /admins/{email} {
       allow read, write: if request.auth != null && request.auth.token.email == 'flextheater@gmail.com';
     }
+
+    // Access requests: users can create their own request, admin can read/update/delete all
+    match /access_requests/{email} {
+      // Any authenticated user can create/read their own request
+      allow create: if request.auth != null && request.auth.token.email == email;
+      allow read: if request.auth != null && (request.auth.token.email == email || request.auth.token.email == 'flextheater@gmail.com');
+      // Only admin can update (approve) or delete (deny)
+      allow update, delete: if request.auth != null && request.auth.token.email == 'flextheater@gmail.com';
+    }
   }
 }

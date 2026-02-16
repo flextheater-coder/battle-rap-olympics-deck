@@ -643,56 +643,68 @@
             #slide-6 .text-2xl { font-size: 0.7rem !important; }
             #slide-6 .mb-10 { margin-bottom: 0.25rem !important; }
 
-            /* Slide 7 — landscape compact */
-            #slide-7 .grid-cols-2 .p-5 { padding: 0.375rem !important; }
-            #slide-7 .grid-cols-2 .w-14 { width: 1.5rem !important; height: 1.5rem !important; }
-            #slide-7 .grid-cols-2 .mb-4 { margin-bottom: 0 !important; }
-            #slide-7 .grid-cols-2 p { font-size: 6px !important; }
+            /* Slide 7 — Run of Show landscape compact */
+            #slide-7 .py-10 { padding-top: 0.25rem !important; padding-bottom: 0.25rem !important; }
             #slide-7 .mb-10 { margin-bottom: 0.25rem !important; }
-            #slide-7 .mt-8 { margin-top: 0.25rem !important; }
+            #slide-7 .space-y-8 > * + * { margin-top: 0.25rem !important; }
+            #slide-7 .p-5 { padding: 0.375rem !important; }
+            #slide-7 h4 { font-size: 0.65rem !important; margin-bottom: 0 !important; }
+            #slide-7 .text-sm.text-white\/65,
+            #slide-7 .text-sm.text-white\/70 { font-size: 8px !important; line-height: 1.1 !important; }
+            #slide-7 .text-2xl { font-size: 0.75rem !important; }
+            #slide-7 .pl-8 { padding-left: 0.75rem !important; }
+            #slide-7 .absolute.-left-\[41px\] { left: -16px !important; width: 10px !important; height: 10px !important; }
 
-            /* Slide 8 — keep split layout in landscape, just compact */
-            #slide-8 > div:first-child {
+            /* Slide 8 — Championship landscape compact */
+            #slide-8 .grid-cols-2 .p-5 { padding: 0.375rem !important; }
+            #slide-8 .grid-cols-2 .w-14 { width: 1.5rem !important; height: 1.5rem !important; }
+            #slide-8 .grid-cols-2 .mb-4 { margin-bottom: 0 !important; }
+            #slide-8 .grid-cols-2 p { font-size: 6px !important; }
+            #slide-8 .mb-10 { margin-bottom: 0.25rem !important; }
+            #slide-8 .mt-8 { margin-top: 0.25rem !important; }
+
+            /* Slide 9 — keep split layout in landscape, just compact */
+            #slide-9 > div:first-child {
                 flex-direction: row !important;
             }
-            #slide-8 .w-1\/2 {
+            #slide-9 .w-1\/2 {
                 width: 50% !important;
                 min-height: auto;
             }
-            #slide-8 .absolute.bottom-36 {
+            #slide-9 .absolute.bottom-36 {
                 bottom: 6px !important;
                 left: 8px !important;
                 right: 8px !important;
             }
-            #slide-8 .absolute.bottom-36 h3 { font-size: 1rem !important; }
-            #slide-8 .absolute.bottom-36 p { font-size: 8px !important; }
-            #slide-8 .w-20 { width: 2rem !important; height: 2rem !important; }
-            #slide-8 .w-20 span { font-size: 0.6rem !important; }
+            #slide-9 .absolute.bottom-36 h3 { font-size: 1rem !important; }
+            #slide-9 .absolute.bottom-36 p { font-size: 8px !important; }
+            #slide-9 .w-20 { width: 2rem !important; height: 2rem !important; }
+            #slide-9 .w-20 span { font-size: 0.6rem !important; }
 
-            /* Slide 9 — landscape compact */
-            #slide-9 .gap-14 { gap: 0.5rem !important; }
-            #slide-9 h4 { font-size: 0.65rem !important; }
-            #slide-9 .text-\[13px\] { font-size: 8px !important; }
+            /* Slide 10 — Visual Identity landscape compact */
+            #slide-10 .gap-14 { gap: 0.5rem !important; }
+            #slide-10 h4 { font-size: 0.65rem !important; }
+            #slide-10 .text-\[13px\] { font-size: 8px !important; }
 
-            /* Slide 10 — 2x2 in landscape */
-            #slide-10 .grid { grid-template-columns: repeat(2,1fr) !important; }
-            #slide-10 .min-h-\[220px\] { min-height: 80px !important; }
-            #slide-10 .p-7 { padding: 0.375rem !important; }
-            #slide-10 h3 { font-size: 0.6rem !important; }
-            #slide-10 .text-sm.opacity-50 { font-size: 7px !important; }
-            #slide-10 .mb-8 { margin-bottom: 0.25rem !important; }
+            /* Slide 11 — Why Now 2x2 in landscape */
+            #slide-11 .grid { grid-template-columns: repeat(2,1fr) !important; }
+            #slide-11 .min-h-\[220px\] { min-height: 80px !important; }
+            #slide-11 .p-7 { padding: 0.375rem !important; }
+            #slide-11 h3 { font-size: 0.6rem !important; }
+            #slide-11 .text-sm.opacity-50 { font-size: 7px !important; }
+            #slide-11 .mb-8 { margin-bottom: 0.25rem !important; }
 
-            /* Slide 11 — landscape compact */
-            #slide-11 .grid-cols-1.md\:grid-cols-3 { grid-template-columns: repeat(3,1fr) !important; }
-            #slide-11 .grid-cols-1.md\:grid-cols-3 .p-6 { padding: 0.25rem 0.375rem !important; }
-            #slide-11 .grid-cols-1.md\:grid-cols-3 h4 { font-size: 8px !important; }
-            #slide-11 .grid-cols-1.md\:grid-cols-3 .text-3xl { font-size: 0.875rem !important; }
-            #slide-11 .grid-cols-1.md\:grid-cols-3 .text-\[11px\] { font-size: 7px !important; }
-            #slide-11 .grid-cols-1.md\:grid-cols-2 { grid-template-columns: repeat(2,1fr) !important; }
-            #slide-11 .grid-cols-1.md\:grid-cols-2 .p-6 { padding: 0.375rem !important; }
-            #slide-11 .pb-24 { padding-bottom: 2rem !important; }
-            #slide-11 .mb-10 { margin-bottom: 0.25rem !important; }
-            #slide-11 .gap-6 { gap: 0.25rem !important; }
+            /* Slide 12 — Next Steps landscape compact */
+            #slide-12 .grid-cols-1.md\:grid-cols-3 { grid-template-columns: repeat(3,1fr) !important; }
+            #slide-12 .grid-cols-1.md\:grid-cols-3 .p-6 { padding: 0.25rem 0.375rem !important; }
+            #slide-12 .grid-cols-1.md\:grid-cols-3 h4 { font-size: 8px !important; }
+            #slide-12 .grid-cols-1.md\:grid-cols-3 .text-3xl { font-size: 0.875rem !important; }
+            #slide-12 .grid-cols-1.md\:grid-cols-3 .text-\[11px\] { font-size: 7px !important; }
+            #slide-12 .grid-cols-1.md\:grid-cols-2 { grid-template-columns: repeat(2,1fr) !important; }
+            #slide-12 .grid-cols-1.md\:grid-cols-2 .p-6 { padding: 0.375rem !important; }
+            #slide-12 .pb-24 { padding-bottom: 2rem !important; }
+            #slide-12 .mb-10 { margin-bottom: 0.25rem !important; }
+            #slide-12 .gap-6 { gap: 0.25rem !important; }
         }
         /* ===== AUDIO PLAYER ===== */
         .audio-player {
@@ -876,10 +888,10 @@
         </button>
         <div class="flex items-center gap-4">
             <span class="text-xs font-bold tracking-[0.2em] text-white/60">SLIDE <span id="current-slide-num"
-                    class="text-white">01</span> / <span id="total-slide-num">09</span></span>
+                    class="text-white">01</span> / <span id="total-slide-num">12</span></span>
             <div class="h-1 w-28 bg-white/10 rounded-full overflow-hidden relative">
                 <div id="progress-bar" class="h-full bg-primary transition-all duration-500 ease-out relative"
-                    style="width:11.1%">
+                    style="width:8.33%">
                     <div class="progress-dot bg-primary" style="color: var(--tw-bg-opacity, #ec1325)"></div>
                 </div>
             </div>
@@ -1621,7 +1633,7 @@
         </section>
 
         <!-- ===== SLIDE 7: RUN OF SHOW ===== -->
-        <section id="slide-6" class="slide-container">
+        <section id="slide-7" class="slide-container">
             <div class="relative w-full h-full flex flex-col items-center p-4 sm:p-8 overflow-y-auto">
                 <div class="absolute inset-0 z-0 overflow-hidden">
                     <img src="./IMAGES/Gemini_Generated_Image_ukcfb2ukcfb2ukcf (1).jpeg" alt="Intimate Battle"
@@ -1708,8 +1720,8 @@
             </div>
         </section>
 
-        <!-- ===== SLIDE 7: THE CHAMPIONSHIP ===== -->
-        <section id="slide-7" class="slide-container">
+        <!-- ===== SLIDE 8: THE CHAMPIONSHIP ===== -->
+        <section id="slide-8" class="slide-container">
             <div class="relative w-full h-full flex flex-col items-center justify-center p-4 sm:p-8 md:p-14">
                 <!-- Cinematic Gold Arena Background -->
                 <div class="absolute inset-0 z-0 bg-black overflow-hidden">
@@ -1852,8 +1864,8 @@
             </div>
         </section>
 
-        <!-- ===== SLIDE 8: THE FINALE — BARCLAYS CENTER ===== -->
-        <section id="slide-8" class="slide-container">
+        <!-- ===== SLIDE 9: THE FINALE — BARCLAYS CENTER ===== -->
+        <section id="slide-9" class="slide-container">
             <div class="relative w-full h-full flex">
                 <!-- Left: Gold Medal -->
                 <div class="w-1/2 h-full relative group overflow-hidden border-r border-white/10">
@@ -1914,8 +1926,8 @@
             </div>
         </section>
 
-        <!-- ===== SLIDE 9: VISUAL IDENTITY ===== -->
-        <section id="slide-9" class="slide-container">
+        <!-- ===== SLIDE 10: VISUAL IDENTITY ===== -->
+        <section id="slide-10" class="slide-container">
             <div class="relative w-full h-full flex flex-col p-4 sm:p-8 md:p-14">
                 <div class="absolute inset-0 z-0 bg-surface-dark">
                     <div class="absolute inset-0 opacity-[0.06]"
@@ -1994,8 +2006,8 @@
             </div>
         </section>
 
-        <!-- ===== SLIDE 10: WHY NOW ===== -->
-        <section id="slide-10" class="slide-container">
+        <!-- ===== SLIDE 11: WHY NOW ===== -->
+        <section id="slide-11" class="slide-container">
             <div
                 class="relative w-full h-full flex flex-col items-center justify-center p-4 sm:p-8 bg-black overflow-hidden">
 
@@ -2080,8 +2092,8 @@
             </div>
         </section>
 
-        <!-- ===== SLIDE 11: NEXT STEPS & CONTACT ===== -->
-        <section id="slide-11" class="slide-container">
+        <!-- ===== SLIDE 12: NEXT STEPS & CONTACT ===== -->
+        <section id="slide-12" class="slide-container">
             <div class="relative w-full h-full flex flex-col items-center justify-center p-4 sm:p-8 pb-24 sm:pb-28">
                 <div class="absolute inset-0 z-0">
                     <div class="absolute inset-0 bg-black"></div>
@@ -2620,7 +2632,7 @@
             // Manage background video: play on slide 10, pause otherwise
             const bgVideo = document.getElementById('why-now-bg-video');
             if (bgVideo) {
-                if (index === 9) { // slide-10 is index 9
+                if (index === 10) { // slide-11 (Why Now) is index 10
                     bgVideo.play().catch(() => { });
                 } else {
                     bgVideo.pause();

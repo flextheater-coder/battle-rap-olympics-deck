@@ -1076,7 +1076,7 @@
                             <div class="relative overflow-hidden shadow-[0_0_40px_rgba(236,19,37,0.15)] w-full h-full md:h-auto border border-white/10 hover:border-primary/30 transition-all duration-500"
                                 style="aspect-ratio: 9/16; max-height: 50vh; margin: 0 auto;">
                                 <video id="promo-video" class="w-full h-full object-cover" playsinline
-                                    preload="metadata">
+                                    preload="metadata" poster="./IMAGES/promo-poster.png">
                                     <source src="./media/bro-promo.mp4" type="video/mp4">
                                 </video>
                                 <div class="video-play-overlay" id="promo-overlay"
@@ -1594,23 +1594,23 @@
                             </div>
 
                             <!-- Source links -->
-                            <div class="flex items-center gap-4 mt-4 pt-3 border-t border-white/5">
+                            <div class="flex items-center gap-5 mt-4 pt-3 border-t border-white/10">
                                 <a href="https://www.businesswire.com/news/home/20210209005284/en/URL-Ultimate-Rap-League-Returns-to-Caffeine-for-2021-Season"
                                     target="_blank" rel="noopener"
-                                    class="text-[9px] text-white/30 hover:text-primary-gold transition-colors font-mono flex items-center gap-1">
-                                    <span class="material-symbols-outlined text-[10px]">link</span>
+                                    class="text-[10px] text-white/50 hover:text-primary-gold transition-colors font-mono flex items-center gap-1.5 underline decoration-white/20 hover:decoration-primary-gold/60">
+                                    <span class="material-symbols-outlined text-[12px]">link</span>
                                     BusinessWire
                                 </a>
                                 <a href="https://www.forbes.com/sites/ericdeggans/2020/09/11/how-battle-rap-is-becoming-the-hottest-new-arena-in-hip-hop/"
                                     target="_blank" rel="noopener"
-                                    class="text-[9px] text-white/30 hover:text-primary-gold transition-colors font-mono flex items-center gap-1">
-                                    <span class="material-symbols-outlined text-[10px]">link</span>
+                                    class="text-[10px] text-white/50 hover:text-primary-gold transition-colors font-mono flex items-center gap-1.5 underline decoration-white/20 hover:decoration-primary-gold/60">
+                                    <span class="material-symbols-outlined text-[12px]">link</span>
                                     Forbes
                                 </a>
                                 <a href="https://www.blackenterprise.com/smack-dvd-founder-troy-mitchell-changed-hip-hop-culture/"
                                     target="_blank" rel="noopener"
-                                    class="text-[9px] text-white/30 hover:text-primary-gold transition-colors font-mono flex items-center gap-1">
-                                    <span class="material-symbols-outlined text-[10px]">link</span>
+                                    class="text-[10px] text-white/50 hover:text-primary-gold transition-colors font-mono flex items-center gap-1.5 underline decoration-white/20 hover:decoration-primary-gold/60">
+                                    <span class="material-symbols-outlined text-[12px]">link</span>
                                     Black Enterprise
                                 </a>
                             </div>
@@ -2013,7 +2013,7 @@
 
                 <!-- Background Video — full canvas loop -->
                 <video id="why-now-bg-video" class="absolute inset-0 w-full h-full object-cover" autoplay muted loop
-                    playsinline preload="metadata" poster="./IMAGES/Gemini_Generated_Image_ukcfb2ukcfb2ukcf (1).jpeg">
+                    playsinline preload="auto" poster="./IMAGES/Gemini_Generated_Image_ukcfb2ukcfb2ukcf (1).jpeg">
                     <source src="./media/nyc-aerial-bg.mp4" type="video/mp4">
                 </video>
 
@@ -2629,11 +2629,25 @@
                     }
                 }
             });
-            // Manage background video: play on slide 10, pause otherwise
+            // Manage background video: play on Why Now slide, pause otherwise
             const bgVideo = document.getElementById('why-now-bg-video');
             if (bgVideo) {
                 if (index === 10) { // slide-11 (Why Now) is index 10
-                    bgVideo.play().catch(() => { });
+                    bgVideo.muted = true; // ensure muted for autoplay policy
+                    if (bgVideo.currentTime >= bgVideo.duration - 0.5) {
+                        bgVideo.currentTime = 0;
+                    }
+                    // Immediate play attempt
+                    const playPromise = bgVideo.play();
+                    if (playPromise !== undefined) {
+                        playPromise.catch(() => {
+                            // Retry after a brief delay (helps with some browsers)
+                            setTimeout(() => {
+                                bgVideo.muted = true;
+                                bgVideo.play().catch(() => { });
+                            }, 200);
+                        });
+                    }
                 } else {
                     bgVideo.pause();
                 }
